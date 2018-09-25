@@ -3,9 +3,9 @@ import glob
 import pytoml as toml
 import base64
 
-whitelist = ['python3','nodejs']
+whitelist = ['python3','nodejs','clojure']
 
-packages = ['curl', 'wget', 'gnupg', 'build-essential', 'man']
+packages = ['curl', 'wget', 'gnupg', 'build-essential', 'man', 'vim', 'ca-certificates']
 setup = []
 run = []
 setup_dupes = []
@@ -83,10 +83,13 @@ useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
 apt-get update
 ''')
 
-sout.write("DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends " + ' '.join(packages))
+sout.write("DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends " + ' '.join(packages) + ' || exit 1')
 
 sout.write("\n\n")
 sout.write('''
+
+update-ca-certificates
+
 curl -sL https://deb.nodesource.com/setup_10.x | bash -
 DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
 npm install -g yarn
