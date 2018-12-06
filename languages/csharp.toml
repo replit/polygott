@@ -1,0 +1,32 @@
+name = "csharp"
+entrypoint = "main.cs"
+extensions = [
+  "cs"
+]
+packages = [
+  "mono-runtime",
+  "mono-mcs",
+  "mono-xbuild",
+  "mono-xsp",
+  "mono-csharp-shell",
+  "libmono-system4.0-cil"
+]
+
+[compile]
+command = [
+  "mcs",
+  "-out:main.exe"
+]
+
+[run]
+pty = false
+command = [
+  "mono",
+  "main.exe"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "using System; class MainClass { public static void Main (string[] args) { Console.WriteLine (\"hello\"); } }"
+  output = "hello\n"

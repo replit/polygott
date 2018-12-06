@@ -1,0 +1,45 @@
+name = "python3"
+entrypoint = "main.py"
+extensions = [
+  "py"
+]
+packages = [
+  "python3.5",
+  "python3-pip",
+  "python3-wheel",
+  "libtk8.6",
+  "python-dev",
+  "libevent-dev",
+  "gcc"
+]
+popularity = 5.0
+setup = [
+  "wget https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb && dpkg -i stderred_1.0_amd64.deb && rm stderred_1.0_amd64.deb",
+  "pip3 install -U setuptools",
+  "pip3 install -U configparser",
+  "pip3 install pylint==1.6.4 pipreqs-amasad==0.4.10 jedi pyflakes rope nltk yapf numpy scipy requests bpython ptpython matplotlib==2.2.3 python-language-server 'python-language-server[all]'"
+]
+
+[run]
+pty = true
+command = [
+  "python3",
+  "-B",
+  "main.py"
+]
+
+[tests]
+
+  [tests.0]
+  code = "print(__name__)"
+  output = "__main__\n"
+
+  [tests.hello]
+  code = "print(\"hello\")"
+  output = "hello\n"
+
+[languageServer]
+command = [
+  "pyls",
+  "-v"
+]

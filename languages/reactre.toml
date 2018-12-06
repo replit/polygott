@@ -1,0 +1,30 @@
+name = "reactre"
+entrypoint = "src/index.re"
+extensions = [
+  "re"
+]
+packages = [
+  "ocaml-native-compilers"
+]
+setup = [
+  "npm install -g bs-platform@3.1.5 --unsafe-perm",
+  "npm install -g --unsafe-perm reason-cli@3.2.0-linux",
+  "npm install -g ocaml-language-server",
+  "rm -f /home/runner/.profile /home/runner/.bashrc /home/runner/.bash_logout",
+  "yarn create react-app /home/runner --scripts-version reason-scripts",
+  "yarn install",
+  "rm -f README.md .gitignore"
+]
+
+[run]
+pty = false
+command = [
+  "yarn",
+  "start"
+]
+
+[languageServer]
+command = [
+  "ocaml-language-server",
+  "--stdio"
+]

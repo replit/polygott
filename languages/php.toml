@@ -1,0 +1,15 @@
+name = "php"
+entrypoint = "main.php"
+extensions = [
+  "php"
+]
+packages = [
+  "php-cli",
+  "php-pear"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "echo \"hello\n\";"
+  output = "hello\n"

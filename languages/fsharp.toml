@@ -1,0 +1,30 @@
+name = "fsharp"
+entrypoint = "main.fs"
+extensions = [
+  "fs"
+]
+packages = [
+  "mono-runtime",
+  "fsharp",
+  "libmono-system4.0-cil"
+]
+
+[compile]
+command = [
+  "fsharpc",
+  "--nologo",
+  "--out:main.exe"
+]
+
+[run]
+pty = false
+command = [
+  "mono",
+  "main.exe"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "System.Console.WriteLine(\"hello\")"
+  output = "hello\n"

@@ -1,0 +1,37 @@
+name = "c"
+entrypoint = "main.c"
+extensions = [
+  "c"
+]
+packages = []
+setup = [
+  "cd /tmp && wget --quiet http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && tar xf clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && cp clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04/bin/clang-format /bin/ && rm -rf clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04 && rm -rf clang+llvm-6.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz",
+  "cd /tmp && wget -q https://github.com/cquery-project/cquery/releases/download/v20180302/cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && tar xf cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && cd cquery-v20180302-x86_64-unknown-linux-gnu && cp bin/cquery /bin && cp -r lib/* /lib/ && cd /tmp && rm cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && rm -r cquery-v20180302-x86_64-unknown-linux-gnu"
+]
+
+[compile]
+command = [
+  "gcc",
+  "-pthread",
+  "-lm",
+  "-o",
+  "main"
+]
+
+[run]
+pty = true
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "#include \"stdio.h\"\nint main(void) {\nprintf(\"hello\\n\");\nreturn 0;\n}"
+  output = "hello\n"
+
+[languageServer]
+command = [
+  "cquery",
+  "--init={\"progressReportFrequencyMs\": -1,\"cacheDirectory\":\"/tmp/cquery\"}"
+]

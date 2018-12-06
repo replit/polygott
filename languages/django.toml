@@ -1,0 +1,38 @@
+name = "django"
+entrypoint = "main/views.py"
+extensions = [
+  "py"
+]
+packages = [
+  "libtk8.6",
+  "python-dev",
+  "libevent-dev",
+  "gcc"
+]
+setup = [
+  "pip3 install pylint==1.6.4 pipreqs-amasad==0.4.10 nltk yapf numpy scipy requests matplotlib django",
+  "pip3 install -U setuptools",
+  "pip3 install -U configparser",
+  "pip3 install jedi pyflakes rope python-language-server 'python-language-server[all]'",
+  "django-admin startproject main /home/runner"
+]
+
+[run]
+pty = true
+command = [
+  "bash",
+  "-c",
+  "echo creating migrations && ./manage.py makemigrations && echo running migrations && ./manage.py migrate && echo running server && ./manage.py runserver 0.0.0.0:8000"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "print(\"hello\")"
+  output = "hello\n"
+
+[languageServer]
+command = [
+  "pyls",
+  "-v"
+]

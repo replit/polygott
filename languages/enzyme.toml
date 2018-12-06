@@ -1,0 +1,16 @@
+name = "enzyme"
+entrypoint = "index.js"
+extensions = [
+  "js"
+]
+packages = []
+popularity = 1.0
+setup = [
+  "yarn add react react-dom react-addons-test-utils jsdom enzyme babel-core babel-preset-latest babel-preset-react babel-polyfill"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "console.log(\"hello\")"
+  output = "hello\n"

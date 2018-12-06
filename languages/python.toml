@@ -1,0 +1,38 @@
+name = "python"
+entrypoint = "main.py"
+extensions = [
+  "py"
+]
+packages = [
+  "python-wheel",
+  "libtk8.6",
+  "python-dev",
+  "libevent-dev",
+  "gcc"
+]
+setup = [
+  "wget https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb && dpkg -i stderred_1.0_amd64.deb && rm stderred_1.0_amd64.deb",
+  "pip install -U setuptools",
+  "pip install -U configparser",
+  "pip install --no-cache-dir # Our deps pipreqs-amasad==0.4.10 # End ours # Frequently used deps nltk yapf numpy scipy requests jedi pyflakes rope matplotlib bpython ptpython python-language-server 'python-language-server[all]'"
+]
+
+[run]
+pty = true
+command = [
+  "python",
+  "-B",
+  "main.py"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "print \"hello\""
+  output = "hello\n"
+
+[languageServer]
+command = [
+  "pyls",
+  "-v"
+]

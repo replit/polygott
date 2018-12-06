@@ -1,0 +1,32 @@
+name = "haskell"
+entrypoint = "main.hs"
+extensions = [
+  "hs"
+]
+packages = [
+  "ghc"
+]
+
+[compile]
+command = [
+  "ghc",
+  "-o",
+  "main"
+]
+
+[run]
+pty = true
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.0]
+  code = "main = do\n  putStrLn \"What's your name?\"\n  name <- getLine \n  putStrLn ( \"Hey, \" ++ name)"
+  output = "Hey, goval\n"
+  input = "goval\n"
+
+  [tests.hello]
+  code = "putStrLn \"hello\""
+  output = "hello\n"

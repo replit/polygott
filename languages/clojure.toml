@@ -1,0 +1,22 @@
+name = "clojure"
+entrypoint = "main.clj"
+extensions = [
+  "clj"
+]
+packages = [
+  "clojure1.6"
+]
+setup = [
+  "# 18.04 has this package, so axe this when we upgrade",
+  "wget http://mirrors.kernel.org/ubuntu/pool/universe/l/leiningen-clojure/leiningen_2.8.1-6_all.deb",
+  "dpkg -i leiningen_2.8.1-6_all.deb",
+  "rm leiningen_2.8.1-6_all.deb"
+]
+
+[run]
+pty = true
+command = [
+  "lein",
+  "exec",
+  "main.clj"
+]

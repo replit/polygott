@@ -1,0 +1,25 @@
+name = "express"
+entrypoint = "index.js"
+extensions = [
+  "js"
+]
+packages = [
+  ""
+]
+popularity = 1.0
+setup = [
+  "npm install -g jest@23.1.0 prettier@1.13.4 babylon@6.15 babel-traverse@6.21 walker@1.0.7"
+]
+
+[run]
+pty = true
+command = [
+  "node",
+  "index.js"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "console.log(\"hello\")"
+  output = "hello\n"

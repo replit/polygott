@@ -1,0 +1,37 @@
+name = "go"
+entrypoint = "main.go"
+extensions = [
+  "go"
+]
+packages = [
+  "golang",
+  "golang-race-detector-runtime"
+]
+setup = [
+  "go get -u github.com/sourcegraph/go-langserver"
+]
+
+[compile]
+command = [
+  "go",
+  "build",
+  "-o",
+  "main"
+]
+
+[run]
+pty = true
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "package main \nimport \"fmt\" \nfunc main() { \nfmt.Println(\"hello\") \n}"
+  output = "hello\n"
+
+[languageServer]
+command = [
+  "go-langserver"
+]

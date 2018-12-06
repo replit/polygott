@@ -1,0 +1,21 @@
+name = "gatsbyjs"
+entrypoint = "src/pages/index.js"
+extensions = [
+  "js"
+]
+packages = [
+  ""
+]
+setup = [
+  "rm -f /home/runner/.profile /home/runner/.bashrc /home/runner/.bash_logout",
+  "npm install -g prettier@1.13.4 gatsby-cli",
+  "gatsby new /home/runner && rm LICENSE && rm README.md && rm .prettierrc && rm .gitignore",
+  "yarn"
+]
+
+[run]
+pty = false
+command = [
+  "yarn",
+  "develop"
+]

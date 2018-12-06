@@ -1,0 +1,26 @@
+name = "bash"
+entrypoint = "main.sh"
+extensions = [
+  "sh"
+]
+packages = [
+  ""
+]
+setup = [
+  "cd /tmp && wget --quiet https://github.com/ewiger/beautify_bash/archive/master.tar.gz && tar xfz master.tar.gz && cp beautify_bash-master/beautify_bash.py /bin/ && chmod +x /bin/beautify_bash.py && rm -rf beautify_bash-master && rm -rf master.tar.gz",
+  "chmod +x /run_dir/bash_interp.sh",
+  "echo 'export PS1=\"\\\\033[33m\\\\033[00m \"' >> /home/runner/.bashrc"
+]
+
+[run]
+pty = true
+command = [
+  "/bin/bash",
+  "./main.sh"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "echo hello"
+  output = "hello\n"
