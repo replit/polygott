@@ -5,11 +5,12 @@ import base64
 
 whitelist = ['python3','nodejs','clojure']
 
-packages = ['curl', 'wget', 'gnupg', 'build-essential', 'man', 'vim', 'ca-certificates']
+packages = open('packages.txt').read().split("\n")
 setup = []
 run = []
 setup_dupes = []
 tests = []
+detections = []
 
 def sh(args):
 	return ' '.join(args)
@@ -20,6 +21,7 @@ for conf in list:
 	with open(conf, "r") as file:
 		info = toml.load(file)
 		name = info['name']
+		popularity = info['popularity'] if 'popularity' in info else 2
 		if name not in whitelist:
 			#continue
 			pass
@@ -45,6 +47,13 @@ for conf in list:
 
 		if 'packages' in info:
 			packages += info['packages']
+
+		if 'entrypoint' in info:
+			detections.append((6+popularity, "if [ -f " + info['entrypoint'] + " ]; then echo '" + name + "'; exit 0; fi"))
+
+		if 'extensions' in info:
+			for ex in info['extensions']:
+				detections.append((popularity, "if [ -n \"$(find . -name '" + ex + "')\" ]; then echo '" + name + "'; exit 0; fi"))
 
 		if 'setup' in info:
 			setup.append("echo Setup " + name)
@@ -109,6 +118,7 @@ chown runner:runner -R /home/runner
 
 rm -rf /var/lib/apt/lists/*
 chmod +x /usr/bin/run-project
+chmod +x /usr/bin/detect-language
 rm /setup.sh
 ''')
 
@@ -118,7 +128,7 @@ sout.close()
 srun = open("out/run-project", "w")
 srun.write('''#!/bin/bash
 READ_STDIN=0
-LANGUAGE=python3
+LANGUAGE=`detect-language`
 
 while getopts ":sl:" opt; do
   case ${opt} in
@@ -160,3 +170,11 @@ stest.write('''#!/bin/bash
 ''')
 stest.write('\n'.join(tests))
 stest.close()
+
+sdetect = open("out/detect-language", "w")
+sdetect.write('''#!/bin/bash
+
+''')
+detections.sort(key=lambda x: -x[0])
+sdetect.write('\n'.join(map(lambda y: y[1], detections)))
+sdetect.close()

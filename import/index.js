@@ -22,8 +22,14 @@ let extra_pkgs = {
 	swift: ['libedit2', 'python2.7-minimal', 'libpython2.7', 'libxml2', 'clang', 'libicu-dev']
 }
 
+let popularity = {
+	python3: 5,
+	express: 1,
+	enzyme: 1
+}
+
 let languages = fs.readdirSync('target/languages').map((f) => {
-	if ( f != "quil.json") return;
+	if ( f == 'polygott' ) continue;
 
 	let data = fs.readFileSync(`target/languages/${f}`, 'utf8');
 	let def = eval('(function() { return ' + data + '})()');
@@ -123,6 +129,10 @@ let languages = fs.readdirSync('target/languages').map((f) => {
 		tests: def.tests,
 	};
 
+	if (popularity[def.name]) {
+		obj.popularity = popularity[def.name];
+	}
+
 	if ( def.languageServer ) {
 		obj.languageServer = {
 			command: def.languageServer.startCommand
@@ -188,9 +198,10 @@ let languages = fs.readdirSync('target/languages').map((f) => {
 	}
 
 
-	fs.writeFileSync(`./languages/${def.name}.toml`, tomlify.toToml(obj, {
+	let str = tomlify.toToml(obj, {
 		space: 2
-	}), 'utf8');
+	});
+	fs.writeFileSync(`./languages/${def.name}.toml`, str, 'utf8');
 
 })
 
