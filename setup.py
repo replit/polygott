@@ -40,7 +40,8 @@ for conf in list:
 		run.append(name + ")")
 		run.append('  maybe_read_stdin ' + info['entrypoint'])
 		if 'compile' in info:
-			run.append("  " + sh(info['compile']['command']) + " " + info['entrypoint'])			
+			run.append("  " + sh(info['compile']['command']) + " " + info['entrypoint'])
+
 		if 'run' in info:
 			run.append("  " + sh(info['run']['command']))
 		run.append('  ;;')
@@ -146,7 +147,7 @@ while getopts ":sl:" opt; do
 done
 
 maybe_read_stdin() {
-    if $READ_STIN; then
+    if $READ_STDIN; then
         cat - > /home/runner/$1
     fi
 }

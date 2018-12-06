@@ -30,7 +30,7 @@ let popularity = {
 
 let languages = fs.readdirSync('target/languages').map((f) => {
 	if ( f == 'polygott' ) continue;
-
+	
 	let data = fs.readFileSync(`target/languages/${f}`, 'utf8');
 	let def = eval('(function() { return ' + data + '})()');
 	let warmups = def.warmups;
@@ -197,6 +197,7 @@ let languages = fs.readdirSync('target/languages').map((f) => {
 		obj.tests = tests;
 	}
 
+	console.log(obj);
 
 	let str = tomlify.toToml(obj, {
 		space: 2
