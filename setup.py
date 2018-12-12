@@ -18,8 +18,15 @@ def sh(args):
 list = glob.glob("./languages/*.toml")
 list.sort()
 for conf in list:
-	with open(conf, "r") as file:
-		info = toml.load(file)
+	with open(conf, "r", encoding="utf-8") as file:
+		info = None
+		try:
+			info = toml.load(file)
+		except e:
+			print("Couldn't load", conf)
+			print(e)
+			continue
+
 		name = info['name']
 		popularity = info['popularity'] if 'popularity' in info else 2
 		if name not in whitelist:
@@ -81,7 +88,7 @@ for conf in list:
 
 packages = set(packages)
 
-sout = open("out/setup.sh", "w")
+sout = open("out/setup.sh", "w", encoding="utf-8")
 
 sout.write('''#!/bin/bash
 set -v
@@ -165,7 +172,7 @@ esac
 ''')
 srun.close()
 
-stest = open("test.sh", "w")
+stest = open("test.sh", "w", encoding="utf-8")
 stest.write('''#!/bin/bash
 
 ''')
