@@ -29,7 +29,7 @@ let popularity = {
 }
 
 let languages = fs.readdirSync('target/languages').map((f) => {
-	if ( f == 'polygott' ) continue;
+	if ( f == 'polygott' ) return;
 	
 	let data = fs.readFileSync(`target/languages/${f}`, 'utf8');
 	let def = eval('(function() { return ' + data + '})()');
@@ -79,7 +79,7 @@ let languages = fs.readdirSync('target/languages').map((f) => {
 	let parts = parser.parse(docker).getInstructions();
 	for ( let part of parts ) {
 		if ( part.instruction == "RUN" ) {
-			let str = part.getArgumentsContent().replace(/\s+/g,' ');
+			let str = part.getArgumentsContent().replace(/#[^\n]*\n/g,'\n').replace(/\s+/g,' ');
 			if ( [
 				'groupadd runner',
 				'groupadd -f runner',

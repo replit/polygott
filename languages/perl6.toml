@@ -1,0 +1,28 @@
+name = "perl6"
+entrypoint = "main.p6"
+extensions = [
+  "p6"
+]
+packages = [
+]
+setup = [
+  "wget https://rakudo.perl6.org/downloads/star/rakudo-star-2018.10.tar.gz",
+  "tar xfz rakudo-star-2018.10.tar.gz",
+  "cd rakudo-star-2018.10",
+  "perl Configure.pl --gen-moar --make-install --prefix /usr",
+  "rm -rf rakudo-star-2018.10 rakudo-star-2018.10.tar"
+]
+
+
+[run]
+pty = true
+command = [
+  "perl6",
+  "./main.p6"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "say 'hello world';"
+  output = "hello world\n"

@@ -20,3 +20,9 @@ command = [
   "exec",
   "main.clj"
 ]
+
+[tests]
+
+  [tests.hello]
+  code = "(println \"Hello World\")"
+  output = "hello\n"

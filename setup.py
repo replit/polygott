@@ -154,7 +154,7 @@ while getopts ":sl:" opt; do
 done
 
 maybe_read_stdin() {
-    if $READ_STDIN; then
+    if [ $READ_STDIN -ne 0 ]; then
         cat - > /home/runner/$1
     fi
 }

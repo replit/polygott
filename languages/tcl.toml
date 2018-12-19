@@ -1,0 +1,23 @@
+name = "tcl"
+entrypoint = "main.tcl"
+extensions = [
+  "tcl"
+]
+packages = [
+  "tcl8.6"
+]
+setup = [
+]
+
+[run]
+pty = true
+command = [
+  "tclsh8.6",
+  "./main.tcl"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "puts {hello}"
+  output = "hello\n"

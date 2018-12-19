@@ -1,0 +1,11 @@
+curl
+wget
+git
+subversion
+mercurial
+gnupg
+build-essential
+man
+vim
+ca-certificates
+busybox
