@@ -1,0 +1,41 @@
+#!/bin/bash
+READ_STDIN=0
+LANGUAGE=`detect-language`
+
+while getopts ":sl:" opt; do
+  case ${opt} in
+    s )
+      READ_STDIN=1
+      ;;
+    l )
+      LANGUAGE=$OPTARG
+      ;;
+    \? )
+      echo "Usage: run-project [-s] [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+maybe_read_stdin() {
+    if [ $READ_STDIN -ne 0 ]; then
+        cat - > /home/runner/$1
+    fi
+}
+
+case $LANGUAGE in
+<% for ( let lang of languages ) { -%>
+<%= lang.name %>)
+  maybe_read_stdin <%= lang.entrypoint %>
+<% if ( lang.compile ) { -%>
+  <%- c(lang.compile.command.concat([lang.entrypoint])) %>
+<% } -%>
+<% if ( lang.run ) { -%>
+  <%- c(lang.run.command) %>
+<% } -%>
+  ;;
+<% } -%>
+*)
+  echo "Unknown Language: $LANGUAGE"
+  ;;
+esac

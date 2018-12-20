@@ -1,17 +1,21 @@
-FROM ubuntu:18.04
-RUN apt-get update && apt-get install -y python3 python3-pip python3-dev build-essential  && pip3 install pytoml
-RUN mkdir -p /home/ubuntu/out
-ADD setup.py /home/ubuntu/setup.py
-ADD languages /home/ubuntu/languages
-ADD packages.txt /home/ubuntu/packages.txt
-RUN cd /home/ubuntu && /usr/bin/env LANG=en_US.UTF-8 python3 /home/ubuntu/setup.py
+ARG LANGS=
+FROM node:8.14.0-alpine
+ARG LANGS
+RUN mkdir -p out
+ADD gen gen
+RUN cd gen && npm install
+ADD languages languages
+ADD packages.txt packages.txt
+RUN node gen/index.js
 
 FROM ubuntu:16.04
 
-COPY --from=0 /home/ubuntu/out/setup.sh /setup.sh
-COPY --from=0 /home/ubuntu/out/run-project /usr/bin/run-project
-COPY --from=0 /home/ubuntu/out/detect-language /usr/bin/detect-language
+COPY --from=0 /out/setup.sh /setup.sh
 RUN /bin/bash setup.sh
+
+COPY --from=0 /out/run-project /usr/bin/run-project
+COPY --from=0 /out/detect-language /usr/bin/detect-language
+COPY --from=0 /out/self-test /usr/bin/polygott-self-test
 
 WORKDIR /home/runner
 

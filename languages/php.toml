@@ -8,8 +8,15 @@ packages = [
   "php-pear"
 ]
 
+[run]
+pty = true
+command = [
+  "php",
+  "main.php"
+]
+
 [tests]
 
   [tests.hello]
-  code = "echo \"hello\n\";"
+  code = "<?php echo \"hello\n\";"
   output = "hello\n"

@@ -1,0 +1,7 @@
+<% for ( let lang of languages ) { -%>
+# <%= lang.name %>
+<% for ( let tname in lang.tests ) { -%>
+<% let test = lang.tests[tname]; -%>
+echo "<%= btoa(test.code) %>"  | base64 --decode | docker run --rm -i polygott run-project -s -l <%= lang.name %> | diff -u --label <%= lang.name %> <( echo "<%= btoa(test.output) %>" | base64 --decode ) - && echo ✓ <%= lang.name %>:<%= tname %>
+<% } %>
+<% } -%>
