@@ -16,6 +16,8 @@ packages = [
 pty = true
 command = [
   "R",
+  "--slave",
+  "-f",
   "main.r"
 ]
 

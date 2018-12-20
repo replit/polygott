@@ -17,8 +17,15 @@ setup = [
   "go build -o /run_dir/lua /run_dir/main.go"
 ]
 
+[run]
+pty = true
+command = [
+  "lua",
+  "./main.lua"
+]
+
 [tests]
 
   [tests.hello]
   code = "print(\"hello\")"
-  output = "hello\t\n"
+  output = "hello\n"

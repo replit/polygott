@@ -53,6 +53,8 @@ for ( let file of list ) {
 	languages.push(info);
 }
 
+
+
 let lbypop = JSON.parse(JSON.stringify(languages));
 lbypop.sort((a,b) => b.popularity - a.popularity);
 

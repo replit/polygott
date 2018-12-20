@@ -28,7 +28,7 @@ case $LANGUAGE in
 <%= lang.name %>)
   maybe_read_stdin <%= lang.entrypoint %>
 <% if ( lang.compile ) { -%>
-  <%- c(lang.compile.command.concat([lang.entrypoint])) %>
+  <%- c(lang.compile.command.concat([lang.entrypoint])) %> 1>&2
 <% } -%>
 <% if ( lang.run ) { -%>
   <%- c(lang.run.command) %>

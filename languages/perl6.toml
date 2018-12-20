@@ -4,6 +4,7 @@ extensions = [
   "p6"
 ]
 packages = [
+  "libssl-dev"
 ]
 setup = [
   "wget https://rakudo.perl6.org/downloads/star/rakudo-star-2018.10.tar.gz",

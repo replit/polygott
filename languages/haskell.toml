@@ -28,5 +28,5 @@ command = [
   input = "goval\n"
 
   [tests.hello]
-  code = "putStrLn \"hello\""
+  code = "main = putStrLn \"hello\""
   output = "hello\n"
