@@ -8,7 +8,7 @@ ADD languages languages
 ADD packages.txt packages.txt
 RUN node gen/index.js
 
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 COPY --from=0 /out/setup.sh /setup.sh
 RUN /bin/bash setup.sh
