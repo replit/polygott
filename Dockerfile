@@ -10,8 +10,12 @@ RUN node gen/index.js
 
 FROM ubuntu:18.04
 
-COPY --from=0 /out/setup.sh /setup.sh
-RUN /bin/bash setup.sh
+COPY --from=0 /out/phase1.sh /phase1.sh
+RUN /bin/bash phase1.sh
+
+COPY --from=0 /out/phase2.sh /phase2.sh
+RUN /bin/bash phase2.sh
+
 
 COPY --from=0 /out/run-project /usr/bin/run-project
 COPY --from=0 /out/detect-language /usr/bin/detect-language

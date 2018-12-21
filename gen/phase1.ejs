@@ -21,29 +21,6 @@ cd /home/runner
 mkdir -p /opt/homes/default
 mv -nt /opt/homes/default/ $(ls -A /home/runner)
 
-<% for ( let lang of languages ) { -%>
-<% if ( lang.setup ) { -%>
-
-
-echo Setup <%= lang.name %>
-<% for ( let line of lang.setup ) { -%>
-<%- undup(line) %>
-<% } -%>
-
-if [ -n "$(ls -A /home/runner)" ]; then
-	echo Storing home for <%= lang.name %>
-	mkdir -p /opt/homes/<%= lang.name %>
-	cp -r /opt/homes/default/* /opt/homes/<%= lang.name %>
-	mv -nt /opt/homes/<%= lang.name %>/ /home/runner/*
-	ls -A /opt/homes/<%= lang.name %>
-fi
-<% } -%>
-<% } -%>
-
-
-
-cp -r /opt/homes/default/* /home/runner
-chown runner:runner -R /home/runner
 
 rm -rf /var/lib/apt/lists/*
-rm /setup.sh
+rm /phase1.sh

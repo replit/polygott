@@ -70,7 +70,8 @@ let ctx = {
 let objects = {
 	'test.sh': 'tests.ejs',
 	'self-test': 'inside-test.ejs',
-	'setup.sh': 'setup.ejs',
+	'phase1.sh': 'phase1.ejs',
+	'phase2.sh': 'phase2.ejs',
 	'run-project': 'run-project.ejs',
 	'detect-language': 'detect-language.ejs'
 }
