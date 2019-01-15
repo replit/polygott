@@ -13,6 +13,8 @@ setup = [
   "ln -s /opt/kotlinc/bin/kotlin{,c,c-js,c-jvm} /usr/local/bin/"
 ]
 
+versionCommand = ["kotlin", "-version"]
+
 [tests]
 
   [tests.hello]

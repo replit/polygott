@@ -38,6 +38,29 @@ for ( let file of list ) {
 
 	info.popularity = info.popularity || 2;
 
+	if ( !info.versionCommand ) {
+		let flag = "--version";
+		if ( ["lua"].indexOf(info.name) !== -1 ) {
+			flag = "-v";
+		}
+
+		if (["go"].indexOf(info.name) !== -1) {
+			flag = "version";
+		}
+
+		if (["java"].indexOf(info.name) !== -1) {
+			flag = "-version";
+		}
+
+		if ( info.compile ) {
+			info.versionCommand = [info.compile.command[0], flag]
+		} else if ( info.run ) {
+			info.versionCommand = [info.run.command[0], flag]
+		} else {
+			info.versionCommand = ['/bin/false']
+		}
+	}
+
 	if ( 'tests' in info ) {
 
 	} else {
@@ -58,12 +81,15 @@ for ( let file of list ) {
 let lbypop = JSON.parse(JSON.stringify(languages));
 lbypop.sort((a,b) => b.popularity - a.popularity);
 
+let lpad = (s,n) => s + new Array(n - s.length).fill(' ').join('');
+
 let ctx = {
 	languages,
 	btoa,
 	lbypop,
 	packages,
 	undup,
+	lpad,
 	c: (a) => a.join(' ')
 };
 
@@ -73,7 +99,8 @@ let objects = {
 	'phase1.sh': 'phase1.ejs',
 	'phase2.sh': 'phase2.ejs',
 	'run-project': 'run-project.ejs',
-	'detect-language': 'detect-language.ejs'
+	'detect-language': 'detect-language.ejs',
+	'polygott-survey': 'versions.ejs'
 }
 
 for ( let target in objects ) {
