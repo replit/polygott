@@ -4,6 +4,7 @@ extensions = [
   "py"
 ]
 packages = [
+  "python-pip",
   "python-wheel",
   "libtk8.6",
   "python-dev",

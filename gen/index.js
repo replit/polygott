@@ -38,7 +38,7 @@ for ( let file of list ) {
 
 	info.popularity = info.popularity || 2;
 
-	if ( !info.versionCommand ) {
+	if (!info.versionCommand) {
 		let flag = "--version";
 		if ( ["lua"].indexOf(info.name) !== -1 ) {
 			flag = "-v";
