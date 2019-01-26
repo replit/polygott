@@ -17,12 +17,12 @@ setup = [
 pty = true
 command = [
   "/usr/lib/dart/bin/dart",
-  "./main.d"
+  "./main.dart"
 ]
 
 [tests]
 
   [tests.hello]
   code = "void main() { print('Hello, World!'); }"
-  output = "Hello. World\n"
+  output = "Hello, World!\n"
 
