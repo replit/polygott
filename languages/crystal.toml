@@ -1,0 +1,30 @@
+name = "crystal"
+entrypoint = "main.cr"
+extensions = [
+  "cr"
+]
+packages = [
+  "libssl-dev"
+]
+setup = [
+  "apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61",
+  'curl -sSL https://dist.crystal-lang.org/apt/setup.sh | bash',
+  'curl -sL "https://keybase.io/crystal/pgp_keys.asc" | apt-key add -',
+  'echo "deb https://dist.crystal-lang.org/apt crystal main" | tee /etc/apt/sources.list.d/crystal.list',
+  'apt-get update && apt-get install -y crystal'
+]
+
+
+[run]
+pty = true
+command = [
+  "crystal",
+  "run",
+  "./main.cr"
+]
+
+[tests]
+
+  [tests.hello]
+  code = 'puts "hello world"'
+  output = "hello world\n"
