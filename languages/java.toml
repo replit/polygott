@@ -4,7 +4,7 @@ extensions = [
   "java"
 ]
 packages = [
-  "openjdk-8-jdk"
+  "openjdk-11-jdk"
 ]
 setup = [
   "mkdir -p /home/runner/.config/language-server && cd /home/runner/.config/language-server && wget http://download.eclipse.org/jdtls/milestones/0.21.0/jdt-language-server-0.21.0-201806152234.tar.gz && tar -xzf jdt-language-server-0.21.0-201806152234.tar.gz && rm jdt-language-server-0.21.0-201806152234.tar.gz && chown runner:runner -R /home/runner"

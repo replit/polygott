@@ -4,7 +4,7 @@ extensions = [
   "kt"
 ]
 packages = [
-	"openjdk-8-jdk"
+	"openjdk-11-jdk"
 ]
 setup = [
   "wget https://github.com/JetBrains/kotlin/releases/download/v1.0.3/kotlin-compiler-1.0.3.zip -O /tmp/a.zip",
