@@ -1,0 +1,29 @@
+name = "scala"
+entrypoint = "Main.scala"
+extensions = [
+  "scala"
+]
+packages = [
+  "openjdk-11-jdk",
+  "scala"
+]
+setup = [
+]
+
+versionCommand = ["scalac", "-version"]
+
+[run]
+command = [
+  "scala",
+  "-nobootcp",
+  "-nc",
+  "Main.scala"
+]
+pty = true
+
+[tests]
+
+  [tests.hello]
+  code = """object Main { def main(args: Array[String]): Unit = println("hello") }"""
+  output = "hello\n"
+
