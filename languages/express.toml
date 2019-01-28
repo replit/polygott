@@ -4,7 +4,6 @@ extensions = [
   "js"
 ]
 packages = [
-  ""
 ]
 popularity = 1.0
 setup = [

@@ -3,9 +3,12 @@ const path = require("path");
 const glob = require("glob");
 const toml = require("toml");
 const ejs = require("ejs");
+const tv4 = require("tv4");
 
 const base = path.join(__dirname, "..");
 const dest = path.join(base, "out");
+const schema = require("./schema.json");
+
 
 const btoa = b => Buffer.from(b).toString("base64");
 
@@ -29,6 +32,14 @@ function undup(line) {
 
 for (let file of list) {
 	let info = toml.parse(fs.readFileSync(file, "utf8"));
+
+	let result = tv4.validateMultiple(info, schema);
+	if ( !result.valid ) {
+		console.log(`Warning: ${file} schema invalid.`);
+		for ( let error of result.errors ) {
+			console.log(`-> ${error.message} @ ${error.dataPath}`)
+		}
+	}
 
 	let name = info.name;
 

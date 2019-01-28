@@ -8,8 +8,7 @@ packages = [
   "liblua5.1-0",
   "liblua5.1-bitop0",
   "lua-socket",
-  "luarocks",
-  ""
+  "luarocks"
 ]
 setup = [
   "luarocks install formatter && luarocks install metalua && luarocks install penlight",

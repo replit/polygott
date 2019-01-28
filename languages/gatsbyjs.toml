@@ -4,7 +4,6 @@ extensions = [
   "js"
 ]
 packages = [
-  ""
 ]
 setup = [
   "rm -f /home/runner/.profile /home/runner/.bashrc /home/runner/.bash_logout",
