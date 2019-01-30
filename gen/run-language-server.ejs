@@ -1,0 +1,31 @@
+#!/bin/bash
+LANGUAGE=`detect-language`
+
+while getopts ":sl:" opt; do
+  case ${opt} in
+    l )
+      LANGUAGE=$OPTARG
+      ;;
+    \? )
+      echo "Usage: run-language-server [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+
+case $LANGUAGE in
+<% for ( let lang of languages ) { -%>
+<%= lang.name %>)
+<% if ( lang.languageServer ) { -%>
+  <%- c(lang.languageServer.command) %>
+<% } else { -%>
+  echo "No langauge server configured for <%= lang.name %>" >&2
+  exit 1
+<% } -%>
+  ;;
+<% } -%>
+*)
+  echo "Unknown Language: $LANGUAGE"
+  ;;
+esac

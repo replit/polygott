@@ -18,6 +18,7 @@ RUN /bin/bash phase2.sh
 
 
 COPY --from=0 /out/run-project /usr/bin/run-project
+COPY --from=0 /out/run-language-server /usr/bin/run-lanague-server
 COPY --from=0 /out/detect-language /usr/bin/detect-language
 COPY --from=0 /out/self-test /usr/bin/polygott-self-test
 COPY --from=0 /out/polygott-survey /usr/bin/polygott-survey

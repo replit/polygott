@@ -99,7 +99,10 @@ let ctx = {
 	packages,
 	undup,
 	lpad,
-	c: a => a.join(" ")
+	c: a => a.map((s) => {
+		if ( /^[a-zA-Z0-9-]*$/.test(s) ) return s;
+		return `'${s.replace(/['\\]/g,(m) => '\\' + m)}'`;
+	}).join(" ")
 };
 
 let objects = {
@@ -108,6 +111,7 @@ let objects = {
 	"phase1.sh": "phase1.ejs",
 	"phase2.sh": "phase2.ejs",
 	"run-project": "run-project.ejs",
+	"run-language-server": "run-language-server.ejs",
 	"detect-language": "detect-language.ejs",
 	"polygott-survey": "versions.ejs"
 };
