@@ -33,5 +33,5 @@ command = [
 
 [languageServer]
 command = [
-  "go-langserver"
+  "/opt/homes/go/go/bin/go-langserver"
 ]

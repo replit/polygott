@@ -2,6 +2,8 @@
 set -v
 shopt -s dotglob
 
+export HOME=/home/runner
+
 <% for ( let lang of languages ) { -%>
 <% if ( lang.setup ) { -%>
 
