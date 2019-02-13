@@ -11,5 +11,5 @@ setup = [
 versionCommand = [
   "/bin/bash",
   "-c",
-  "\"pip3 show pyquil | grep Version \""
+  "pip3 show pyquil | grep Version "
 ]

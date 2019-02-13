@@ -82,6 +82,15 @@
 		"run"
 	],
 	"properties": {
+		"aptRepos": {
+			"type": "array",
+			"items": {
+				"$id": "#/properties/aptRepos/items",
+				"type": "string",
+				"title": "The Items Schema",
+				"default": ""
+			}
+		},
 		"entrypoint": {
 			"type": "string",
 			"title": "The Entrypoint Schema",

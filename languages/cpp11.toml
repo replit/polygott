@@ -11,7 +11,7 @@ setup = [
 
 [compile]
 command = [
-  "g++",
+  "clang++",
   "-pthread",
   "-std=c++11",
   "-o",

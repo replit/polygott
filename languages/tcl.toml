@@ -12,7 +12,7 @@ setup = [
 versionCommand = [
   "/bin/bash",
   "-c",
-  "\"echo 'puts \$tcl_version' | tclsh8.6\""
+  "echo \"puts $tcl_version\" | tclsh8.6"
 ]
 
 [run]

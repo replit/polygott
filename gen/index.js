@@ -16,6 +16,8 @@ let packages = fs
 	.readFileSync(path.join(base, "packages.txt"), "utf8")
 	.split(/\r?\n/);
 
+let aptRepos = [];
+
 let list = glob.sync(path.join(base, "languages", "*.toml"));
 let languages = [];
 list.sort();
@@ -79,6 +81,12 @@ for (let file of list) {
 		info.tests = {};
 	}
 
+	if (info.aptRepos) {
+		for (let p of info.aptRepos) {
+			if (aptRepos.indexOf(p) == -1) aptRepos.push(p);
+		}
+	}
+
 	if (info.packages) {
 		for (let p of info.packages) {
 			if (packages.indexOf(p) == -1) packages.push(p);
@@ -97,6 +105,7 @@ let ctx = {
 	btoa,
 	lbypop,
 	packages,
+	aptRepos,
 	undup,
 	lpad,
 	c: a => a.map((s) => {

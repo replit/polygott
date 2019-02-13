@@ -4,6 +4,8 @@ shopt -s dotglob
 
 export HOME=/home/runner
 
+ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin
+
 <% for ( let lang of languages ) { -%>
 <% if ( lang.setup ) { -%>
 

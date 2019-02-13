@@ -9,4 +9,4 @@ build-essential
 man
 vim
 ca-certificates
-busybox
+chromium-chromedriver
