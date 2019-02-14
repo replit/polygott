@@ -82,6 +82,15 @@
 		"run"
 	],
 	"properties": {
+		"aptKeys": {
+			"type": "array",
+			"items": {
+				"$id": "#/properties/aptRepos/items",
+				"type": "string",
+				"title": "The Items Schema",
+				"default": ""
+			}
+		},
 		"aptRepos": {
 			"type": "array",
 			"items": {

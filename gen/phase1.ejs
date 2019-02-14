@@ -7,11 +7,16 @@ shopt -s dotglob
 groupadd -g 1000 runner
 useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
 
-apt-get update DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends busybox software-properties-common apt-utils
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends busybox software-properties-common apt-utils dirmngr gpg-agent
 
+
+<% for ( let key of aptKeys ) { %>
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv <%- c([key]) %>
+<% } %>
 
 <% for ( let repo of aptRepos ) { %>
-add-apt-repository -y <%- repo %>
+add-apt-repository -y <%- c([repo]) %>
 <% } %>
 
 apt-get update

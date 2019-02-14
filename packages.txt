@@ -10,3 +10,6 @@ man
 vim
 ca-certificates
 chromium-chromedriver
+man
+xvfb
+

@@ -16,6 +16,7 @@ let packages = fs
 	.readFileSync(path.join(base, "packages.txt"), "utf8")
 	.split(/\r?\n/);
 
+let aptKeys = [];
 let aptRepos = [];
 
 let list = glob.sync(path.join(base, "languages", "*.toml"));
@@ -81,6 +82,12 @@ for (let file of list) {
 		info.tests = {};
 	}
 
+	if (info.aptKeys) {
+		for (let p of info.aptKeys) {
+			if (aptKeys.indexOf(p) == -1) aptKeys.push(p);
+		}
+	}
+
 	if (info.aptRepos) {
 		for (let p of info.aptRepos) {
 			if (aptRepos.indexOf(p) == -1) aptRepos.push(p);
@@ -106,6 +113,7 @@ let ctx = {
 	lbypop,
 	packages,
 	aptRepos,
+	aptKeys,
 	undup,
 	lpad,
 	c: a => a.map((s) => {

@@ -3,13 +3,17 @@ entrypoint = "main.p6"
 extensions = [
   "p6"
 ]
+aptKeys = [
+  "379CE192D401AB61"
+]
+aptRepos = [
+  "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs bionic main"
+]
 packages = [
-  "libssl-dev"
+  "libssl-dev",
+  "rakudo-pkg"
 ]
 setup = [
-  "apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61",
-  'echo "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs `lsb_release -cs` main" | tee -a /etc/apt/sources.list.d/rakudo-pkg.list',
-  "apt-get update && apt-get install rakudo-pkg",
   "ln -s /opt/rakudo-pkg/bin/perl6 /usr/local/bin/perl6",
   "ln -s /opt/rakudo-pkg/bin/zef /usr/local/bin/zef",
   "zef install Linenoise"
