@@ -20,3 +20,4 @@ versionCommand = ["kotlin", "-version"]
   [tests.hello]
   code = "println(\"hello\")"
   output = "hello\n"
+  skip = true

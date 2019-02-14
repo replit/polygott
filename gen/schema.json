@@ -44,6 +44,10 @@
 						"hello\n"
 					]
 				},
+				"skip": {
+					"type": "boolean",
+					"default": false
+				},
 				"additionalProperties": false
 			}
 		},

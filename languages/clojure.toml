@@ -23,3 +23,4 @@ command = [
   [tests.hello]
   code = "(println \"Hello World\")"
   output = "hello\n"
+  skip = true

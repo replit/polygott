@@ -30,6 +30,7 @@ command = [
   [tests.hello]
   code = "print(\"hello\")"
   output = "hello\n"
+  skip = true
 
 [languageServer]
 command = [
