@@ -1,0 +1,55 @@
+name = "pygame"
+entrypoint = "main.py"
+extensions = [
+  "py"
+]
+packages = [
+  "python3.5",
+  "python3-pip",
+  "python3-wheel",
+  "libtk8.6",
+  "python-dev",
+  "libevent-dev",
+  "gcc",
+  "x11vnc",
+  "xvfb"
+]
+popularity = 5.0
+setup = [
+  "wget https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb && dpkg -i stderred_1.0_amd64.deb && rm stderred_1.0_amd64.deb",
+  "pip3 install -U setuptools",
+  "pip3 install -U configparser",
+  "pip3 install pylint==1.6.4 pipreqs-amasad==0.4.10 python-language-server==0.21.5 jedi==0.13.2 pyflakes==2.0.0 rope==0.11.0 yapf==0.25.0 pycodestyle==2.4.0 mccabe==0.6.1 nltk numpy scipy requests bpython ptpython matplotlib==2.2.3",
+  "pip3 install pygame"
+]
+runtimeSetup = [
+  "Xvfb&",
+  "x11vnc -shared -forever -display :0 &"
+]
+[run]
+pty = true
+command = [
+  "python3",
+  "-B",
+  "main.py"
+]
+
+[tests]
+
+  [tests.0]
+  code = "print(__name__)"
+  output = "__main__\n"
+
+  [tests.hello]
+  code = "print(\"hello\")"
+  output = "hello\n"
+
+  [tests.pygame]
+  code = "import pygame"
+  output = "pygame 1.9.4\nHello from the pygame community. https://www.pygame.org/contribute.html\n"
+
+[languageServer]
+command = [
+  "pyls",
+  "-v"
+]
