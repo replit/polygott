@@ -22,6 +22,7 @@ COPY --from=0 /out/run-language-server /usr/bin/run-lanague-server
 COPY --from=0 /out/detect-language /usr/bin/detect-language
 COPY --from=0 /out/self-test /usr/bin/polygott-self-test
 COPY --from=0 /out/polygott-survey /usr/bin/polygott-survey
+COPY --from=0 /out/polygott-lang-setup /usr/bin/polygott-lang-setup
 
 
 WORKDIR /home/runner

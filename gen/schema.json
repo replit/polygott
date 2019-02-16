@@ -209,6 +209,15 @@
 				"pattern": "^(.*)$"
 			}
 		},
+		"runtimeSetup": {
+			"type": "array",
+			"title": "The Runtime Setup Schema",
+			"items": {
+				"type": "string",
+				"default": "",
+				"pattern": "^(.*)$"
+			}
+		},
 		"tests": {
 			"$id": "#/properties/tests",
 			"type": "object",

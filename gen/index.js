@@ -130,7 +130,8 @@ let objects = {
 	"run-project": "run-project.ejs",
 	"run-language-server": "run-language-server.ejs",
 	"detect-language": "detect-language.ejs",
-	"polygott-survey": "versions.ejs"
+	"polygott-survey": "versions.ejs",
+	"polygott-lang-setup": "lang-setup.ejs",
 };
 
 for (let target in objects) {

@@ -12,4 +12,5 @@ ca-certificates
 chromium-chromedriver
 man
 xvfb
+x11vnc
 
