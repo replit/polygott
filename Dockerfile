@@ -23,6 +23,8 @@ COPY --from=0 /out/detect-language /usr/bin/detect-language
 COPY --from=0 /out/self-test /usr/bin/polygott-self-test
 COPY --from=0 /out/polygott-survey /usr/bin/polygott-survey
 COPY --from=0 /out/polygott-lang-setup /usr/bin/polygott-lang-setup
+COPY --from=0 /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
+
 
 
 WORKDIR /home/runner

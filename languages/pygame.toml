@@ -10,9 +10,7 @@ packages = [
   "libtk8.6",
   "python-dev",
   "libevent-dev",
-  "gcc",
-  "x11vnc",
-  "xvfb"
+  "gcc"
 ]
 popularity = 5.0
 setup = [

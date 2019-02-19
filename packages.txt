@@ -11,6 +11,7 @@ vim
 ca-certificates
 chromium-chromedriver
 man
-xvfb
-x11vnc
 
+x11vnc
+xserver-xorg-video-dummy
+x11-xserver-utils

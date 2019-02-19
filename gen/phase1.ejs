@@ -33,6 +33,7 @@ cd /home/runner
 mkdir -p /opt/homes/default
 mv -nt /opt/homes/default/ $(ls -A /home/runner)
 
+curl https://xpra.org/xorg.conf > /opt/xorg.conf
 
 rm -rf /var/lib/apt/lists/*
 rm /phase1.sh
