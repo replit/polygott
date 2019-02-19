@@ -1,0 +1,24 @@
+name = "elixir"
+entrypoint = "main.exs"
+extensions = [
+  "ex",
+  "exs"
+]
+packages = [
+  "erlang",
+  "elixir"
+]
+
+
+[run]
+pty = true
+command = [
+  "elixir",
+  "./main.exs"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "IO.puts \"hello world\""
+  output = "hello world\n"
