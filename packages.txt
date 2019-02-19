@@ -12,6 +12,15 @@ ca-certificates
 chromium-chromedriver
 man
 
+busybox
+software-properties-common
+apt-utils
+dirmngr
+gpg-agent
+
 x11vnc
 xserver-xorg-video-dummy
 x11-xserver-utils
+
+cmake
+ninja-build

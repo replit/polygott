@@ -14,7 +14,10 @@ const btoa = b => Buffer.from(b).toString("base64");
 
 let packages = fs
 	.readFileSync(path.join(base, "packages.txt"), "utf8")
-	.split(/\r?\n/);
+	.split(/\r?\n/)
+	.filter(x => !/^#|^\s*$/.test(x));
+
+let basePackages = [].concat(packages);
 
 let aptKeys = [];
 let aptRepos = [];
@@ -108,6 +111,7 @@ lbypop.sort((a, b) => b.popularity - a.popularity);
 let lpad = (s, n) => s + new Array(n - s.length).fill(" ").join("");
 
 let ctx = {
+	basePackages,
 	languages,
 	btoa,
 	lbypop,
@@ -125,6 +129,7 @@ let ctx = {
 let objects = {
 	"test.sh": "tests.ejs",
 	"self-test": "inside-test.ejs",
+	"phase0.sh": "phase0.ejs",
 	"phase1.sh": "phase1.ejs",
 	"phase2.sh": "phase2.ejs",
 	"run-project": "run-project.ejs",

@@ -1,0 +1,13 @@
+#!/bin/bash
+set -v
+shopt -s dotglob
+
+groupadd -g 1000 runner
+useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
+
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- basePackages.join(' ') %>
+
+
+rm -rf /var/lib/apt/lists/*
+rm /phase0.sh
