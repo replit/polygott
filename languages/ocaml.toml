@@ -1,0 +1,40 @@
+name = "ocaml"
+entrypoint = "main.ml"
+extensions = [
+  "ml"
+]
+
+aptKeys = []
+aptRepos = [
+  "ppa:avsm/ppa"
+]
+
+
+packages = [
+  "m4",
+  "ocaml",
+  "opam"
+]
+
+setup = [
+  "opam init -c ocaml-system -n --disable-sandboxing"
+]
+
+[compile]
+command = [
+  "ocamlc",
+  "-o",
+  "main"
+]
+
+[run]
+pty = true
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = """print_string "hello world!\n";;"""
+  output = "hello world!\n"
