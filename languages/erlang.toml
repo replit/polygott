@@ -1,0 +1,33 @@
+name = "erlang"
+entrypoint = "main.erl"
+extensions = [
+  "erl"
+]
+packages = [
+  "erlang-ic"
+]
+
+[compile]
+command = [
+  "erlc",
+  "main.erl"
+]
+
+[run]
+pty = true
+command = [
+  "erl",
+  "-noshell",
+  "-s",
+  "main",
+  "start",
+  "-s",
+  "init",
+  "stop"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "-module(main).\n-export([start/0]).\n\nstart() ->\n  io:fwrite(\"hello world\n\")."
+  output = "hello world\n"
