@@ -1,6 +1,6 @@
 #!/bin/bash
 
 Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /home/runner/.x.log -config /opt/xorg.conf :0 &
-x11vnc -display :0 -forever -nopw -bg
+x11vnc -display :0 -forever -nopw -shared -bg
 sleep 1
 DISPLAY=:0 xrandr -s 800x600
