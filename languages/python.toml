@@ -9,7 +9,9 @@ packages = [
   "libtk8.6",
   "python-dev",
   "libevent-dev",
-  "gcc"
+  "gcc",
+  "python-tk",
+  "tk-dev"
 ]
 setup = [
   "wget https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb && dpkg -i stderred_1.0_amd64.deb && rm stderred_1.0_amd64.deb",

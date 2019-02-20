@@ -10,7 +10,9 @@ packages = [
   "libtk8.6",
   "python-dev",
   "libevent-dev",
-  "gcc"
+  "gcc",
+  "python3-tk",
+  "tk-dev"
 ]
 popularity = 5.0
 setup = [

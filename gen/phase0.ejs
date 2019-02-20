@@ -8,6 +8,9 @@ useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- basePackages.join(' ') %>
 
+locale-gen en_US.UTF-8
+update-locale LANG=en_US.UTF-8
+
 
 rm -rf /var/lib/apt/lists/*
 rm /phase0.sh

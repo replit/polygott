@@ -28,7 +28,8 @@ COPY --from=0 /out/polygott-survey /usr/bin/polygott-survey
 COPY --from=0 /out/polygott-lang-setup /usr/bin/polygott-lang-setup
 COPY --from=0 /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
 
-
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
 
 WORKDIR /home/runner
 

@@ -1,3 +1,5 @@
+locales
+
 unzip
 curl
 wget
