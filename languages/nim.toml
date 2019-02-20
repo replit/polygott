@@ -25,4 +25,4 @@ command = [
 
   [tests.hello]
   code = "echo \"hello world\""
-  output = "hello world\n"
+  output = "CC: main\nCC: stdlib_system\nhello world\n"
