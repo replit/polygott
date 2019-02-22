@@ -1,6 +1,22 @@
 #!/bin/bash
 
-Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /home/runner/.x.log -config /opt/xorg.conf :0 &
-x11vnc -display :0 -forever -nopw -shared -bg
+if [ ! -f /tmp/.X11-unix/ ]; then
+	Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /home/runner/.x.log -config /opt/xorg.conf :0 &
+fi
+
+export DISPLAY=:0
+
+TRIES=0
+while ! xset q; do
+    sleep 0.50s
+    TRIES=$(( TRIES + 1 ))
+    if [ "$TRIES" -ge 60 ]; then
+        echo "FATAL: $0: Gave up waiting for X server $DISPLAY"
+        exit 11
+    fi
+done
+
+x11vnc -display $DISPLAY -forever -nopw -shared -bg -reopen
 sleep 1
-DISPLAY=:0 xrandr -s 800x600
+
+xrandr -s 800x600

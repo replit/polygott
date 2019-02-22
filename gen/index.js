@@ -19,6 +19,8 @@ let packages = fs
 
 let basePackages = [].concat(packages);
 
+console.log(basePackages);
+
 let aptKeys = [];
 let aptRepos = [];
 
