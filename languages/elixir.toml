@@ -8,7 +8,13 @@ packages = [
   "erlang",
   "elixir"
 ]
-
+setup = [
+  "apt-get install -y --no-install-recommends locales",
+  "export LANG=en_US.UTF-8",
+  "echo $LANG UTF-8 > /etc/locale.gen",
+  "locale-gen",
+  "update-locale LANG=$LANG"
+]
 
 [run]
 pty = true
