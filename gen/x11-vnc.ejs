@@ -16,7 +16,7 @@ while ! xset q; do
     fi
 done
 
-x11vnc -display $DISPLAY -forever -nopw -shared -bg -reopen
+x11vnc -display $DISPLAY -forever -nopw -shared -bg -reopen -quiet -N
 sleep 1
 
 xrandr -s 800x600
