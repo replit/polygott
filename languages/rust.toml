@@ -1,0 +1,30 @@
+name = "rust"
+entrypoint = "main.rs"
+extensions = [
+  "rs"
+]
+packages = [
+  "rustc",
+  "cargo",
+  "rust-gdb"
+]
+
+[compile]
+onlyMain = true
+command = [
+  "rustc",
+  "-o",
+  "main"
+]
+
+[run]
+pty = true
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "fn main() {\n  println!(\"hello\");\n}"
+  output = "hello\n"

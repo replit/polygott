@@ -1,0 +1,29 @@
+name = "julia"
+entrypoint = "main.jl"
+extensions = [
+  "jl"
+]
+packages = [
+]
+setup = [
+  "wget https://julialang-s3.julialang.org/bin/linux/x64/1.1/julia-1.1.0-linux-x86_64.tar.gz",
+  "tar xf julia-1.1.0-linux-x86_64.tar.gz",
+  "cp julia-1.1.0/bin/julia /usr/bin/",
+  "cp -r julia-1.1.0/lib/* /usr/lib/",
+  "cp -r julia-1.1.0/include/* /usr/include/",
+  "cp -r julia-1.1.0/share/* /usr/share/",
+  "rm -rf ./julia-1.1.0 julia-1.1.0-linux-x86_64.tar.gz"
+]
+
+[run]
+pty = true
+command = [
+  "julia",
+  "./main.jl"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "println(\"hello\")"
+  output = "hello\n"

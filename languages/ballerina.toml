@@ -1,0 +1,32 @@
+name = "ballerina"
+entrypoint = "main.bal"
+extensions = [
+  "bal"
+]
+packages = [
+]
+setup = [
+  "wget https://product-dist.ballerina.io/downloads/0.990.3/ballerina-linux-installer-x64-0.990.3.deb",
+  "apt-get install ./ballerina-linux-installer-x64-0.990.3.deb",
+  "rm -r ballerina-linux-installer-x64-0.990.3.deb"
+]
+
+
+[run]
+pty = true
+command = [
+  "ballerina",
+  "run",
+  "./main.bal"
+]
+
+[tests]
+
+  [tests.hello]
+  code = """
+import ballerina/io;
+public function main() {
+    io:println("Hello, World!");
+}
+"""
+  output = "Hello, World!\n"

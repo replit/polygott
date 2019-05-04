@@ -1,0 +1,27 @@
+name = "common lisp"
+entrypoint = "main.lisp"
+aliases = [
+  "lisp"
+]
+extensions = [
+  "lisp"
+]
+packages = [
+  "sbcl"
+]
+setup = [
+]
+
+[run]
+pty = true
+command = [
+  "sbcl",
+  "--script",
+  "./main.lisp"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "(format t \"Hello, world!\")"
+  output = "Hello, world!"

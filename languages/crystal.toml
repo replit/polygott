@@ -1,0 +1,29 @@
+name = "crystal"
+entrypoint = "main.cr"
+extensions = [
+  "cr"
+]
+packages = [
+  "libssl-dev",
+  "crystal"
+]
+aptKeys = [
+  "09617FD37CC06B54"
+]
+aptRepos = [
+  "deb https://dist.crystal-lang.org/apt crystal main"
+]
+
+[run]
+pty = true
+command = [
+  "crystal",
+  "run",
+  "./main.cr"
+]
+
+[tests]
+
+  [tests.hello]
+  code = 'puts "hello world"'
+  output = "hello world\n"

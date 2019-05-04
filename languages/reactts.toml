@@ -1,0 +1,16 @@
+name = "reactts"
+entrypoint = "src/index.tsx"
+extensions = [
+  "tsx"
+]
+packages = []
+setup = [
+  "rm -f /home/runner/.profile /home/runner/.bashrc /home/runner/.bash_logout && npx create-react-app --scripts-version=react-scripts-ts /home/runner && yarn && rm README.md && chown runner:runner -R /home/runner && yarn global add prettier@1.13.4"
+]
+
+[run]
+pty = false
+command = [
+  "yarn",
+  "start"
+]

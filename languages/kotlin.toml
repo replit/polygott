@@ -1,0 +1,23 @@
+name = "kotlin"
+entrypoint = "main.kt"
+extensions = [
+  "kt"
+]
+packages = [
+	"openjdk-11-jdk"
+]
+setup = [
+  "wget https://github.com/JetBrains/kotlin/releases/download/v1.0.3/kotlin-compiler-1.0.3.zip -O /tmp/a.zip",
+  "unzip /tmp/a.zip -d /opt",
+  "rm /tmp/a.zip",
+  "ln -s /opt/kotlinc/bin/kotlin{,c,c-js,c-jvm} /usr/local/bin/"
+]
+
+versionCommand = ["kotlin", "-version"]
+
+[tests]
+
+  [tests.hello]
+  code = "println(\"hello\")"
+  output = "hello\n"
+  skip = true

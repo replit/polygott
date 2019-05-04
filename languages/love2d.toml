@@ -1,0 +1,35 @@
+name = "love2d"
+entrypoint = "main.lua"
+extensions = [
+  "lua"
+]
+aptRepos = [
+  "ppa:bartbes/love-stable"
+]
+packages = [
+  "love"
+]
+setup = [
+]
+
+[run]
+pty = true
+command = [
+  "love",
+  "."
+]
+
+[tests]
+
+  [tests.hello]
+  skip = true
+  code = """
+
+function love.conf(t)
+	t.console = true
+end
+print("hello")
+love.event.quit(0)
+
+"""
+  output = "hello\n"

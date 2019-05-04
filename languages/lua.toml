@@ -1,0 +1,30 @@
+name = "lua"
+entrypoint = "main.lua"
+extensions = [
+  "lua"
+]
+packages = [
+  "lua5.1",
+  "liblua5.1-0",
+  "liblua5.1-bitop0",
+  "lua-socket",
+  "luarocks"
+]
+setup = [
+  "luarocks install formatter && luarocks install metalua && luarocks install penlight",
+  "go get github.com/aarzilli/golua/lua",
+  "go build -o /run_dir/lua /run_dir/main.go"
+]
+
+[run]
+pty = true
+command = [
+  "lua",
+  "./main.lua"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "print(\"hello\")"
+  output = "hello\n"

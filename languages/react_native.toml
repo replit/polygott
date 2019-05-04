@@ -1,0 +1,19 @@
+name = "react_native"
+entrypoint = "index.js"
+extensions = [
+  "js"
+]
+packages = []
+setup = [
+  "yarn global add jest",
+  "yarn"
+]
+
+[run]
+pty = true
+command = [
+  "jest",
+  "--colors",
+  "--config",
+  "/home/runner/config.json"
+]

@@ -1,0 +1,52 @@
+name = "java"
+entrypoint = "Main.java"
+extensions = [
+  "java"
+]
+packages = [
+  "openjdk-11-jdk"
+]
+setup = [
+  "mkdir -p /home/runner/.config/language-server && cd /home/runner/.config/language-server && wget http://download.eclipse.org/jdtls/milestones/0.21.0/jdt-language-server-0.21.0-201806152234.tar.gz && tar -xzf jdt-language-server-0.21.0-201806152234.tar.gz && rm jdt-language-server-0.21.0-201806152234.tar.gz && chown runner:runner -R /home/runner"
+]
+
+[compile]
+command = [
+  "javac",
+  "-classpath",
+  ".:/run_dir/junit-4.12.jar:/run_dir/hamcrest-core-1.3.jar:/run_dir/json-simple-1.1.1.jar",
+  "-d",
+  "."
+]
+
+[run]
+command = [
+  "java",
+  "-classpath",
+  ".:/run_dir/junit-4.12.jar:/run_dir/hamcrest-core-1.3.jar:/run_dir/json-simple-1.1.1.jar",
+  "Main"
+]
+pty = true
+
+[tests]
+
+  [tests.hello]
+  code = "class Main { public static void main(String[] args) { System.out.println(\"hello\"); } }"
+  output = "hello\n"
+
+[languageServer]
+command = [
+  "java",
+  "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+  "-Dosgi.bundles.defaultStartLevel=4",
+  "-Declipse.product=org.eclipse.jdt.ls.core.product",
+  "-noverify",
+  "-Xmx256m",
+  "-XX:+UseConcMarkSweepGC",
+  "-jar",
+  "/opt/homes/java/.config/language-server/plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar",
+  "-configuration",
+  "/opt/homes/java/.config/language-server/config_linux",
+  "-data",
+  "/home/runner"
+]

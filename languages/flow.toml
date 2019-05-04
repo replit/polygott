@@ -1,0 +1,22 @@
+name = "flow"
+entrypoint = "src/index.js"
+extensions = [
+  "js"
+]
+packages = []
+setup = [
+  "npm install -g flow-language-server-amasad flow-bin"
+]
+
+[run]
+pty = true
+command = [
+  "yarn",
+  "start"
+]
+
+[languageServer]
+command = [
+  "flow-language-server",
+  "--stdio"
+]

@@ -1,0 +1,38 @@
+name = "csharp"
+aliases = [
+  "c#"
+]
+entrypoint = "main.cs"
+extensions = [
+  "cs"
+]
+
+aptKeys = ['3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF']
+
+aptRepos = [
+  'deb https://download.mono-project.com/repo/ubuntu stable-bionic main'
+]
+
+packages = [
+  "mono-complete"
+]
+
+[compile]
+command = [
+  "mcs",
+  "-out:main.exe"
+]
+
+[run]
+pty = false
+command = [
+  "mono",
+  "main.exe"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "using System; class MainClass { public static void Main (string[] args) { Console.WriteLine (\"hello\"); } }"
+  output = "hello\n"
+

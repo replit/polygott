@@ -1,0 +1,32 @@
+#!/bin/bash
+set -v
+shopt -s dotglob
+
+# Languages: <%= languages.map((l) => l.name).join(', ') %>
+
+<% for ( let key of aptKeys ) { %>
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv <%- c([key]) %>
+<% } %>
+
+<% for ( let repo of aptRepos ) { %>
+add-apt-repository -y <%- c([repo]) %>
+<% } %>
+
+apt-get update
+
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- packages.join(' ') %> || exit 1
+
+update-ca-certificates
+
+curl -sL https://deb.nodesource.com/setup_10.x | bash -
+DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+npm install -g yarn
+
+cd /home/runner
+mkdir -p /opt/homes/default
+mv -nt /opt/homes/default/ $(ls -A /home/runner)
+
+curl https://xpra.org/xorg.conf > /opt/xorg.conf
+
+rm -rf /var/lib/apt/lists/*
+rm /phase1.sh

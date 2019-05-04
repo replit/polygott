@@ -1,0 +1,18 @@
+#!/bin/bash
+
+CODE=0
+
+<% for ( let lang of languages ) { -%>
+# <%= lang.name %>
+<% for ( let tname in lang.tests ) { -%>
+<% let test = lang.tests[tname]; -%>
+<% if ( test.input ) continue %>
+<%     if ( test.skip ) { %>
+echo S <%= lang.name %>:<%= tname %>
+<%     } else { %>
+echo "<%= btoa(test.code) %>"  | base64 --decode | run-project -s -l <%= lang.id %> | diff -u --label "<%= lang.name %>" <( echo "<%= btoa(test.output) %>" | base64 --decode ) - && echo ✓ <%= lang.name %>:<%= tname %> || CODE=1
+<% } %>
+<% } %>
+<% } -%>
+
+exit $CODE

@@ -1,0 +1,28 @@
+name = "dart"
+entrypoint = "main.dart"
+extensions = [
+  "dart"
+]
+packages = [
+  "apt-transport-https"
+]
+setup = [
+  'curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -',
+  'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list',
+  "apt-get update && apt-get install dart",
+]
+
+
+[run]
+pty = true
+command = [
+  "/usr/lib/dart/bin/dart",
+  "./main.dart"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "void main() { print('Hello, World!'); }"
+  output = "Hello, World!\n"
+

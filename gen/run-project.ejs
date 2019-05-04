@@ -1,0 +1,70 @@
+#!/bin/bash
+READ_STDIN=0
+LANGUAGE=`detect-language`
+BUILDER=0
+
+while getopts ":sl:b" opt; do
+  case ${opt} in
+    s )
+      READ_STDIN=1
+      ;;
+    l )
+      LANGUAGE=$OPTARG
+      ;;
+    b )
+      BUILDER=1
+      ;;
+    : )
+      echo "Invalid option: $OPTARG requires an argument"
+      exit 1
+      ;;
+    \? )
+      echo "Usage: run-project [-sb] [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+if [ $BUILDER -ne 0 ]; then
+  if [ -f Makefile ] && [ $( cat /proc/$PPID/comm ) != 'make' ]; then
+    exec make
+  fi
+
+  if [ -f CMakeLists.txt ]; then
+    mkdir /tmp/build
+    PROJ=$(pwd)
+    cd /tmp/build
+    exec bash -c "cmake $PROJ && ninja"
+  fi
+
+  if [ -f package.json ]; then
+    if jq -e .scripts.start package.json; then
+      exec npm start
+    fi
+  fi
+
+fi
+
+maybe_read_stdin() {
+    if [ $READ_STDIN -ne 0 ]; then
+        cat - > /home/runner/$1
+    fi
+}
+
+case "$LANGUAGE" in
+<% for ( let lang of languages ) { -%>
+
+<%- lang.names.map(x => `"${x}"`).join('|') %>)
+  maybe_read_stdin <%= lang.entrypoint %>
+<% if ( lang.compile ) { -%>
+  <%- c(lang.compile.command.concat([lang.entrypoint])) %> 1>&2
+<% } -%>
+<% if ( lang.run ) { -%>
+  <%- c(lang.run.command) %>
+<% } -%>
+  ;;
+<% } -%>
+*)
+  echo "Unknown Language: $LANGUAGE"
+  ;;
+esac

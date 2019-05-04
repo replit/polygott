@@ -1,0 +1,26 @@
+name = "clojure"
+entrypoint = "main.clj"
+extensions = [
+  "clj"
+]
+packages = [
+  "clojure1.8",
+  "leiningen"
+]
+setup = [
+]
+
+[run]
+pty = true
+command = [
+  "lein",
+  "exec",
+  "main.clj"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "(println \"Hello World\")"
+  output = "hello\n"
+  skip = true

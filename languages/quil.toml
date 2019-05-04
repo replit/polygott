@@ -1,0 +1,15 @@
+name = "quil"
+entrypoint = "main.quil"
+extensions = [
+  "quil"
+]
+packages = []
+setup = [
+  "pip3 install referenceqvm==0.3 pyquil==1.9.0"
+]
+
+versionCommand = [
+  "/bin/bash",
+  "-c",
+  "pip3 show pyquil | grep Version "
+]

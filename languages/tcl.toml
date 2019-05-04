@@ -1,0 +1,31 @@
+name = "tcl"
+entrypoint = "main.tcl"
+extensions = [
+  "tcl"
+]
+packages = [
+  "tcl8.6",
+  "tklib",
+  "tcllib"
+]
+setup = [
+]
+
+versionCommand = [
+  "/bin/bash",
+  "-c",
+  "echo \"puts [list tcl $tcl_version]\" | tclsh8.6"
+]
+
+[run]
+pty = true
+command = [
+  "tclsh8.6",
+  "./main.tcl"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "puts {hello}"
+  output = "hello\n"

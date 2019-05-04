@@ -1,0 +1,47 @@
+name = "go"
+aliases = [
+  "golang"
+]
+entrypoint = "main.go"
+extensions = [
+  "go"
+]
+aptRepos = [
+  "ppa:longsleep/golang-backports"
+]
+
+packages = [
+  "golang-go",
+  "pkg-config"
+]
+setup = [
+  "ln -s /usr/lib/go-1.11/bin/* /usr/bin",
+  "go get -u github.com/saibing/bingo"
+]
+
+[compile]
+command = [
+  "go",
+  "build",
+  "-o",
+  "main"
+]
+
+[run]
+pty = true
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "package main \nimport \"fmt\" \nfunc main() { \nfmt.Println(\"hello\") \n}"
+  output = "hello\n"
+
+[languageServer]
+command = [
+  "/bin/bash",
+  "-c",
+  "/opt/homes/go/go/bin/bingo"
+]

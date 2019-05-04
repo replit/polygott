@@ -1,0 +1,28 @@
+name = "rlang"
+entrypoint = "main.r"
+extensions = [
+  "r"
+]
+packages = [
+  "r-base",
+  "r-base-dev",
+  "r-recommended",
+  "littler",
+  "r-cran-littler",
+  "r-cran-stringr"
+]
+
+[run]
+pty = true
+command = [
+  "R",
+  "--slave",
+  "-f",
+  "main.r"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "print(\"Hello World\")"
+  output = "[1] \"Hello World\"\n"

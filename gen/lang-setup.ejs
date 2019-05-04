@@ -1,0 +1,33 @@
+#!/bin/bash
+
+shopt -s dotglob
+
+LANGUAGE=`detect-language`
+
+while getopts ":sl:" opt; do
+  case ${opt} in
+    l )
+      LANGUAGE=$OPTARG
+      ;;
+    \? )
+      echo "Usage: run-project [-s] [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+case "$LANGUAGE" in
+<% for ( let lang of languages ) { -%>
+<%- lang.names.map(x => `"${x}"`).join('|') %>)
+  cp -a /opt/homes/<%= lang.name %>/* /home/runner/
+<% if ( lang.runtimeSetup ) { -%>
+<% for ( let line of lang.runtimeSetup ) { -%>
+  <%- line %>
+<% } -%>
+<% } -%>
+  ;;
+<% } -%>
+*)
+  echo "Unknown Language: $LANGUAGE"
+  ;;
+esac

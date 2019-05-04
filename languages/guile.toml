@@ -1,0 +1,27 @@
+name = "guile"
+entrypoint = "main.scm"
+extensions = [
+  "scm"
+]
+aliases = [
+  "scheme"
+]
+packages = [
+  "guile-2.2"
+]
+setup = [
+]
+
+[run]
+pty = true
+command = [
+  "guile",
+  "-s",
+  "./main.scm"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "(display \"hello world\")"
+  output = "hello world"

@@ -1,0 +1,24 @@
+name = "nim"
+entrypoint = "main.nim"
+extensions = [
+  "nim"
+]
+
+packages = [
+  "nim"
+]
+
+[run]
+pty = true
+command = [
+  "nim",
+  "compile",
+  "--run",
+  "main.nim"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "echo \"hello world\""
+  output = "CC: main\nCC: stdlib_system\nhello world\n"

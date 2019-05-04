@@ -1,0 +1,34 @@
+name = "perl6"
+entrypoint = "main.p6"
+extensions = [
+  "p6"
+]
+aptKeys = [
+  "379CE192D401AB61"
+]
+aptRepos = [
+  "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs bionic main"
+]
+packages = [
+  "libssl-dev",
+  "rakudo-pkg"
+]
+setup = [
+  "ln -s /opt/rakudo-pkg/bin/perl6 /usr/local/bin/perl6",
+  "ln -s /opt/rakudo-pkg/bin/zef /usr/local/bin/zef",
+  "zef install Linenoise"
+]
+
+
+[run]
+pty = true
+command = [
+  "perl6",
+  "./main.p6"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "say 'hello world';"
+  output = "hello world\n"

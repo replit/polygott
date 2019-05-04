@@ -1,0 +1,22 @@
+name = "php"
+entrypoint = "main.php"
+extensions = [
+  "php"
+]
+packages = [
+  "php-cli",
+  "php-pear"
+]
+
+[run]
+pty = true
+command = [
+  "php",
+  "main.php"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "<?php echo \"hello\n\";"
+  output = "hello\n"
