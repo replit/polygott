@@ -4,14 +4,13 @@ extensions = [
   "rs"
 ]
 packages = [
-  "rustc",
-  "cargo",
-  "rust-gdb"
+  "rustup"
 ]
 
 [compile]
 onlyMain = true
 command = [
+  "rustup"
   "rustc",
   "-o",
   "main"
