@@ -1,0 +1,27 @@
+name = "red"
+entrypoint = "main.red"
+extensions = [
+	"red",
+	"reds"
+]
+setup = [
+	"sudo dpkg --add-architecture i386",
+	"sudo apt-get update",
+	"sudo apt-get install libc6:i386 libcurl4:i386",
+	"curl https://static.red-lang.org/dl/linux/red-064 -o /usr/bin/red",
+	"chmod u+rwx /usr/bin/red",
+	"red -V"
+]
+
+[run]
+pty = true
+command = [
+	"red",
+	"--cli",
+	"main.red"
+]
+
+[tests]
+	[tests.hello]
+	code = "Red [\n\ttitle: \"hello\"\n]\n\nprint \"hello world\""
+	output = "hello world\n"

@@ -1,0 +1,28 @@
+name = "pascal"
+entrypoint = "main.pas"
+extensions = [
+	"pas",
+	"pp"
+]
+packages = [
+	"fpc"
+]
+setup = [
+]
+
+[compile]
+command = [
+	"fpc",
+	"main.pas"
+]
+
+[run]
+pty = true
+command = [
+	"./main"
+]
+
+[tests]
+	[tests.hello]
+	code = "program hello;\nbegin\n\twriteln('hello world');\nend."
+	output = "hello world\n"
