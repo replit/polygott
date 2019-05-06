@@ -4,7 +4,7 @@ extensions = [
   "d"
 ]
 packages = [
-  "apt-transport-https"
+  
 ]
 setup = [
   "sudo wget http://master.dl.sourceforge.net/project/d-apt/files/d-apt.list -O /etc/apt/sources.list.d/d-apt.list",
