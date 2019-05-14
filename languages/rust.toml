@@ -10,7 +10,7 @@ packages = [
 [compile]
 onlyMain = true
 command = [
-  "rustup"
+  "rustup",
   "rustc",
   "-o",
   "main"
