@@ -7,7 +7,7 @@ packages = [
   "openjdk-11-jdk"
 ]
 setup = [
-  "mkdir -p /home/runner/.config/language-server && cd /home/runner/.config/language-server && wget http://download.eclipse.org/jdtls/milestones/0.21.0/jdt-language-server-0.21.0-201806152234.tar.gz && tar -xzf jdt-language-server-0.21.0-201806152234.tar.gz && rm jdt-language-server-0.21.0-201806152234.tar.gz && chown runner:runner -R /home/runner"
+  "mkdir -p /config/language-server && cd /config/language-server && wget http://download.eclipse.org/jdtls/milestones/0.21.0/jdt-language-server-0.21.0-201806152234.tar.gz && tar -xzf jdt-language-server-0.21.0-201806152234.tar.gz && rm jdt-language-server-0.21.0-201806152234.tar.gz && chown runner:runner -R /config/language-server"
 ]
 
 [compile]
@@ -44,9 +44,9 @@ command = [
   "-Xmx256m",
   "-XX:+UseConcMarkSweepGC",
   "-jar",
-  "/opt/homes/java/.config/language-server/plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar",
+  "/config/language-server/plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar",
   "-configuration",
-  "/opt/homes/java/.config/language-server/config_linux",
+  "/config/language-server/config_linux",
   "-data",
   "/home/runner"
 ]

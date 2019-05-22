@@ -13,6 +13,8 @@ FROM ubuntu:18.04
 COPY --from=0 /out/phase0.sh /phase0.sh
 RUN /bin/bash phase0.sh
 
+ENV XDG_CONFIG_HOME=/config
+
 COPY --from=0 /out/phase1.sh /phase1.sh
 RUN /bin/bash phase1.sh
 

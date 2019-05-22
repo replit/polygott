@@ -29,6 +29,7 @@ ninja-build
 
 silversearcher-ag
 ssh
+redis-tools
 
 libboost-all-dev
 

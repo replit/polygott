@@ -29,6 +29,7 @@ fi
 
 cp -r /opt/homes/default/* /home/runner
 chown runner:runner -R /home/runner
+chown runner:runner -R /config
 
 rm -rf /var/lib/apt/lists/*
 rm /phase2.sh
