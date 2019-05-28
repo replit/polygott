@@ -1,0 +1,24 @@
+name = "elisp"
+entrypoint = "main.el"
+extensions = [
+  "elc"
+]
+packages = [
+  "emacs-nox"
+]
+
+[run]
+command = [
+  "emacs",
+  "-Q",
+  "--script",
+  "main.el"
+]
+
+[tests]
+
+  [tests.math]
+  code = """
+(princ (format "2 + 2 = %d\\n" (+ 2 2)))
+"""
+  output = "2 + 2 = 4\n"
