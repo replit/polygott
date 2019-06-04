@@ -15,7 +15,6 @@ aptRepos = [
 ]
 
 [run]
-pty = true
 command = [
   "crystal",
   "run",

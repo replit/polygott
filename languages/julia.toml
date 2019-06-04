@@ -16,7 +16,6 @@ setup = [
 ]
 
 [run]
-pty = true
 command = [
   "julia",
   "./main.jl"

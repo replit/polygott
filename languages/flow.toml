@@ -9,7 +9,6 @@ setup = [
 ]
 
 [run]
-pty = true
 command = [
   "yarn",
   "start"

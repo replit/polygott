@@ -21,7 +21,6 @@ setup = [
   "pip3 install pygame"
 ]
 [run]
-pty = true
 command = [
   "python3",
   "-B",

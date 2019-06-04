@@ -10,7 +10,6 @@ packages = [
 ]
 
 [compile]
-onlyMain = true
 command = [
   "rustc",
   "-o",
@@ -18,7 +17,6 @@ command = [
 ]
 
 [run]
-pty = true
 command = [
   "./main"
 ]

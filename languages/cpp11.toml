@@ -12,7 +12,7 @@ setup = [
 
   "update-alternatives --install /usr/bin/clang-format clang-format `which clang-format-7` 100",
 
-  "echo -e '%clang\n%c -std=gnu11\n%cpp -std=gnu++14\n-pthread' | tee ~/.cquery"
+  "echo -e '%clang\\n%c -std=gnu11\\n%cpp -std=gnu++14\\n-pthread' | tee ~/.cquery"
 ]
 
 [compile]
@@ -25,7 +25,6 @@ command = [
 ]
 
 [run]
-pty = true
 command = [
   "./main"
 ]

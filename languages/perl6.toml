@@ -21,7 +21,6 @@ setup = [
 
 
 [run]
-pty = true
 command = [
   "perl6",
   "./main.p6"

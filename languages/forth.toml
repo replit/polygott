@@ -9,7 +9,6 @@ packages = [
 setup = [ ]
 
 [run]
-pty = true
 command = [
   "gforth",
   "--",

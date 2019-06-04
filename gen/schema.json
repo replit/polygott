@@ -61,15 +61,6 @@
 			"properties": {
 				"command": {
 					"$ref": "#/definitions/command"
-				},
-				"pty": {
-					"$id": "#/properties/run/properties/pty",
-					"type": "boolean",
-					"title": "The Pty Schema",
-					"default": false,
-					"examples": [
-						true
-					]
 				}
 			},
 			"additionalProperties": false
@@ -82,14 +73,45 @@
 	"required": [
 		"entrypoint",
 		"extensions",
-		"name",
-		"run"
+		"name"
 	],
+  "anyOf": [
+    {
+      "description": "If 'run' not provided, tests must be omitted or skipped",
+      "required": [
+        "run"
+      ]
+    },
+    {
+      "properties": {
+        "tests": {
+          "additionalProperties": {
+            "required": [
+              "skip"
+            ],
+            "properties": {
+              "skip": {
+                "enum": [
+                  true
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
 	"properties": {
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
 		"aptKeys": {
 			"type": "array",
 			"items": {
-				"$id": "#/properties/aptRepos/items",
+				"$id": "#/properties/aptKeys/items",
 				"type": "string",
 				"title": "The Items Schema",
 				"default": ""
@@ -142,8 +164,7 @@
 			"default": "",
 			"examples": [
 				"python"
-			],
-			"pattern": "^([a-z_]*[0-9.]*)$"
+			]
 		},
 		"packages": {
 			"type": "array",
@@ -165,8 +186,8 @@
 			}
 		},
 		"popularity": {
-			"title": "Populartiy",
-			"type": "integer" 
+			"title": "Popularity",
+			"type": "number"
 		},
 		"run": {
 			"$ref": "#/definitions/exec"
@@ -179,14 +200,6 @@
 			"properties": {
 				"command": {
 					"$ref": "#/definitions/command"
-				},
-				"pty": {
-					"type": "boolean",
-					"default": false
-				},
-				"onlyMain": {
-					"type": "boolean",
-					"default": false
 				}
 			},
 			"additionalProperties": false

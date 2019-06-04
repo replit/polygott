@@ -1,5 +1,5 @@
 name = "fsharp"
-alias = [
+aliases = [
   "f#"
 ]
 entrypoint = "main.fs"
@@ -25,7 +25,6 @@ command = [
 ]
 
 [run]
-pty = false
 command = [
   "mono",
   "main.exe"
@@ -36,4 +35,3 @@ command = [
   [tests.hello]
   code = "System.Console.WriteLine(\"hello\")"
   output = "hello\n"
-

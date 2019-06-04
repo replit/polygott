@@ -1,3 +1,4 @@
+.dir-locals-2.el
 gen/node_modules/
 import/node_modules/
 out

@@ -9,7 +9,7 @@ if [ -f <%= lang.entrypoint %> ]; then echo '<%= lang.id %>'; exit 0; fi
 <% for ( let lang of lbypop ) { -%>
 <% if ( lang.extensions ) { -%>
 <% for ( let ex of lang.extensions ) { -%>
-if [ -n "$(find . -name '<%= ex %>')" ]; then echo '<%= lang.id %>'; exit 0; fi
+if [ -n "$(find . -name '*.<%= ex %>')" ]; then echo '<%= lang.id %>'; exit 0; fi
 <% } -%>
 <% } -%>
 <% } -%>

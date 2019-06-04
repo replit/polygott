@@ -17,7 +17,6 @@ command = [
 ]
 
 [run]
-pty = true
 command = [
 	"./main"
 ]
