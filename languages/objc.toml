@@ -1,0 +1,29 @@
+name = "objective-c"
+entrypoint = "main.m"
+extensions = [
+  "m"
+]
+packages = [
+  "gobjc",
+  "gnustep-devel"
+]
+
+[compile]
+command = [
+  "gcc",
+  "-o",
+  "main",
+  "main.m"
+]
+
+[run]
+pty = true
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "#import <stdio.h>\nint main(void) {\n\tprintf("hi\n");\n\treturn 0;\n}"
+  output = "hi\n"
