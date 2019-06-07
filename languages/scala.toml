@@ -20,11 +20,9 @@ command = [
   "scala",
   "Main"
 ]
-pty = true
 
 [tests]
 
   [tests.hello]
   code = "object Main { def main(args: Array[String]) { println(\"Hello, world!\") } }\n"
   output = "Hello, world!\n"
-

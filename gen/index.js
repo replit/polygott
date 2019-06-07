@@ -45,15 +45,16 @@ for (let file of list) {
 	if ( !result.valid ) {
 		console.log(`Warning: ${file} schema invalid.`);
 		for ( let error of result.errors ) {
-			console.log(`-> ${error.message} @ ${error.dataPath}`)
+			console.log(`-> ${error.message} @ ${error.dataPath}`);
 		}
+		process.exit(1);
 	}
 
 	let name = info.name;
 	info.id = path.basename(file).replace(/.toml$/,'');
 	let names = [name, info.id];
 	if ( info.aliases ) {
-		names = names.concat(info.aliases)
+		names = names.concat(info.aliases);
 	};
 	info.names = [...new Set(names)];
 	if (process.env.LANGS) {
@@ -158,3 +159,8 @@ for (let target in objects) {
 	);
 	fs.chmodSync(path.join(dest, target), 0o755);
 }
+
+// Local Variables:
+// indent-tabs-mode: t
+// js-indent-level: 8
+// End:

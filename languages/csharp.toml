@@ -24,7 +24,6 @@ command = [
 ]
 
 [run]
-pty = false
 command = [
   "mono",
   "main.exe"
@@ -35,4 +34,3 @@ command = [
   [tests.hello]
   code = "using System; class MainClass { public static void Main (string[] args) { Console.WriteLine (\"hello\"); } }"
   output = "hello\n"
-

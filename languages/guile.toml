@@ -13,7 +13,6 @@ setup = [
 ]
 
 [run]
-pty = true
 command = [
   "guile",
   "-s",

@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker run -it polygott
+# For backwards compatibility.
+make run

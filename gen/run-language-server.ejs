@@ -20,7 +20,7 @@ case "$LANGUAGE" in
 <% if ( lang.languageServer ) { -%>
   <%- c(lang.languageServer.command) %>
 <% } else { -%>
-  echo "No langauge server configured for <%= lang.name %>" >&2
+  echo "No language server configured for <%= lang.name %>" >&2
   exit 1
 <% } -%>
   ;;

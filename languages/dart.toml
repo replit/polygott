@@ -14,7 +14,6 @@ setup = [
 
 
 [run]
-pty = true
 command = [
   "/usr/lib/dart/bin/dart",
   "./main.dart"
@@ -25,4 +24,3 @@ command = [
   [tests.hello]
   code = "void main() { print('Hello, World!'); }"
   output = "Hello, World!\n"
-

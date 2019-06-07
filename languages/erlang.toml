@@ -19,7 +19,6 @@ command = [
 ]
 
 [run]
-pty = true
 command = [
   "erl",
   "-noshell",

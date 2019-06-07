@@ -1,29 +1,38 @@
-.PHONY: DUMMY image languages deploy
+# Note that the '##' syntax is important, since it is parsed by the
+# 'make help' target below.
 
-DUMMY: image
-
-languages: import/index.js
-	node ./import/index.js
-
-
-image: Dockerfile languages/*.toml ## Make polygott image
+# Default task:
+.PHONY: image
+image: ## Build Docker image with all languages
 	docker build -t polygott:latest .
 
-deploy: image ## Send the image to GCS (repl.it use)
+image-%: ## Build Docker image with single language LANG
+	docker build -t polygott-$(*) --build-arg LANGS=$(*) .
+
+.PHONY: run
+run: image ## Build and run image with all languages
+	docker run -it --rm polygott
+
+run-%: image-% ## Build and run image with single language LANG
+	docker run -it --rm polygott-$(*)
+
+.PHONY: test
+test: image ## Build and test all languages
+	docker run polygott:latest bash -c polygott-self-test
+
+test-%: image-% ## Build and test single language LANG
+	docker run polygott-$(*) bash -c polygott-self-test
+
+.PHONY: deploy
+deploy: image ## Build and deploy image to Google Cloud Storage (repl.it use)
 	docker tag polygott:latest gcr.io/marine-cycle-160323/polygott-base:latest
 	docker push gcr.io/marine-cycle-160323/polygott-base:latest
 
-test-%: ## Build and test only the langauge <arg>
-	docker build -t polygott-$(*) --build-arg LANGS=$(*) .
-	docker run polygott-$(*) bash -c polygott-self-test
-
-test: image ## Build and test all langauges
-	docker run polygott:latest bash -c polygott-self-test
-
-help: ## show this message
-	@echo "available targets:"
-	@fgrep -h "##" $(MAKEFILE_LIST) | \
-		fgrep -v fgrep | \
-		sed 's/:.\+#. /|/g' | \
-		sed 's/%/<arg>/g' | \
-		column -s '|' -t
+.PHONY: help
+help: ## Show this message
+	@echo "usage:" >&2
+	@grep -h "[#]# " $(MAKEFILE_LIST) | \
+		sed 's/^/  make /'       | \
+		sed 's/:[^#]*[#]# /|/'   | \
+		sed 's/%/LANG/'          | \
+		column -t -s'|' >&2

@@ -9,7 +9,6 @@ packages = [
 ]
 
 [run]
-pty = true
 command = [
   "php",
   "main.php"

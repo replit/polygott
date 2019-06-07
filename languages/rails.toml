@@ -21,7 +21,6 @@ setup = [
 ]
 
 [run]
-pty = true
 command = [
   "bash",
   "-c",

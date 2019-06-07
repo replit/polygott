@@ -24,7 +24,6 @@ setup = [
   "pip3 install git+https://github.com/amasad/pyxel "
 ]
 [run]
-pty = true
 command = [
   "python3",
   "-B",

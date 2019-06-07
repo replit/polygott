@@ -24,7 +24,6 @@ setup = [
 ]
 
 [run]
-pty = true
 command = [
   "python3",
   "-B",

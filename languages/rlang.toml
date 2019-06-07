@@ -13,7 +13,6 @@ packages = [
 ]
 
 [run]
-pty = true
 command = [
   "R",
   "--slave",
