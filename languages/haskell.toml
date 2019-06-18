@@ -4,7 +4,8 @@ extensions = [
   "hs"
 ]
 packages = [
-  "ghc"
+  "ghc",
+  "libghc-random-dev"
 ]
 
 [compile]
