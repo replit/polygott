@@ -1,0 +1,21 @@
+name = "sqlite"
+entrypoint = "main.sql"
+extensions = [
+  "sql"
+]
+packages = [
+  "sqlite",
+]
+
+[run]
+command = [
+  "sqlite",
+  "-init",
+  "main.sql",
+]
+
+[tests]
+
+  [tests.hello]
+  code = "select 'hello';"
+  output = "hello\n"
