@@ -4,12 +4,12 @@ extensions = [
   "sql"
 ]
 packages = [
-  "sqlite",
+  "sqlite3",
 ]
 
 [run]
 command = [
-  "sqlite",
+  "sqlite3",
   "-init",
   "main.sql",
 ]
