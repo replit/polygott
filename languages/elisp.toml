@@ -1,6 +1,7 @@
 name = "elisp"
 entrypoint = "main.el"
 extensions = [
+  "el",
   "elc"
 ]
 packages = [
