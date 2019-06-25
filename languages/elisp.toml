@@ -4,10 +4,7 @@ extensions = [
   "elc"
 ]
 packages = [
-  "emacs26"
-]
-aptRepos = [
-  "ppa:kelleyk/emacs"
+  "emacs-nox"
 ]
 
 [run]
