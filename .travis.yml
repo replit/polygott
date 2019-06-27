@@ -3,6 +3,10 @@ sudo: required
 services:
   - docker
 
+before_install:
+  # we need origin/master so we know what's changed in `make changed-test`
+  - git remote set-branches --add origin master && git fetch
+
 script:
   - make changed-test -j$(nproc)
   - make test -j$(nproc)
