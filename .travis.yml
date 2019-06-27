@@ -3,10 +3,14 @@ sudo: required
 services:
   - docker
 
+env:
+  - TEST=all
+  - TEST=changed
+
 before_install:
   # we need origin/master so we know what's changed in `make changed-test`
-  - git remote set-branches --add origin master && git fetch
+  - if [ $TEST == "changed" ]; then git remote set-branches --add origin master && git fetch; fi
 
 script:
-  - make changed-test -j$(nproc)
-  - make test -j$(nproc)
+  - if [ $TEST == "all" ]; then make test -j$(nproc); fi
+  - if [ $TEST == "changed" ]; then make changed-test -j$(nproc); fi
