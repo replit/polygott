@@ -21,6 +21,8 @@ RUN /bin/bash phase1.sh
 COPY --from=0 /out/phase2.sh /phase2.sh
 RUN /bin/bash phase2.sh
 
+RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
+ADD polygott-gitignore /etc/.gitignore
 
 COPY --from=0 /out/run-project /usr/bin/run-project
 COPY --from=0 /out/run-language-server /usr/bin/run-language-server
