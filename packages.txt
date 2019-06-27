@@ -8,11 +8,11 @@ subversion
 mercurial
 gnupg
 build-essential
-man
 vim
 ca-certificates
 chromium-chromedriver
 man
+rlwrap
 
 busybox
 software-properties-common
@@ -32,4 +32,6 @@ ssh
 redis-tools
 
 libboost-all-dev
+
+default-jre-headless
 
