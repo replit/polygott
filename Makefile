@@ -23,6 +23,12 @@ test: image ## Build and test all languages
 test-%: image-% ## Build and test single language LANG
 	docker run polygott-$(*) bash -c polygott-self-test
 
+# Build and test only changed/added languages.
+# You should still do `make test` to have confidence everything works together.
+# This is a way to catch some failures faster.
+.PHONY: changed-test
+changed-test: $(addprefix test-,$(basename $(notdir $(shell git diff --name-only origin/master -- languages))))
+
 .PHONY: deploy
 deploy: image ## Build and deploy image to Google Cloud Storage (repl.it use)
 	docker tag polygott:latest gcr.io/marine-cycle-160323/polygott-base:latest
