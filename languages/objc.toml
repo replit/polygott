@@ -8,22 +8,30 @@ packages = [
   "gnustep-devel"
 ]
 
+setup = [
+  ". /usr/share/GNUstep/Makefiles/GNUstep.sh"
+]
+
 [compile]
 command = [
   "gcc",
   "-o",
   "main",
-  "main.m"
+  "main.m",
+  "-I/usr/include/GNUstep",
+  "-L/usr/lib/GNUstep",
+  "-lobjc",
+  "-lgnustep-base"
 ]
 
 [run]
 pty = true
 command = [
-  "./main"
+  "/home/runner/main"
 ]
 
 [tests]
 
   [tests.hello]
-  code = "#import <stdio.h>\nint main(void) {\n\tprintf(\"hi\\n\");\n\treturn 0;\n}"
+  code = "#import <Foundation/Foundation.h>\nint main(void) {\n\tNSAutoreleasePool *pool = [NSAutoreleasePool new];\n\tputs(\"hi\");\n\t[pool drain];\n\treturn 0;\n}"
   output = "hi\n"
