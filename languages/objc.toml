@@ -5,6 +5,7 @@ extensions = [
 ]
 packages = [
   "gobjc",
+  "gnustep",
   "gnustep-devel"
 ]
 
