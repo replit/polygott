@@ -5,10 +5,16 @@ extensions = [
   "elc"
 ]
 packages = [
-  "emacs26"
+  "emacs26",
+  "sqlite3", # for UPM
 ]
 aptRepos = [
   "ppa:kelleyk/emacs"
+]
+setup = [
+  "git clone https://github.com/cask/cask.git /usr/local/cask",
+  "ln -s /usr/local/cask/bin/cask /usr/local/bin/cask",
+  "cask upgrade-cask",
 ]
 
 [run]
