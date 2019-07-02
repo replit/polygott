@@ -22,14 +22,15 @@ each of these cases:
 
     % make help
     usage:
-      make image       Build Docker image with all languages
-      make image-LANG  Build Docker image with single language LANG
-      make run         Build and run image with all languages
-      make run-LANG    Build and run image with single language LANG
-      make test        Build and test all languages
-      make test-LANG   Build and test single language LANG
-      make deploy      Build and deploy image to Google Cloud Storage (repl.it use)
-      make help        Show this message
+      make image         Build Docker image with all languages
+      make image-LANG    Build Docker image with single language LANG
+      make run           Build and run image with all languages
+      make run-LANG      Build and run image with single language LANG
+      make test          Build and test all languages
+      make test-LANG     Build and test single language LANG
+      make changed-test  Build and test only changed/added languages
+      make deploy        Build and deploy image to Google Cloud Storage (repl.it use)
+      make help          Show this message
 
 As you can see, there is a facility for testing that languages have
 been installed and configured correctly. This involves running
