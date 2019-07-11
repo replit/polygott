@@ -4,9 +4,11 @@ extensions = [
   "rs"
 ]
 packages = [
-  "rustc",
-  "cargo",
-  "rust-gdb"
+  # "rust-gdb"
+]
+setup = [
+  "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable",
+  "mkdir $HOME/.profile.d && echo 'source $HOME/.cargo/env' | tee $HOME/.profile.d/cargo",
 ]
 
 [compile]

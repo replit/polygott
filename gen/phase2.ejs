@@ -19,7 +19,7 @@ if [ -n "$(ls -A /home/runner)" ]; then
 	echo Storing home for <%= lang.name %>
 	mkdir -p /opt/homes/<%= lang.name %>
 	cp -r /opt/homes/default/* /opt/homes/<%= lang.name %>
-	mv -nt /opt/homes/<%= lang.name %>/ /home/runner/*
+	mv -nt /opt/homes/<%= lang.name %>/{*,.*} /home/runner/*
 	ls -A /opt/homes/<%= lang.name %>
 fi
 <% } -%>
