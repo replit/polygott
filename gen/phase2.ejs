@@ -31,7 +31,7 @@ fi
 <% } -%>
 <% } -%>
 
-for lang in $LANG_SETUPS; do setup_$lang & done; wait
+for lang in $LANG_SETUPS; do setup_$lang & done; wait -fn
 
 cp -r /opt/homes/default/* /home/runner
 chown runner:runner -R /home/runner
