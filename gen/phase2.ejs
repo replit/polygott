@@ -6,9 +6,13 @@ export HOME=/home/runner
 
 ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin
 
+LANG_SETUPS=()
+
 <% for ( let lang of languages ) { -%>
 <% if ( lang.setup ) { -%>
 
+LANG_SETUPS+=('<%= lang.name %>')
+setup_<%= lang.name %>() {
 
 echo Setup <%= lang.name %>
 <% for ( let line of lang.setup ) { -%>
@@ -22,10 +26,12 @@ if [ -n "$(ls -A /home/runner)" ]; then
 	mv -nt /opt/homes/<%= lang.name %>/ /home/runner/*
 	ls -A /opt/homes/<%= lang.name %>
 fi
+}
+
 <% } -%>
 <% } -%>
 
-
+for lang in $LANG_SETUPS; do setup_$lang & done; wait
 
 cp -r /opt/homes/default/* /home/runner
 chown runner:runner -R /home/runner
