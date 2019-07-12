@@ -11,8 +11,8 @@ LANG_SETUPS=()
 <% for ( let lang of languages ) { -%>
 <% if ( lang.setup ) { -%>
 
-LANG_SETUPS+=('<%= lang.name %>')
-setup_<%= lang.name %>() {
+LANG_SETUPS+=('<%= lang.id %>')
+setup_<%= lang.id %>() {
 
 echo Setup <%= lang.name %>
 <% for ( let line of lang.setup ) { -%>
