@@ -14,10 +14,10 @@ blocks:
         - name: Build
           commands:
             - make image
-  - name: Tests
+  - name: Run tests
     task:
       jobs:
-        - name: Tests
+        - name: Test
           commands:
             - make test
   - name: Push to Docker Hub
