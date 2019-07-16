@@ -5,8 +5,10 @@ agent:
     type: e1-standard-4
     os_image: ubuntu1804
 blocks:
-  - name: Build image
+  - name: Build, test, and maybe push
     task:
+      secrets:
+          - name: dockerhub-secrets
       prologue:
         commands:
           - checkout
@@ -14,21 +16,10 @@ blocks:
         - name: Build
           commands:
             - make image
-  - name: Run tests
-    task:
-      jobs:
-        - name: Test
-          commands:
             - make test
-  - name: Push to Docker Hub
-    skip:
-      when: "branch != 'master'"
-    task:
-      secrets:
-          - name: dockerhub-secrets
-      jobs:
-        - name: Push
-          commands:
-            - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
-            - docker tag polygott:latest replco/polygott:latest
-            - docker push replco/polygott:latest
+            - |
+              if [ "$SEMAPHORE_GIT_BRANCH" = "master" ]; then
+                echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+                docker tag polygott:latest replco/polygott:latest
+                docker push replco/polygott:latest
+              fi
