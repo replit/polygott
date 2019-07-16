@@ -9,12 +9,10 @@ blocks:
     task:
       secrets:
           - name: dockerhub-secrets
-      prologue:
-        commands:
-          - checkout
       jobs:
         - name: Build
           commands:
+            - checkout
             - make image
             - make test
             - |
