@@ -29,6 +29,7 @@ blocks:
             - make changed-test
 promotions:
   - name: Docker Hub
+    pipeline_file: docker-hub-deploy.yml
     auto_promote_on:
       - result: passed
         branch:
