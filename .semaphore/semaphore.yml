@@ -19,7 +19,7 @@ blocks:
       jobs:
         - name: Changed test
           commands:
-            - checkout
+            - checkout --use-cache
             - make changed-test
 promotions:
   - name: Docker Hub
