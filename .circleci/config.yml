@@ -1,0 +1,46 @@
+version: 2.1
+jobs:
+  build_and_test:
+    docker:
+      - image: docker:18.09
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: make image
+      - run: make test
+  build_and_test_changed:
+    docker:
+      - image: docker:18.09
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: make image
+      - run: make changed-test
+  build_test_and_deploy:
+    docker:
+      - image: docker:18.09
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: make image
+      - run: make test
+      - deploy:
+          command: |
+            docker login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
+            docker tag polygott:latest replco/polygott:latest
+            docker push replco/polygott:latest
+workflows:
+  ci:
+    jobs:
+      - build_and_test:
+          filters:
+            branches:
+              ignore: master
+      - build_and_test_changed:
+          filters:
+            branches:
+              ignore: master
+      - build_test_and_deploy:
+          filters:
+            branches:
+              only: master
