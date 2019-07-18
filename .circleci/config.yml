@@ -7,7 +7,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: apk add --no-cache --no-progress make
-      - run: make image
       - run: make test
   build_and_test_changed:
     docker:
@@ -16,7 +15,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: apk add --no-cache --no-progress make
-      - run: make image
       - run: make changed-test
   build_test_and_deploy:
     docker:
