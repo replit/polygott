@@ -16,7 +16,7 @@ jobs:
       - setup_remote_docker
       - run: apk add --no-cache --no-progress make git
       - run: make changed-test
-  build_test_and_deploy:
+  deploy:
     docker:
       - image: docker:18.09
     steps:
