@@ -39,6 +39,7 @@ workflows:
             branches:
               ignore: master
       - deploy:
+          context: Docker Hub
           requires:
             - build_and_test
           filters:
