@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: apk add --no-cache --no-progress make
+      - run: apk add --no-cache --no-progress make git
       - run: make test
   build_and_test_changed:
     docker:
