@@ -22,9 +22,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: apk add --no-cache --no-progress make
-      - run: make image
-      - run: make test
       - deploy:
           command: |
             docker login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD"
@@ -41,7 +38,9 @@ workflows:
           filters:
             branches:
               ignore: master
-      - build_test_and_deploy:
+      - deploy:
+          requires:
+            - build_and_test
           filters:
             branches:
               only: master
