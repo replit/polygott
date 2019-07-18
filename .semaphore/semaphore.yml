@@ -9,22 +9,17 @@ blocks:
     dependencies: []
     task:
       jobs:
-        - name: Test
+        - name: Test and maybe deploy
           commands:
             - checkout
             - make test
-  - name: Changed language tests
-    dependencies: []
-    task:
-      jobs:
-        - name: Changed test
+            - |
+              if [ "$SEMAPHORE_GIT_BRANCH" = "master" ]; then
+                echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+                docker tag polygott:latest replco/polygott:latest
+                docker push replco/polygott:latest
+              fi
+        - name: Test changed languages
           commands:
             - checkout --use-cache
             - make changed-test
-promotions:
-  - name: Docker Hub
-    pipeline_file: docker-hub-deploy.yml
-    auto_promote_on:
-      - result: passed
-        branch:
-         - "^master$"
