@@ -16,12 +16,14 @@ jobs:
       - setup_remote_docker
       - run: apk add --no-cache --no-progress make git
       - run: make changed-test
-  deploy:
+  build_test_and_deploy:
     docker:
       - image: docker:18.09
     steps:
       - checkout
       - setup_remote_docker
+      - run: apk add --no-cache --no-progress make git
+      - run: make test
       - deploy:
           command: |
             echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
@@ -38,10 +40,8 @@ workflows:
           filters:
             branches:
               ignore: master
-      - deploy:
+      - build_test_and_deploy:
           context: Docker Hub
-          requires:
-            - build_and_test
           filters:
             branches:
               only:
