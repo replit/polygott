@@ -46,4 +46,3 @@ workflows:
             branches:
               only:
                 - master
-                - sk-circleci
