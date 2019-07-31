@@ -2,6 +2,13 @@
 .bash_logout
 .bashrc
 .profile
+.cache/
+.local/
 .config/
 .replit/
 .upm/
+
+# executables
+main
+*.exe
+*.dll
