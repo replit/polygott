@@ -29,7 +29,6 @@ each of these cases:
       make test          Build and test all languages
       make test-LANG     Build and test single language LANG
       make changed-test  Build and test only changed/added languages
-      make deploy        Build and deploy image to Google Cloud Storage (repl.it use)
       make help          Show this message
 
 As you can see, there is a facility for testing that languages have
@@ -194,5 +193,12 @@ configuration file. `LANG` defaults to the output of
 
 Start VNC forwarding for X11. Fork into the background and return.
 This script does not interact with language configuration at all.
+
+## Deployment
+
+When a commit is merged to `master`, [CircleCI](https://circleci.com/)
+automatically builds Polygott and pushes the image to [Docker
+Hub](https://hub.docker.com/r/replco/polygott), whence our evaluation
+server pulls it.
 
 [repl.it]: https://repl.it/
