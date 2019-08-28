@@ -75,39 +75,39 @@
 		"extensions",
 		"name"
 	],
-	"anyOf": [
-		{
-			"description": "If 'run' not provided, tests must be omitted or skipped",
-			"required": [
-				"run"
-			]
-		},
-		{
-			"properties": {
-				"tests": {
-					"additionalProperties": {
-						"required": [
-							"skip"
-						],
-						"properties": {
-							"skip": {
-								"enum": [
-									true
-								]
-							}
-						}
-					}
-				}
-			}
-		}
-	],
+  "anyOf": [
+    {
+      "description": "If 'run' not provided, tests must be omitted or skipped",
+      "required": [
+        "run"
+      ]
+    },
+    {
+      "properties": {
+        "tests": {
+          "additionalProperties": {
+            "required": [
+              "skip"
+            ],
+            "properties": {
+              "skip": {
+                "enum": [
+                  true
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
 	"properties": {
-		"aliases": {
-			"type": "array",
-			"items": {
-				"type": "string"
-			}
-		},
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
 		"aptKeys": {
 			"type": "array",
 			"items": {
@@ -155,9 +155,7 @@
 				"command"
 			],
 			"properties": {
-				"command": {
-					"$ref": "#/definitions/command"
-				}
+				"command": {"$ref": "#/definitions/command"}
 			}
 		},
 		"name": {
@@ -239,9 +237,7 @@
 			"type": "object",
 			"title": "The Tests Schema",
 			"required": [],
-			"additionalProperties": {
-				"$ref": "#/definitions/test"
-			}
+			"additionalProperties": {"$ref": "#/definitions/test" }
 		}
 	},
 	"additionalProperties": false
