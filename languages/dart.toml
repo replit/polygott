@@ -13,6 +13,13 @@ aptRepos = [
   "deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main"
 ]
 
+[languageServer]
+command = [
+  "dart",
+  "/usr/lib/dart/bin/snapshots/analysis_server.dart.snapshot",
+  "--lsp",
+]
+
 
 [run]
 command = [
