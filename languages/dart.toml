@@ -4,14 +4,21 @@ extensions = [
   "dart"
 ]
 packages = [
-  "apt-transport-https"
+  "dart=2.2.0-1"
 ]
-setup = [
-  'curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -',
-  'curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list',
-  "apt-get update && apt-get install dart",
+aptKeys = [
+  "6494C6D6997C215E"
+]
+aptRepos = [
+  "deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main"
 ]
 
+[languageServer]
+command = [
+  "dart",
+  "/usr/lib/dart/bin/snapshots/analysis_server.dart.snapshot",
+  "--lsp",
+]
 
 [run]
 command = [

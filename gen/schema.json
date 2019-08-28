@@ -180,9 +180,10 @@
 					"libtk8.6",
 					"python-dev",
 					"libevent-dev",
-					"gcc"
+					"gcc",
+					"dart=2.4.1-1"
 				],
-				"pattern": "^([a-z0-9.-]+)$"
+				"pattern": "^([a-z0-9.=-]+)$"
 			}
 		},
 		"popularity": {
