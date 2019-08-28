@@ -20,7 +20,6 @@ command = [
   "--lsp",
 ]
 
-
 [run]
 command = [
   "/usr/lib/dart/bin/dart",
