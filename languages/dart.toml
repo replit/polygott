@@ -4,7 +4,7 @@ extensions = [
   "dart"
 ]
 packages = [
-  "dart=2.2.0-1"
+  "dart=2.4.1-1"
 ]
 aptKeys = [
   "6494C6D6997C215E"
