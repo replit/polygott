@@ -6,13 +6,17 @@ extensions = [
 packages = [
 ]
 setup = [
-  "curl https://wasmtime.dev/install.sh -sSf | bash"
+  "wget https://github.com/CraneStation/wasmtime/releases/download/v0.3.0/wasmtime-v0.3.0-x86_64-linux.tar.xz -O /tmp/a.tar.xz",
+  "mkdir /usr/local/wasmtime",
+  "tar -xvf /tmp/a.tar.xz -C /usr/local/wasmtime --strip-components=1",
+  "ln -s /usr/local/wasmtime/wasmtime /usr/local/bin/wasmtime",
+  "rm /tmp/a.tar.xz"
 ]
 
 
 [run]
 command = [
-  "/opt/homes/WebAssembly/.wasmtime/bin/wasmtime",
+  "wasmtime",
   "main.wat"
 ]
 
