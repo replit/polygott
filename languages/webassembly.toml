@@ -6,17 +6,18 @@ extensions = [
 packages = [
 ]
 setup = [
-  "wget https://github.com/CraneStation/wasmtime/releases/download/v0.3.0/wasmtime-v0.3.0-x86_64-linux.tar.xz -O /tmp/a.tar.xz",
-  "mkdir /usr/local/wasmtime",
-  "tar -xvf /tmp/a.tar.xz -C /usr/local/wasmtime --strip-components=1",
-  "ln -s /usr/local/wasmtime/wasmtime /usr/local/bin/wasmtime",
-  "rm /tmp/a.tar.xz"
+  "wget https://github.com/wasmerio/wasmer/releases/download/0.8.0/wasmer-linux-amd64.tar.gz -O /tmp/wasmer.tar.gz",
+  "mkdir /usr/local/wasmer",
+  "tar -xvf /tmp/wasmer.tar.gz -C /usr/local/wasmer --strip-components=1",
+  "ln -s /usr/local/wasmer/wasmer /usr/local/bin/wasmer",
+  "rm /tmp/wasmer.tar.gz"
 ]
 
 
 [run]
 command = [
-  "wasmtime",
+  "wasmer",
+  "run",
   "main.wat"
 ]
 
