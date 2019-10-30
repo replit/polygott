@@ -1,0 +1,31 @@
+name = "hoon"
+entrypoint = "main.hoon"
+extensions = [
+  "hoon"
+]
+packages = [
+]
+setup = [
+  "git clone https://github.com/urbit/urbit.git /tmp/urbit && cd /tmp/urbit && git checkout v0.7.4",
+  "./scripts/build",
+  "mv build/urbit /usr/local/bin",
+  "rm -rf /tmp/urbit",
+]
+
+# [compile]
+# command = [
+#   "rustc",
+#   "-o",
+#   "main"
+# ]
+
+# [run]
+# command = [
+#   "./main"
+# ]
+
+# [tests]
+
+#   [tests.hello]
+#   code = "fn main() {\n  println!(\"hello\");\n}"
+#   output = "hello\n"
