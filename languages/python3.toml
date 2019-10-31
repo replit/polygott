@@ -8,9 +8,9 @@ aptRepos = [
 ]
 packages = [
   "python3.8",
+  "python3.8-dev",
   "python3-pip",
   "python3-wheel",
-  "python3-dev",
   "libtk8.6",
   "python-dev",
   "libevent-dev",
@@ -28,7 +28,7 @@ setup = [
 
 [run]
 command = [
-  "python3",
+  "python3.8",
   "-B",
   "main.py"
 ]
@@ -42,6 +42,12 @@ command = [
   [tests.hello]
   code = "print(\"hello\")"
   output = "hello\n"
+
+  [tests.version]
+  code = """
+import sys
+print(sys.version[:5])"""
+  output = "3.8.0\n"
 
 [languageServer]
 command = [
