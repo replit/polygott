@@ -12,8 +12,6 @@ packages = [
 ]
 setup = [
   "luarocks install formatter && luarocks install metalua && luarocks install penlight",
-  "go get github.com/aarzilli/golua/lua",
-  "go build -o /run_dir/lua /run_dir/main.go"
 ]
 
 [run]
