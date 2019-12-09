@@ -1,6 +1,6 @@
 # Polygott
 ## Overview
-
+[![Run on Repl.it](https://repl.it/badge/github/replit/polygott)](https://repl.it/github/replit/polygott)
 [Repl.it] allows you to quickly get started with any programming
 language online. In order to provide this capability, our evaluation
 server uses [Docker](https://www.docker.com/) to ensure that all these
