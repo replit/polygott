@@ -13,6 +13,8 @@ vim
 ca-certificates
 chromium-chromedriver
 man
+valgrind
+libc6-dbg
 
 busybox
 software-properties-common
@@ -32,4 +34,3 @@ ssh
 redis-tools
 
 libboost-all-dev
-
