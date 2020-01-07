@@ -32,4 +32,5 @@ ssh
 redis-tools
 
 libboost-all-dev
-
+python-dev
+python3-dev
