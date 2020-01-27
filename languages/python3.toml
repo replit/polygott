@@ -18,11 +18,11 @@ packages = [
 ]
 popularity = 5.0
 setup = [
-  "curl https://bootstrap.pypa.io/get-pip.py | python3.8",
+  "ln -s /usr/bin/python3.8 /usr/local/bin/python3",
   "wget https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb && dpkg -i stderred_1.0_amd64.deb && rm stderred_1.0_amd64.deb",
-  "python3.8 -m pip install -U setuptools",
-  "python3.8 -m pip install -U configparser",
-  "python3.8 -m pip install pylint==1.6.4 pipreqs-amasad==0.4.10 python-language-server==0.21.5 jedi==0.13.2 pyflakes==2.0.0 rope==0.11.0 yapf==0.25.0 pycodestyle==2.4.0 mccabe==0.6.1 nltk numpy scipy requests bpython ptpython matplotlib==2.2.3 poetry==0.12.16"
+  "curl https://bootstrap.pypa.io/get-pip.py | python3",
+  "python3 -m pip install -U setuptools configparser",
+  "python3 -m pip install pylint==1.6.4 pipreqs-amasad==0.4.10 python-language-server==0.21.5 jedi==0.13.2 pyflakes==2.0.0 rope==0.11.0 yapf==0.25.0 pycodestyle==2.4.0 mccabe==0.6.1 nltk numpy scipy requests bpython ptpython matplotlib==2.2.3 poetry==0.12.16",
 ]
 
 [run]
@@ -41,6 +41,10 @@ command = [
   [tests.hello]
   code = "print(\"hello\")"
   output = "hello\n"
+
+  [tests.version]
+  code = "import sys; sys.version.startswith('3.8')"
+  output = "True\n"
 
 [languageServer]
 command = [

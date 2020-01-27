@@ -3,22 +3,29 @@ entrypoint = "main.py"
 extensions = [
   "py"
 ]
+languages = [
+  "python3"
+]
 packages = [
-  "python3.5",
-  "python3-pip",
-  "python3-wheel",
-  "libtk8.6",
-  "python-dev",
+  "gcc",
+  "libsdl-ttf2.0-dev",
   "libevent-dev",
-  "gcc"
+  "libportmidi-dev",
+  "libsdl1.2-dev",
+  "libsdl-image1.2-dev",
+  "libsdl-mixer1.2-dev",
+  "libtk8.6",
+  "xfonts-base",
+  "xfonts-100dpi",
+  "xfonts-75dpi",
+  "xfonts-cyrillic",
+  "fontconfig",
+  "fonts-freefont-ttf",
+  "libfreetype6-dev",
 ]
 popularity = 5.0
 setup = [
-  "wget https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb && dpkg -i stderred_1.0_amd64.deb && rm stderred_1.0_amd64.deb",
-  "pip3 install -U setuptools",
-  "pip3 install -U configparser",
-  "pip3 install pylint==1.6.4 pipreqs-amasad==0.4.10 python-language-server==0.21.5 jedi==0.13.2 pyflakes==2.0.0 rope==0.11.0 yapf==0.25.0 pycodestyle==2.4.0 mccabe==0.6.1 nltk numpy scipy requests bpython ptpython matplotlib==2.2.3",
-  "pip3 install pygame"
+  "python3 -m pip install pygame pylint==1.6.4 pipreqs-amasad==0.4.10 python-language-server==0.21.5 jedi==0.13.2 pyflakes==2.0.0 rope==0.11.0 yapf==0.25.0 pycodestyle==2.4.0 mccabe==0.6.1 nltk numpy scipy requests bpython ptpython matplotlib==2.2.3",
 ]
 [run]
 command = [
