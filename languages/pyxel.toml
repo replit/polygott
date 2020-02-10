@@ -11,7 +11,8 @@ packages = [
   "libevent-dev",
   "gcc",
   "libglfw3-dev",
-  "portaudio19-dev"
+  "portaudio19-dev",
+  "libsdl2-image-2.0-0",
 ]
 popularity = 5.0
 setup = [
