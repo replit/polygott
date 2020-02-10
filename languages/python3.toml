@@ -32,6 +32,12 @@ command = [
   "main.py"
 ]
 
+[languageServer]
+command = [
+  "pyls",
+  "-v"
+]
+
 [tests]
 
   [tests.0]
@@ -43,11 +49,9 @@ command = [
   output = "hello\n"
 
   [tests.version]
-  code = "import sys; sys.version.startswith('3.8')"
+  code = "import sys; print(sys.version.startswith('3.8'))"
   output = "True\n"
 
-[languageServer]
-command = [
-  "pyls",
-  "-v"
-]
+  [tests.venv]
+  code = "import ensurepip; print(ensurepip.version())"
+  output = "19.2.3\n"
