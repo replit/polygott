@@ -8,6 +8,7 @@ aptRepos = [
 ]
 packages = [
   "python3.8",
+  "python3.8-dev",
   "python3-pip",
   "python3-wheel",
   "python3-dev",
