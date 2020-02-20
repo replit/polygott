@@ -1,25 +1,34 @@
 name = "clojure"
 entrypoint = "main.clj"
 extensions = [
-  "clj"
+  "clj",
+  "cljc",
+  "cljs",
+  "edn"
 ]
 packages = [
-  "clojure1.8",
-  "leiningen"
 ]
 setup = [
+  "wget https://download.clojure.org/install/linux-install-1.10.1.478.sh",
+  "chmod +x linux-install-1.10.1.478.sh",
+  "./linux-install-1.10.1.478.sh"
+]
+
+versionCommand = [
+  "clojure",
+  "-e",
+  "(clojure-version)"
 ]
 
 [run]
 command = [
-  "lein",
-  "exec",
+  "clojure",
   "main.clj"
 ]
 
 [tests]
 
   [tests.hello]
-  code = "(println \"Hello World\")"
+  code = "(println \"hello\")"
   output = "hello\n"
-  skip = true
+

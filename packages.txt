@@ -8,11 +8,11 @@ subversion
 mercurial
 gnupg
 build-essential
-man
 vim
 ca-certificates
 chromium-chromedriver
 man
+rlwrap
 valgrind
 libc6-dbg
 
@@ -34,3 +34,5 @@ ssh
 redis-tools
 
 libboost-all-dev
+
+default-jre-headless
