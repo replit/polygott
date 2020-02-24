@@ -7,12 +7,19 @@ extensions = [
   "edn"
 ]
 packages = [
+  "openjdk-11-jre-headless"
 ]
 setup = [
   "wget https://download.clojure.org/install/linux-install-1.10.1.478.sh",
   "chmod +x linux-install-1.10.1.478.sh",
   "./linux-install-1.10.1.478.sh",
-  "clojure --eval ''", # this ensures that we cache the maven deps in the image
+  "rm linux-install-1.10.1.478.sh",
+
+  # this ensures that we cache the maven deps in the image ($XDG_CONFIG_HOME)
+  # https://clojure.org/reference/deps_and_cli#_command_line_tools
+  # pretty ridiculous but what else can you do?
+  "clojure -Sverbose -Sdeps '{:mvn/local-repo \"/home/runner/.m2/repository\"}' --eval ''",
+  "mv /root/.m2/repository $XDG_CONFIG_HOME/clojure/repository && rm -rf /root/.m2",
 ]
 
 versionCommand = [
@@ -32,4 +39,3 @@ command = [
   [tests.hello]
   code = "(println \"hello\")"
   output = "hello\n"
-
