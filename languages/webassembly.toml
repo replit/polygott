@@ -6,7 +6,7 @@ extensions = [
 packages = [
 ]
 setup = [
-  "wget https://github.com/wasmerio/wasmer/releases/download/0.10.1/wasmer-linux-amd64.tar.gz -O /tmp/wasmer.tar.gz",
+  "wget https://github.com/wasmerio/wasmer/releases/download/0.14.0/wasmer-linux-amd64.tar.gz -O /tmp/wasmer.tar.gz",
   "mkdir /usr/local/wasmer",
   "tar -xvf /tmp/wasmer.tar.gz -C /usr/local/wasmer --strip-components=1",
   "ln -s /usr/local/wasmer/wasmer /usr/local/bin/wasmer",
