@@ -21,7 +21,6 @@ setup = [
   "clojure -Sverbose -Sdeps '{:mvn/local-repo \"/home/runner/.m2/repository\"}' --eval ''",
   "mv /root/.m2/repository $XDG_CONFIG_HOME/clojure/repository && rm -rf /root/.m2",
 ]
-
 versionCommand = [
   "clojure",
   "-e",

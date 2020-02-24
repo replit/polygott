@@ -13,6 +13,8 @@ ca-certificates
 chromium-chromedriver
 man
 rlwrap
+valgrind
+libc6-dbg
 
 busybox
 software-properties-common

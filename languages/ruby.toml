@@ -4,16 +4,16 @@ extensions = [
   "rb"
 ]
 packages = [
+  "build-essential",
+  "rake-compiler",
+  "ruby-dev",
   "ruby",
   "rubygems-integration",
-  "rake-compiler",
   "rubygems",
-  "build-essential"
 ]
 setup = [
   "gem install --source http://rubygems.org rspec:3.5 stripe rufo sinatra",
-  "gem install solargraph -v 0.23.0",
-  "chown -R runner /usr/local/bundle"
+  "gem install solargraph -v 0.38.1",
 ]
 
 [run]

@@ -4,7 +4,7 @@ extensions = [
   "dart"
 ]
 packages = [
-  "dart=2.5.1-1"
+  "dart=2.6.0-1"
 ]
 aptKeys = [
   "6494C6D6997C215E"
@@ -12,10 +12,13 @@ aptKeys = [
 aptRepos = [
   "deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main"
 ]
+setup = [
+  "ln -s /usr/lib/dart/bin/pub /usr/local/bin/pub",
+]
 
 [languageServer]
 command = [
-  "dart",
+  "/usr/lib/dart/bin/dart",
   "/usr/lib/dart/bin/snapshots/analysis_server.dart.snapshot",
   "--lsp",
 ]
