@@ -34,5 +34,3 @@ ssh
 redis-tools
 
 libboost-all-dev
-
-default-jre-headless
