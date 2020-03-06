@@ -1,7 +1,7 @@
 name = "raku"
 entrypoint = "main.raku"
 extensions = [
-  "raku"
+  "raku",
   "rakumod",
   "rakudoc",
   "rakutest",
