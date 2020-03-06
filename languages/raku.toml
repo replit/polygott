@@ -22,6 +22,7 @@ packages = [
 ]
 setup = [
   "ln -s /opt/rakudo-pkg/bin/perl6 /usr/local/bin/perl6",
+  "ln -s /opt/rakudo-pkg/bin/raku /usr/local/bin/raku",
   "ln -s /opt/rakudo-pkg/bin/zef /usr/local/bin/zef",
   "zef install Linenoise"
 ]
