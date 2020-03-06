@@ -1,7 +1,14 @@
-name = "perl6"
-entrypoint = "main.p6"
+name = "raku"
+entrypoint = "main.raku"
 extensions = [
-  "p6"
+  "raku"
+  "rakumod",
+  "rakudoc",
+  "rakutest",
+  "p6",
+  "pm6",
+  "pod6",
+  "t6"
 ]
 aptKeys = [
   "379CE192D401AB61"
@@ -22,8 +29,8 @@ setup = [
 
 [run]
 command = [
-  "perl6",
-  "./main.p6"
+  "raku",
+  "./main.raku"
 ]
 
 [tests]
