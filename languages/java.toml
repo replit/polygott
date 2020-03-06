@@ -4,6 +4,7 @@ extensions = [
   "java"
 ]
 packages = [
+  "maven",
   "openjdk-11-jdk"
 ]
 setup = [
