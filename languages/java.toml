@@ -4,6 +4,7 @@ extensions = [
   "java"
 ]
 packages = [
+  "gradle",
   "maven",
   "openjdk-11-jdk"
 ]
