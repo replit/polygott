@@ -35,5 +35,16 @@ COPY --from=0 /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
-WORKDIR /home/runner
+COPY prybar/scripts/docker-install.sh /tmp/docker-install.sh
+RUN /tmp/docker-install.sh
 
+RUN mkdir -p /gocode/src/github.com/replit/prybar
+COPY ./prybar/ /gocode/src/github.com/replit/prybar
+WORKDIR /gocode/src/github.com/replit/prybar
+
+ENV GOPATH=/gocode LC_ALL=C.UTF-8 PATH="/gocode/src/github.com/replit/prybar:$PATH"
+
+RUN cp languages/tcl/tcl.pc /usr/lib/pkgconfig/
+RUN make
+
+WORKDIR /home/runner
