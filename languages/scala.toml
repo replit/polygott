@@ -7,6 +7,8 @@ packages = [
   "openjdk-11-jdk"
 ]
 setup = [
+  "curl -L https://github.com/lihaoyi/Ammonite/releases/download/2.0.4/2.13-2.0.4 > /usr/local/bin/amm",
+  "chmod +x /usr/local/bin/amm",
   "wget -nv https://downloads.lightbend.com/scala/2.13.1/scala-2.13.1.tgz",
   "tar -xf scala-2.13.1.tgz",
   "cp -R   scala-2.13.1/bin/*     /usr/local/bin/",
