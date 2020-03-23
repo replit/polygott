@@ -12,12 +12,22 @@ setup = [
   "cp -r julia-1.3.1/lib/* /usr/lib/",
   "cp -r julia-1.3.1/include/* /usr/include/",
   "cp -r julia-1.3.1/share/* /usr/share/",
-  "rm -rf ./julia-1.3.1 julia-1.3.1-linux-x86_64.tar.gz"
+  "rm -rf ./julia-1.3.1 julia-1.3.1-linux-x86_64.tar.gz",
+  "mkdir -p /gocode/src/github.com/replit/",
+  "wget https://github.com/replit/prybar/archive/ds-fix-julia.zip",
+  "unzip ds-fix-julia.zip",
+  "mv prybar-ds-fix-julia /gocode/src/github.com/replit/prybar/",
+  "export GOPATH=/gocode",
+  "export LC_ALL=C.UTF-8",
+  "export PATH=\"/gocode/src/github.com/replit/prybar:$PATH\"",
+  "cd /gocode/src/github.com/replit/prybar",
+  "make prybar-julia",
+  "cp prybar-julia /usr/local/bin/"
 ]
 
 [run]
 command = [
-  "julia",
+  "prybar-julia",
   "-q",
   "./main.jl"
 ]

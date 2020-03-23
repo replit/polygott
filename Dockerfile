@@ -35,7 +35,4 @@ COPY --from=0 /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
-COPY install-prybar.sh /tmp/install-prybar.sh
-RUN bash -ex /tmp/install-prybar.sh
-
 WORKDIR /home/runner
