@@ -10,6 +10,7 @@ RUN node gen/index.js
 
 ADD fetch-prybar.sh fetch-prybar.sh
 RUN sh fetch-prybar.sh
+ADD build-prybar-lang.sh build-prybar-lang.sh
 
 FROM ubuntu:18.04
 
@@ -20,6 +21,9 @@ ENV XDG_CONFIG_HOME=/config
 
 COPY --from=0 /out/phase1.sh /phase1.sh
 RUN /bin/bash phase1.sh
+
+COPY --from=0 /gocode /gocode
+COPY --from=0 /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
 
 COPY --from=0 /out/phase2.sh /phase2.sh
 RUN /bin/bash phase2.sh
@@ -34,8 +38,6 @@ COPY --from=0 /out/self-test /usr/bin/polygott-self-test
 COPY --from=0 /out/polygott-survey /usr/bin/polygott-survey
 COPY --from=0 /out/polygott-lang-setup /usr/bin/polygott-lang-setup
 COPY --from=0 /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
-
-COPY --from=0 /gocode /gocode
 
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8

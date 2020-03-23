@@ -1,5 +1,3 @@
-#!/usr/bin/env sh -e
-
 TAG="tag-ds-fix-julia"
 
 mkdir -p /gocode/src/github.com/replit/
