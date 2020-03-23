@@ -8,6 +8,9 @@ ADD languages languages
 ADD packages.txt packages.txt
 RUN node gen/index.js
 
+ADD fetch-prybar.sh fetch-prybar.sh
+RUN sh fetch-prybar.sh
+
 FROM ubuntu:18.04
 
 COPY --from=0 /out/phase0.sh /phase0.sh
@@ -31,6 +34,8 @@ COPY --from=0 /out/self-test /usr/bin/polygott-self-test
 COPY --from=0 /out/polygott-survey /usr/bin/polygott-survey
 COPY --from=0 /out/polygott-lang-setup /usr/bin/polygott-lang-setup
 COPY --from=0 /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
+
+COPY --from=0 /gocode /gocode
 
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
