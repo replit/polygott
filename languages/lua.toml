@@ -12,6 +12,7 @@ packages = [
 ]
 setup = [
   "luarocks install formatter && luarocks install metalua && luarocks install penlight",
+  "/usr/bin/build-prybar-lang.sh lua"
 ]
 
 [run]
