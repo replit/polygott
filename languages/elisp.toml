@@ -15,6 +15,7 @@ setup = [
   "git clone https://github.com/cask/cask.git /usr/local/cask",
   "ln -s /usr/local/cask/bin/cask /usr/local/bin/cask",
   "cask upgrade-cask",
+  "/usr/bin/build-prybar-lang.sh elisp"
 ]
 
 [run]
