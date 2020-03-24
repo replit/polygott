@@ -34,3 +34,5 @@ ssh
 redis-tools
 
 libboost-all-dev
+
+golang-go
