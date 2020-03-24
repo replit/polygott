@@ -1,4 +1,4 @@
-TAG="tag-ds-fix-julia"
+TAG="$1"
 
 mkdir -p /gocode/src/github.com/replit/
 
