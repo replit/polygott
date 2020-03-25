@@ -24,8 +24,8 @@ setup = [
 
 [run]
 command = [
-  "prybar-python2",
-  "-q",
+  "python",
+  "-B",
   "main.py"
 ]
 
