@@ -7,3 +7,4 @@ export PATH="/gocode/src/github.com/replit/prybar:$PATH"
 cd /gocode/src/github.com/replit/prybar
 make "prybar-${LANG}"
 cp "prybar-${LANG}" /usr/bin/
+cp -r prybar_assets/ /usr/bin/

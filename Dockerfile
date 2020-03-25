@@ -25,6 +25,7 @@ RUN /bin/bash phase1.sh
 
 COPY --from=0 /gocode /gocode
 COPY --from=0 /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
+COPY --from=0 /usr/bin/prybar_assets /usr/bin/prybar_assets
 
 COPY --from=0 /out/phase2.sh /phase2.sh
 RUN /bin/bash phase2.sh
