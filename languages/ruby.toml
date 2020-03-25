@@ -14,6 +14,7 @@ packages = [
 setup = [
   "gem install --source http://rubygems.org rspec:3.5 stripe rufo sinatra",
   "gem install solargraph -v 0.38.1",
+  "/usr/bin/build-prybar-lang.sh ruby"
 ]
 
 [run]

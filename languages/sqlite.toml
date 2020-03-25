@@ -6,6 +6,9 @@ extensions = [
 packages = [
   "sqlite3",
 ]
+setup = [
+  "/usr/bin/build-prybar-lang.sh sqlite"
+]
 
 [run]
 command = [

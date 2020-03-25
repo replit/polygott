@@ -11,7 +11,8 @@ setup = [
   "tar -xf scala-2.13.1.tgz",
   "cp -R   scala-2.13.1/bin/*     /usr/local/bin/",
   "cp -R   scala-2.13.1/lib/*     /usr/local/lib/",
-  "rm -rf  scala-2.13.1/"
+  "rm -rf  scala-2.13.1/",
+  "/usr/bin/build-prybar-lang.sh scala"
 ]
 
 [compile]

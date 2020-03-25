@@ -4,11 +4,15 @@ extensions = [
   "tcl"
 ]
 packages = [
+  "pkg-config",
   "tcl8.6",
   "tklib",
-  "tcllib"
+  "tcllib",
+  "tcl-dev"
 ]
 setup = [
+  "cp /gocode/src/github.com/replit/prybar/languages/tcl/tcl.pc /usr/lib/pkgconfig/tcl.pc",
+  "/usr/bin/build-prybar-lang.sh tcl"
 ]
 
 versionCommand = [
@@ -19,7 +23,8 @@ versionCommand = [
 
 [run]
 command = [
-  "tclsh8.6",
+  "prybar-tcl",
+  "-q",
   "./main.tcl"
 ]
 
