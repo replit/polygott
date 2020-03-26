@@ -38,28 +38,35 @@ function undup(line) {
 	}
 }
 
-for (let file of list) {
+function handleLanguage(language, dependency = false) {
+	let file = path.join(base, "languages", language + ".toml");
 	let info = toml.parse(fs.readFileSync(file, "utf8"));
 
 	let result = tv4.validateMultiple(info, schema);
-	if ( !result.valid ) {
+	if (!result.valid) {
 		console.log(`Warning: ${file} schema invalid.`);
-		for ( let error of result.errors ) {
+		for (let error of result.errors) {
 			console.log(`-> ${error.message} @ ${error.dataPath}`);
 		}
 		process.exit(1);
 	}
 
 	let name = info.name;
-	info.id = path.basename(file).replace(/.toml$/,'');
+	info.id = path.basename(file).replace(/.toml$/, '');
 	let names = [name, info.id];
-	if ( info.aliases ) {
+	if (info.aliases) {
 		names = names.concat(info.aliases);
 	};
 	info.names = [...new Set(names)];
 	if (process.env.LANGS) {
 		let set = process.env.LANGS.split(/[ ,]+/);
-		if (set.indexOf(info.id) == -1) continue;
+		if (set.indexOf(info.id) == -1 && !dependency) return;
+	}
+
+	if (info.languages) {
+		for (let l of info.languages) {
+			handleLanguage(l, true);
+		}
 	}
 
 	info.popularity = info.popularity || 2;
@@ -113,6 +120,11 @@ for (let file of list) {
 	languages.push(info);
 }
 
+for (let file of list) {
+	let language = path.basename(file, ".toml");
+	handleLanguage(language);
+}
+
 let lbypop = JSON.parse(JSON.stringify(languages));
 lbypop.sort((a, b) => b.popularity - a.popularity);
 
@@ -129,8 +141,8 @@ let ctx = {
 	undup,
 	lpad,
 	c: a => a.map((s) => {
-		if ( /^[a-zA-Z0-9-]*$/.test(s) ) return s;
-		return `'${s.replace(/[$'\\]/g,(m) => '\\' + m)}'`;
+		if (/^[a-zA-Z0-9-]*$/.test(s)) return s;
+		return `'${s.replace(/[$'\\]/g, (m) => '\\' + m)}'`;
 	}).join(" ")
 };
 
