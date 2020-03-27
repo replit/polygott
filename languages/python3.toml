@@ -28,8 +28,8 @@ setup = [
 
 [run]
 command = [
-  "prybar-python3",
-  "-q",
+  "python3",
+  "-B",
   "main.py"
 ]
 
