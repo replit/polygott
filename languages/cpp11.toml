@@ -9,10 +9,7 @@ packages = [
 ]
 setup = [
   "cd /tmp && wget -q https://github.com/cquery-project/cquery/releases/download/v20180302/cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && tar xf cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && cd cquery-v20180302-x86_64-unknown-linux-gnu && cp bin/cquery /bin && cp -r lib/* /lib/ && cd /tmp && rm cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && rm -r cquery-v20180302-x86_64-unknown-linux-gnu",
-
   "update-alternatives --install /usr/bin/clang-format clang-format `which clang-format-7` 100",
-
-  "echo -e '%clang\\n%c -std=gnu11\\n%cpp -std=gnu++14\\n-pthread' | tee ~/.cquery"
 ]
 
 [compile]
@@ -38,5 +35,5 @@ command = [
 [languageServer]
 command = [
   "cquery",
-  "--init={\"progressReportFrequencyMs\": -1,\"cacheDirectory\":\"/tmp/cquery\"}"
+  "--init={\"progressReportFrequencyMs\": -1,\"cacheDirectory\":\"/tmp/cquery\", \"extraClangArguments\": [\"-std=c++11\", \"-pthread\"]}"
 ]
