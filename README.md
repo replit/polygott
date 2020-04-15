@@ -57,7 +57,7 @@ subdirectory](languages). The meaningful keys are as follows:
   exists with this name, then the project is detected to have this
   language. (Ties are resolved by `popularity`.) It is also used by
   the `run-project` script in order to identify the main file of the
-  projecy.
+  project.
 * `extensions`: List of file extensions (use `"py"`, not `".py"`)
   which files of this language may have. This is used in the
   `detect-language` script built into the Polygott image: if a file
