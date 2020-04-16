@@ -3,25 +3,22 @@ entrypoint = "main.py"
 extensions = [
   "py"
 ]
+languages = [
+  "python3",
+]
 packages = [
-  "python3.5",
-  "python3-pip",
-  "python3-wheel",
   "libtk8.6",
-  "python-dev",
   "libevent-dev",
   "gcc",
   "libglfw3-dev",
-  "portaudio19-dev"
+  "portaudio19-dev",
+  "libsdl2-image-2.0-0",
 ]
 popularity = 5.0
 setup = [
-  "wget https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb && dpkg -i stderred_1.0_amd64.deb && rm stderred_1.0_amd64.deb",
-  "pip3 install -U setuptools",
-  "pip3 install -U configparser",
-  "pip3 install pylint==1.6.4 pipreqs-amasad==0.4.10 python-language-server==0.21.5 jedi==0.13.2 pyflakes==2.0.0 rope==0.11.0 yapf==0.25.0 pycodestyle==2.4.0 mccabe==0.6.1 nltk numpy scipy requests bpython ptpython matplotlib==2.2.3",
-  "pip3 install glfw",
-  "pip3 install git+https://github.com/amasad/pyxel "
+  "python3 -m pip install -U setuptools configparser",
+  "python3 -m pip install pylint==1.6.4 pipreqs-amasad==0.4.10 python-language-server==0.21.5 jedi==0.13.2 pyflakes==2.0.0 rope==0.11.0 yapf==0.25.0 pycodestyle==2.4.0 mccabe==0.6.1 nltk numpy scipy requests bpython ptpython matplotlib==2.2.3 glfw",
+  "python3 -m pip install git+https://github.com/amasad/pyxel",
 ]
 [run]
 command = [
