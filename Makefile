@@ -11,17 +11,17 @@ image-%: ## Build Docker image with single language LANG
 
 .PHONY: run
 run: image ## Build and run image with all languages
-	docker run -it --rm polygott
+	docker run -it --rm --user runner:runner polygott
 
 run-%: image-% ## Build and run image with single language LANG
-	docker run -it --rm polygott-$(*)
+	docker run -it --rm --user runner:runner polygott-$(*)
 
 .PHONY: test
 test: image ## Build and test all languages
-	docker run polygott:latest bash -c polygott-self-test
+	docker run --user runner:runner polygott:latest bash -c polygott-self-test
 
 test-%: image-% ## Build and test single language LANG
-	docker run polygott-$(*) bash -c polygott-self-test
+	docker run --user runner:runner polygott-$(*) bash -c polygott-self-test
 
 .PHONY: changed-test
 changed-test: $(addprefix test-,$(basename $(notdir $(shell git diff --name-only origin/master -- languages)))) ## Build and test only changed/added languages
