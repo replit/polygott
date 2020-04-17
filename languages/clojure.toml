@@ -17,18 +17,19 @@ setup = [
 
   # Trigger downloading of Clojure JARs now to avoid downloading them at runtime.
   # (https://clojure.org/reference/deps_and_cli#_command_line_tools)
-  """clojure \
-    -Sdeps '{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."] :mvn/local-repo "/home/runner/.m2/repository"}' \
-    -Sforce \
-    -Sverbose \
-    --eval ''""",
+  """su runner \
+    -c 'clojure \
+        -Sdeps "{:deps {org.clojure/tools.namespace {:mvn/version \\\"1.0.0\\\"}} :paths [\\\"src\\\" \\\".\\\"]}" \
+        -Sforce \
+        -Sverbose \
+        --eval ""'""",
 
   "/usr/bin/build-prybar-lang.sh clojure"
 ]
 versionCommand = [
   "clj",
   "-Sdeps",
-  """{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."] :mvn/local-repo "/home/runner/.m2/repository"}""",
+  """{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."]}""",
   "--eval",
   "(clojure-version)"
 ]
@@ -37,7 +38,7 @@ versionCommand = [
 command = [
   "clj",
   "-Sdeps",
-  """{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."] :mvn/local-repo "/home/runner/.m2/repository"}""",
+  """{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."]}""",
   "main.clj"
 ]
 
