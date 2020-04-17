@@ -15,23 +15,29 @@ setup = [
   "./linux-install-1.10.1.536.sh",
   "rm linux-install-1.10.1.536.sh",
 
-  # Fetch Maven artifacts eagerly in order to cache them in the container image.
+  # Trigger downloading of Clojure JARs now to avoid downloading them at runtime.
   # (https://clojure.org/reference/deps_and_cli#_command_line_tools)
-  """clojure -Sverbose \
-             -Sdeps '{:deps {org.clojure/tools.namespace {:mvn/version \"1.0.0\"}} :mvn/local-repo \"/home/runner/.m2/repository\"}' \
-             --eval ''""",
+  """clojure \
+    -Sdeps '{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."] :mvn/local-repo "/home/runner/.m2/repository"}' \
+    -Sforce \
+    -Sverbose \
+    --eval ''""",
 
   "/usr/bin/build-prybar-lang.sh clojure"
 ]
 versionCommand = [
-  "clojure",
+  "clj",
+  "-Sdeps",
+  """{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."] :mvn/local-repo "/home/runner/.m2/repository"}""",
   "--eval",
   "(clojure-version)"
 ]
 
 [run]
 command = [
-  "clojure",
+  "clj",
+  "-Sdeps",
+  """{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."] :mvn/local-repo "/home/runner/.m2/repository"}""",
   "main.clj"
 ]
 
