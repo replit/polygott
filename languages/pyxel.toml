@@ -16,9 +16,10 @@ packages = [
 ]
 popularity = 5.0
 setup = [
-  "python3 -m pip install -U setuptools configparser",
-  "python3 -m pip install pylint==1.6.4 pipreqs-amasad==0.4.10 python-language-server==0.21.5 jedi==0.13.2 pyflakes==2.0.0 rope==0.11.0 yapf==0.25.0 pycodestyle==2.4.0 mccabe==0.6.1 nltk numpy scipy requests bpython ptpython matplotlib==2.2.3 glfw",
-  "python3 -m pip install git+https://github.com/amasad/pyxel",
+  "mkdir -p /home/runner/.local/share/virtualenvs",
+  "cp -r /opt/homes/python3/.local/share/virtualenvs/python3 /home/runner/.local/share/virtualenvs/python3",
+  "/home/runner/.local/share/virtualenvs/python3/bin/python3 -m pip install glfw",
+  "/home/runner/.local/share/virtualenvs/python3/bin/python3 -m pip install git+https://github.com/amasad/pyxel",
 ]
 [run]
 command = [
