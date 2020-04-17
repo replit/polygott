@@ -1,7 +1,7 @@
-name = "perl6"
-entrypoint = "main.p6"
+name = "raku"
+entrypoint = "main.raku"
 extensions = [
-  "p6"
+  "raku"
 ]
 aptKeys = [
   "379CE192D401AB61"
@@ -15,6 +15,9 @@ packages = [
 ]
 setup = [
   "ln -s /opt/rakudo-pkg/bin/perl6 /usr/local/bin/perl6",
+  "ln -s /opt/rakudo-pkg/bin/raku /usr/local/bin/raku",
+  "ln -s /opt/rakudo-pkg/bin/nqp /usr/local/bin/nqp",
+  "ln -s /opt/rakudo-pkg/bin/moar /usr/local/bin/moar",
   "ln -s /opt/rakudo-pkg/bin/zef /usr/local/bin/zef",
   "zef install Linenoise"
 ]
@@ -22,8 +25,8 @@ setup = [
 
 [run]
 command = [
-  "perl6",
-  "./main.p6"
+  "raku",
+  "./main.raku"
 ]
 
 [tests]
