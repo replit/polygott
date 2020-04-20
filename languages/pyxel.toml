@@ -16,13 +16,16 @@ packages = [
 ]
 popularity = 5.0
 setup = [
-  "/home/runner/.local/share/virtualenvs/python3/bin/python3 -m pip install glfw",
-  "/home/runner/.local/share/virtualenvs/python3/bin/python3 -m pip install git+https://github.com/amasad/pyxel",
-  "virtualenv-clone /home/runner/.local/share/virtualenvs/python3 /opt/homes/pyxel/.local/share/virtualenvs/python3",
+  "python3 -m pip install glfw",
+  "python3 -m pip install git+https://github.com/amasad/pyxel",
 ]
+runtimeSetup = [
+  "python3 -m venv --system-site-packages /home/runner/venv",
+]
+
 [run]
 command = [
-  "/opt/homes/pyxel/.local/share/virtualenvs/python3/bin/python3",
+  "python3",
   "-B",
   "main.py"
 ]
