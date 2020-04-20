@@ -26,6 +26,7 @@ let aptRepos = [];
 
 let list = glob.sync(path.join(base, "languages", "*.toml"));
 let languages = [];
+let handledLanguages = {};
 list.sort();
 
 let dc = [];
@@ -39,6 +40,10 @@ function undup(line) {
 }
 
 function handleLanguage(language, dependency = false) {
+	if (language in handledLanguages) {
+		return;
+	}
+
 	let file = path.join(base, "languages", language + ".toml");
 	let info = toml.parse(fs.readFileSync(file, "utf8"));
 
@@ -118,6 +123,7 @@ function handleLanguage(language, dependency = false) {
 		}
 	}
 	languages.push(info);
+	handledLanguages[language] = true;
 }
 
 for (let file of list) {
