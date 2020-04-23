@@ -13,6 +13,11 @@ ADD fetch-prybar.sh fetch-prybar.sh
 RUN sh fetch-prybar.sh $PRYBAR_TAG
 ADD build-prybar-lang.sh build-prybar-lang.sh
 
+ARG UPM_TAG=circleci_pipeline_147_build_146
+ADD fetch-upm.sh fetch-upm.sh
+RUN sh fetch-upm.sh $UPM_TAG
+ADD build-upm.sh build-upm.sh
+
 FROM ubuntu:18.04
 
 COPY --from=0 /out/phase0.sh /phase0.sh
@@ -26,9 +31,11 @@ RUN /bin/bash phase1.sh
 COPY --from=0 /gocode /gocode
 COPY --from=0 /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
 COPY --from=0 /usr/bin/prybar_assets /usr/bin/prybar_assets
+COPY --from=0 /build-upm.sh /usr/bin/build-upm.sh
 
 COPY --from=0 /out/phase2.sh /phase2.sh
 RUN /bin/bash phase2.sh
+RUN /bin/bash /usr/bin/build-upm.sh
 
 RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
 ADD polygott-gitignore /etc/.gitignore
