@@ -8,6 +8,10 @@ useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- basePackages.join(' ') %>
 
+# we need a recent golang to build upm
+add-apt-repository -y ppa:longsleep/golang-backports
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends golang-go
+
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 

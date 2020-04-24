@@ -6,16 +6,10 @@ entrypoint = "main.go"
 extensions = [
   "go"
 ]
-aptRepos = [
-  "ppa:longsleep/golang-backports"
-]
-
 packages = [
-  "golang-go",
   "pkg-config"
 ]
 setup = [
-  "ln -s /usr/lib/go-1.11/bin/* /usr/bin",
   "go get -u github.com/saibing/bingo"
 ]
 

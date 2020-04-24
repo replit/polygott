@@ -3,9 +3,6 @@ entrypoint = "Main.java"
 extensions = [
   "java"
 ]
-languages = [
-  "go"
-]
 packages = [
   "maven",
   "openjdk-11-jdk"
