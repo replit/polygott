@@ -1,6 +1,7 @@
 name = "raku"
 entrypoint = "main.raku"
 extensions = [
+  "p6",
   "raku"
 ]
 aptKeys = [
