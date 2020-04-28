@@ -16,7 +16,8 @@ packages = [
 ]
 setup = [
   "ln -s /usr/lib/go-1.11/bin/* /usr/bin",
-  "go get -u github.com/saibing/bingo"
+  "go get -u github.com/saibing/bingo",
+  "mv ./go /opt/homes/go",
 ]
 
 [compile]

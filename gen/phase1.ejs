@@ -23,8 +23,8 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
 npm install -g yarn
 
 cd /home/runner
-mkdir -p /opt/homes/default
-mv -nt /opt/homes/default/ $(ls -A /home/runner)
+rm -rf /home/runner/*
+mkdir -p /opt/homes
 
 curl https://xpra.org/xorg.conf > /opt/xorg.conf
 
