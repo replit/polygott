@@ -19,6 +19,7 @@ packages = [
 popularity = 5.0
 setup = [
   "ln -s /usr/bin/python3.8 /usr/local/bin/python3",
+  "curl https://bootstrap.pypa.io/get-pip.py | python3",
   "mkdir -p \"${HOME}/.local/share/virtualenvs\"",
   "python3 -m venv --without-pip \"${HOME}/.local/share/virtualenvs/python3\"",
   "curl https://bootstrap.pypa.io/get-pip.py | \"${HOME}/.local/share/virtualenvs/python3/bin/python3\"",
