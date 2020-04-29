@@ -16,16 +16,12 @@ packages = [
 ]
 popularity = 5.0
 setup = [
-  "python3 -m pip install glfw",
-  "python3 -m pip install git+https://github.com/amasad/pyxel",
+  "/opt/virtualenvs/python3/bin/python3 -m pip install glfw",
+  "/opt/virtualenvs/python3/bin/python3 -m pip install git+https://github.com/amasad/pyxel",
 ]
-runtimeSetup = [
-  "python3 -m venv --system-site-packages /home/runner/venv",
-]
-
 [run]
 command = [
-  "python3",
+  "/opt/virtualenvs/python3/bin/python3",
   "-B",
   "main.py"
 ]
@@ -46,6 +42,6 @@ command = [
 
 [languageServer]
 command = [
-  "pyls",
+  "/opt/virtualenvs/python3/bin/python3",
   "-v"
 ]
