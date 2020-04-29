@@ -21,6 +21,10 @@ setup = [
   "ln -s /usr/bin/python3.8 /usr/local/bin/python3",
   "curl https://bootstrap.pypa.io/get-pip.py | python3",
   "pip3 install --disable-pip-version-check pipreqs-amasad==0.4.10 pylint==1.6.4 jedi==0.13.2 mccabe==0.6.1 pycodestyle==2.4.0 pyflakes==2.1.1 python-language-server==0.21.5 rope==0.11.0 yapf==0.25.0 dephell==0.7.7 poetry==0.12.16",
+  "mkdir -p \"${HOME}/.local/share/virtualenvs\"",
+  "python3 -m venv --without-pip \"${HOME}/.local/share/virtualenvs/python3\"",
+  "curl https://bootstrap.pypa.io/get-pip.py | \"${HOME}/.local/share/virtualenvs/python3/bin/python3\"",
+  "\"${HOME}/.local/share/virtualenvs/python3/bin/pip\" install bpython matplotlib nltk numpy ptpython requests scipy",
 ]
 runtimeSetup = [
 ]
