@@ -31,14 +31,14 @@ setup = [
 
 [run]
 command = [
-  "/opt/virtualenvs/python3/bin/python3",
+  "python3",
   "-B",
   "main.py"
 ]
 
 [languageServer]
 command = [
-  "/opt/virtualenvs/python3/bin/pyls",
+  "pyls",
   "-v"
 ]
 
