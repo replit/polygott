@@ -1,0 +1,22 @@
+FROM ubuntu:18.04
+
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends gnupg software-properties-common
+
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 09617FD37CC06B54
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 6494C6D6997C215E
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
+
+RUN add-apt-repository -y 'deb https://dist.crystal-lang.org/apt crystal main'
+RUN add-apt-repository -y 'deb https://download.mono-project.com/repo/ubuntu stable-bionic main'
+RUN add-apt-repository -y 'deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main'
+RUN add-apt-repository -y 'ppa:kelleyk/emacs'
+RUN add-apt-repository -y 'ppa:longsleep/golang-backports'
+RUN add-apt-repository -y 'ppa:bartbes/love-stable'
+RUN add-apt-repository -y 'ppa:avsm/ppa'
+RUN add-apt-repository -y 'ppa:deadsnakes/ppa'
+RUN add-apt-repository -y 'deb https://dl.bintray.com/nxadm/rakudo-pkg-debs bionic main'
+RUN apt-get update
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends locales unzip curl wget git subversion mercurial build-essential vim ca-certificates chromium-chromedriver man rlwrap valgrind libc6-dbg busybox apt-utils dirmngr gpg-agent x11vnc xserver-xorg-video-dummy x11-xserver-utils cmake ninja-build silversearcher-ag ssh redis-tools libboost-all-dev golang-go clang-7 clang-format-7 sbcl openjdk-11-jre-headless libssl-dev crystal mono-complete dart=2.6.0-1 emacs26 sqlite3 erlang elixir erlang-ic gforth fsharp pkg-config guile-2.2 ghc maven openjdk-11-jdk love lua5.1 liblua5.1-0 liblua5.1-bitop0 lua-socket luarocks nim m4 ocaml opam fpc php-cli php-pear python3.8 python3.8-dev python3.8-tk python3.8-venv libtk8.6 libevent-dev gcc tk-dev libsdl-ttf2.0-dev libportmidi-dev libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev xfonts-base xfonts-100dpi xfonts-75dpi xfonts-cyrillic fontconfig fonts-freefont-ttf libfreetype6-dev python-pip python-wheel python-dev python-tk libglfw3-dev portaudio19-dev libsdl2-image-2.0-0 rakudo-pkg r-base r-base-dev r-recommended littler r-cran-littler r-cran-stringr rake-compiler ruby-dev ruby rubygems-integration rubygems rust-gdb libedit2 python2.7-minimal libpython2.7 libxml2 clang libicu-dev tcl8.6 tklib tcllib tcl-dev

@@ -1,0 +1,176 @@
+#!/bin/bash
+
+shopt -s dotglob
+
+LANGUAGE=`detect-language`
+
+while getopts ":sl:" opt; do
+  case ${opt} in
+    l )
+      LANGUAGE=$OPTARG
+      ;;
+    \? )
+      echo "Usage: run-project [-s] [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+case "$LANGUAGE" in
+"ballerina")
+  cp -a /opt/homes/ballerina/* /home/runner/
+  ;;
+"bash")
+  cp -a /opt/homes/bash/* /home/runner/
+  ;;
+"c")
+  cp -a /opt/homes/c/* /home/runner/
+  ;;
+"common lisp"|"clisp"|"lisp")
+  cp -a /opt/homes/common lisp/* /home/runner/
+  ;;
+"clojure")
+  cp -a /opt/homes/clojure/* /home/runner/
+  ;;
+"cpp"|"c++")
+  cp -a /opt/homes/cpp/* /home/runner/
+  ;;
+"cpp11")
+  cp -a /opt/homes/cpp11/* /home/runner/
+  ;;
+"crystal")
+  cp -a /opt/homes/crystal/* /home/runner/
+  ;;
+"csharp"|"c#")
+  cp -a /opt/homes/csharp/* /home/runner/
+  ;;
+"dart")
+  cp -a /opt/homes/dart/* /home/runner/
+  ;;
+"elisp")
+  cp -a /opt/homes/elisp/* /home/runner/
+  ;;
+"elixir")
+  cp -a /opt/homes/elixir/* /home/runner/
+  ;;
+"enzyme")
+  cp -a /opt/homes/enzyme/* /home/runner/
+  ;;
+"erlang")
+  cp -a /opt/homes/erlang/* /home/runner/
+  ;;
+"express")
+  cp -a /opt/homes/express/* /home/runner/
+  ;;
+"flow")
+  cp -a /opt/homes/flow/* /home/runner/
+  ;;
+"forth")
+  cp -a /opt/homes/forth/* /home/runner/
+  ;;
+"fsharp"|"f#")
+  cp -a /opt/homes/fsharp/* /home/runner/
+  ;;
+"gatsbyjs")
+  cp -a /opt/homes/gatsbyjs/* /home/runner/
+  ;;
+"go"|"golang")
+  cp -a /opt/homes/go/* /home/runner/
+  ;;
+"guile"|"scheme")
+  cp -a /opt/homes/guile/* /home/runner/
+  ;;
+"haskell")
+  cp -a /opt/homes/haskell/* /home/runner/
+  ;;
+"java")
+  cp -a /opt/homes/java/* /home/runner/
+  ;;
+"jest")
+  cp -a /opt/homes/jest/* /home/runner/
+  ;;
+"julia")
+  cp -a /opt/homes/julia/* /home/runner/
+  ;;
+"kotlin")
+  cp -a /opt/homes/kotlin/* /home/runner/
+  ;;
+"love2d")
+  cp -a /opt/homes/love2d/* /home/runner/
+  ;;
+"lua")
+  cp -a /opt/homes/lua/* /home/runner/
+  ;;
+"nextjs")
+  cp -a /opt/homes/nextjs/* /home/runner/
+  ;;
+"nim")
+  cp -a /opt/homes/nim/* /home/runner/
+  ;;
+"nodejs")
+  cp -a /opt/homes/nodejs/* /home/runner/
+  ;;
+"ocaml")
+  cp -a /opt/homes/ocaml/* /home/runner/
+  ;;
+"pascal")
+  cp -a /opt/homes/pascal/* /home/runner/
+  ;;
+"php")
+  cp -a /opt/homes/php/* /home/runner/
+  ;;
+"python3")
+  cp -a /opt/homes/python3/* /home/runner/
+  ;;
+"pygame")
+  cp -a /opt/homes/pygame/* /home/runner/
+  ;;
+"python")
+  cp -a /opt/homes/python/* /home/runner/
+  ;;
+"pyxel")
+  cp -a /opt/homes/pyxel/* /home/runner/
+  ;;
+"quil")
+  cp -a /opt/homes/quil/* /home/runner/
+  ;;
+"raku")
+  cp -a /opt/homes/raku/* /home/runner/
+  ;;
+"react_native")
+  cp -a /opt/homes/react_native/* /home/runner/
+  ;;
+"reactjs")
+  cp -a /opt/homes/reactjs/* /home/runner/
+  ;;
+"reactts")
+  cp -a /opt/homes/reactts/* /home/runner/
+  ;;
+"rlang")
+  cp -a /opt/homes/rlang/* /home/runner/
+  ;;
+"ruby")
+  cp -a /opt/homes/ruby/* /home/runner/
+  ;;
+"rust")
+  cp -a /opt/homes/rust/* /home/runner/
+  ;;
+"scala")
+  cp -a /opt/homes/scala/* /home/runner/
+  ;;
+"sqlite")
+  cp -a /opt/homes/sqlite/* /home/runner/
+  ;;
+"swift")
+  cp -a /opt/homes/swift/* /home/runner/
+  ;;
+"tcl")
+  cp -a /opt/homes/tcl/* /home/runner/
+  ;;
+"WebAssembly"|"webassembly")
+  cp -a /opt/homes/WebAssembly/* /home/runner/
+  ;;
+*)
+  echo "Unknown Language: $LANGUAGE"
+  ;;
+esac

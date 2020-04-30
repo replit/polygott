@@ -1,0 +1,23 @@
+#!/bin/bash
+
+unset LD_PRELOAD
+
+if [ ! -f /tmp/.X11-unix/ ]; then
+	nohup Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /home/runner/.x.log -config /opt/xorg.conf :0 > /dev/null &
+fi
+
+export DISPLAY=:0
+
+TRIES=0
+while ! xset q; do
+    sleep 0.50s
+    TRIES=$(( TRIES + 1 ))
+    if [ "$TRIES" -ge 60 ]; then
+        echo "FATAL: $0: Gave up waiting for X server $DISPLAY"
+        exit 11
+    fi
+done
+
+nohup x11vnc -display $DISPLAY -forever -nopw -shared -bg -reopen -quiet -N -noxkb -oa /home/runner/.vnc.log
+setxkbmap -display :0 -keycodes xfree86 -layout us
+xrandr -s ${RESOLUTION:-800x600}
