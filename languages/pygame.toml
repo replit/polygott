@@ -25,10 +25,7 @@ packages = [
 ]
 popularity = 5.0
 setup = [
-  "python3 -m pip install pygame",
-]
-runtimeSetup = [
-  "python3 -m venv --system-site-packages /home/runner/venv",
+  "/opt/virtualenvs/python3/bin/python3 -m pip install pygame",
 ]
 [run]
 command = [
