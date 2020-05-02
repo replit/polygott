@@ -8,6 +8,14 @@ jobs:
       - setup_remote_docker
       - run: apk add --no-cache --no-progress make git
       - run: make test
+  build_and_test_python3:
+    docker:
+      - image: docker:18.09
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: apk add --no-cache --no-progress make git
+      - run: make test-python3
   build_and_test_changed:
     docker:
       - image: docker:18.09
@@ -29,10 +37,27 @@ jobs:
             echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
             docker tag polygott:latest replco/polygott:latest
             docker push replco/polygott:latest
+  build_test_and_deploy_python3:
+    docker:
+      - image: docker:18.09
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: apk add --no-cache --no-progress make git
+      - run: make test-python3
+      - deploy:
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+            docker tag polygott-python3:latest replco/polygott-python3:latest
+            docker push replco/polygott-python3:latest
 workflows:
   ci:
     jobs:
       - build_and_test:
+          filters:
+            branches:
+              ignore: master
+      - build_and_test_python3:
           filters:
             branches:
               ignore: master
@@ -41,6 +66,12 @@ workflows:
             branches:
               ignore: master
       - build_test_and_deploy:
+          context: Docker Hub
+          filters:
+            branches:
+              only:
+                - master
+      - build_test_and_deploy_python3:
           context: Docker Hub
           filters:
             branches:
