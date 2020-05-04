@@ -5,11 +5,7 @@ shopt -s dotglob
 # Languages: <%= languages.map((l) => l.name).join(', ') %>
 
 <% for ( let key of aptKeys ) { %>
-<% if (isurl(key)) { %>
-curl -L <%- c([key]) %> | apt-key add -
-<% } else { %>
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv <%- c([key]) %>
-<% } %>
 <% } %>
 
 <% for ( let repo of aptRepos ) { %>
