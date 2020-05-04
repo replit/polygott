@@ -8,6 +8,10 @@ shopt -s dotglob
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv <%- c([key]) %>
 <% } %>
 
+<% for ( let keyUrl of aptKeyUrls ) { %>
+curl -L <%- c([keyUrl]) %> | apt-key add -
+<% } %>    
+
 <% for ( let repo of aptRepos ) { %>
 add-apt-repository -y <%- c([repo]) %>
 <% } %>

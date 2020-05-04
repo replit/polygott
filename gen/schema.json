@@ -117,6 +117,15 @@
 				"default": ""
 			}
 		},
+		"aptKeyUrls": {
+			"type": "array",
+			"items": {
+				"$id": "#/properties/aptKeyUrls/items",
+				"type": "string",
+				"title": "The Items Schema",
+				"default": ""
+			}
+		},
 		"aptRepos": {
 			"type": "array",
 			"items": {

@@ -22,6 +22,7 @@ let basePackages = [].concat(packages);
 console.log(basePackages);
 
 let aptKeys = [];
+let aptKeyUrls = []
 let aptRepos = [];
 
 let list = glob.sync(path.join(base, "languages", "*.toml"));
@@ -111,6 +112,12 @@ function handleLanguage(language, dependency = false) {
 		}
 	}
 
+	if (info.aptKeyUrls) {
+		for (let p of info.aptKeyUrls) {
+			if (aptKeyUrls.indexOf(p) == -1) aptKeyUrls.push(p);
+		}
+	}
+
 	if (info.aptRepos) {
 		for (let p of info.aptRepos) {
 			if (aptRepos.indexOf(p) == -1) aptRepos.push(p);
@@ -144,6 +151,7 @@ let ctx = {
 	packages,
 	aptRepos,
 	aptKeys,
+	aptKeyUrls,
 	undup,
 	lpad,
 	c: a => a.map((s) => {
