@@ -4,6 +4,7 @@ const glob = require("glob");
 const toml = require("toml");
 const ejs = require("ejs");
 const tv4 = require("tv4");
+const url = require("url");
 
 const base = path.join(__dirname, "..");
 const dest = path.join(base, "out");
@@ -37,6 +38,16 @@ function undup(line) {
 	} else {
 		return "#" + line;
 	}
+}
+
+function isurl(string) {
+	try {
+	  url.parse(string);
+	} catch (_) {
+	  return false;
+	}
+
+	return true;
 }
 
 function handleLanguage(language, dependency = false) {
@@ -146,6 +157,7 @@ let ctx = {
 	aptKeys,
 	undup,
 	lpad,
+	isurl,
 	c: a => a.map((s) => {
 		if (/^[a-zA-Z0-9-]*$/.test(s)) return s;
 		return `'${s.replace(/[$'\\]/g, (m) => '\\' + m)}'`;
