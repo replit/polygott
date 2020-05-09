@@ -1,0 +1,23 @@
+name = "deno"
+entrypoint = "index.ts"
+extensions = [
+  "ts"
+]
+packages = [
+]
+setup = [
+  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh"
+]
+
+[run]
+command = [
+  "deno",
+  "run",
+  "index.ts"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "console.log(\"hello\")"
+  output = "hello\n"
