@@ -36,3 +36,5 @@ redis-tools
 libboost-all-dev
 
 golang-go
+
+libopus0
