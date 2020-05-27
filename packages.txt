@@ -38,3 +38,4 @@ libboost-all-dev
 golang-go
 
 libopus0
+libopusfile0
