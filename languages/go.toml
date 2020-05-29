@@ -11,7 +11,7 @@ aptRepos = [
 ]
 
 packages = [
-  "golang-1.14-go=1.14.2-1longsleep1+bionic",
+  "golang-1.14-go",
   "pkg-config"
 ]
 setup = [

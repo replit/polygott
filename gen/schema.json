@@ -194,7 +194,7 @@
 					"gcc",
 					"dart=2.4.1-1"
 				],
-				"pattern": "^([a-z0-9.=+-]+)$"
+				"pattern": "^([a-z0-9.=-]+)$"
 			}
 		},
 		"popularity": {
