@@ -11,11 +11,10 @@ aptRepos = [
 ]
 
 packages = [
-  "golang-go",
+  "golang-1.14-go=1.14.2-1longsleep1+bionic",
   "pkg-config"
 ]
 setup = [
-  "ln -s /usr/lib/go-1.11/bin/* /usr/bin",
   "go get -u github.com/saibing/bingo"
 ]
 
