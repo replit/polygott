@@ -11,11 +11,10 @@ aptRepos = [
 ]
 
 packages = [
-  "golang-go",
+  "golang-1.14-go",
   "pkg-config"
 ]
 setup = [
-  "ln -s /usr/lib/go-1.11/bin/* /usr/bin",
   "go get -u github.com/saibing/bingo"
 ]
 
@@ -37,6 +36,10 @@ command = [
   [tests.hello]
   code = "package main \nimport \"fmt\" \nfunc main() { \nfmt.Println(\"hello\") \n}"
   output = "hello\n"
+
+  [tests.version]
+  code = "package main \nimport (\"fmt\" \n\"runtime\") \nfunc main(){fmt.Print(runtime.Version()[:7])}"
+  output = "go1.14."
 
 [languageServer]
 command = [
