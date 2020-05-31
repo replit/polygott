@@ -1,0 +1,26 @@
+name = "assembly"
+entrypoint = "main.asm"
+extensions = [
+    "asm",
+    "s"
+]
+packages = [
+    "nasm",
+]
+
+[compile]
+command = [
+    "/bin/bash",
+    "-c",
+    "nasm -felf64 -omain.o main.asm && ld -s -omain main.o",
+]
+
+[run]
+command = [
+    "./main"
+]
+
+[tests]
+    [tests.hello]
+        code = "section .text\nglobal _start\n_start:\nmov rax, 1\nmov rdi, 1\nmov rsi, buf\nmov rdx, 5\nsyscall\nmov rax, 60\nsyscall\nsection .data\nbuf: db \"hello\""
+        output = "hello"
