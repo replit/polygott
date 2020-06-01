@@ -1,15 +1,16 @@
 #!/bin/bash
 
 unset LD_PRELOAD
+log="/tmp/polygott-x11-vnc.log"
 
 if [ ! -f /tmp/.X11-unix/ ]; then
-	nohup Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /home/runner/.x.log -config /opt/xorg.conf :0 > /dev/null &
+	nohup Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /home/runner/.x.log -config /opt/xorg.conf :0 >> "$log" 2>&1 &
 fi
 
 export DISPLAY=:0
 
 TRIES=0
-while ! xset q; do
+while ! xset q >> "$log" 2>&1 ; do
     sleep 0.50s
     TRIES=$(( TRIES + 1 ))
     if [ "$TRIES" -ge 60 ]; then
@@ -18,6 +19,6 @@ while ! xset q; do
     fi
 done
 
-nohup x11vnc -display $DISPLAY -forever -nopw -shared -bg -reopen -quiet -N -noxkb -oa /home/runner/.vnc.log
+nohup x11vnc -display $DISPLAY -forever -nopw -shared -bg -reopen -quiet -N -noxkb -oa /home/runner/.vnc.log >> "$log" 2>&1
 setxkbmap -display :0 -keycodes xfree86 -layout us
 xrandr -s ${RESOLUTION:-800x600}
