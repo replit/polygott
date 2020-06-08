@@ -21,6 +21,8 @@ command = [
   "DENO_DIR=\"/home/runner/.deno\"",
   "deno",
   "run",
+  "--lock=lock.json",
+  "--lock-write",
   "--allow-all",
   "index.ts"
 ]
