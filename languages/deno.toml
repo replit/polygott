@@ -18,6 +18,7 @@ command = [
 
 [run]
 command = [
+  "DENO_DIR=\"/home/runner/.deno\"",
   "deno",
   "run",
   "--allow-all",
@@ -29,3 +30,8 @@ command = [
   [tests.hello]
   code = "console.log(\"hello\")"
   output = "hello\n"
+
+versionCommand = [
+  "deno",
+  "--version"
+]
