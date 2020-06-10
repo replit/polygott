@@ -18,8 +18,6 @@ packages = [
 ]
 popularity = 5.0
 setup = [
-  "mkdir -p $XDG_CONFIG_HOME/pypoetry",
-  "echo 'virtualenvs.create = false' > $XDG_CONFIG_HOME/pypoetry/config.toml",
   "ln -s /usr/bin/python3.8 /usr/local/bin/python3",
   "curl https://bootstrap.pypa.io/get-pip.py | python3",
   "pip3 install --disable-pip-version-check pipreqs-amasad==0.4.10 pylint==1.6.4 jedi==0.13.2 mccabe==0.6.1 pycodestyle==2.4.0 pyflakes==2.1.1 python-language-server==0.21.5 rope==0.11.0 yapf==0.25.0 dephell==0.7.7 poetry==1.0.5",
