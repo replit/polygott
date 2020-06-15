@@ -4,8 +4,21 @@ extensions = [
   "nim"
 ]
 
-packages = [
-  "nim"
+setup = [
+  'NIM_VER="1.2.0"',
+  "wget https://nim-lang.org/download/nim-$NIM_VER.tar.xz",
+  "tar xf nim-$NIM_VER.tar.xz",
+  "rm -rf nim-$NIM_VER.tar.xz",
+  "chown -R root: nim-$NIM_VER/",
+  "cd nim-$NIM_VER",
+  "sh build.sh",
+  "./bin/nim c koch.nim",
+  "./koch tools",
+  "sh install.sh /usr/local/bin",
+  "cp ./bin/* /usr/local/bin",
+  "cd ..",
+  "rm -rf nim-$NIM_VER",
+  "unset NIM_VER"
 ]
 
 [run]
@@ -20,4 +33,4 @@ command = [
 
   [tests.hello]
   code = "echo \"hello world\""
-  output = "CC: main\nCC: stdlib_system\nhello world\n"
+  output = "CC: stdlib_io.nim\nCC: stdlib_system.nim\nCC: main.nim\nhello world\n"
