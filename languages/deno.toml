@@ -6,7 +6,7 @@ extensions = [
 packages = [
 ]
 setup = [
-  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.0.0",
+  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.1.0",
   "npm i -g typescript-language-server@0.4.0 typescript@3.8.3"
 ]
 
@@ -18,7 +18,6 @@ command = [
 
 [run]
 command = [
-  "DENO_DIR=\"/home/runner/.deno\"",
   "deno",
   "run",
   "--lock=lock.json",
