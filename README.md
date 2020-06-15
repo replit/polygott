@@ -179,7 +179,7 @@ nothing.
 Execute the `compile` and `run` commands on the `entrypoint` file in
 the current directory. `LANG` defaults to the output of
 `detect-language`. If `-s` is passed, then the `entrypoint` file is
-written with the contents of stdin. If `-s` is passed, then some
+written with the contents of stdin. If `-b` is passed, then some
 special logic is used instead of the `compile` and `run` commands;
 [see the source for details](gen/run-project.ejs).
 

@@ -6,7 +6,7 @@ extensions = [
 packages = [
 ]
 setup = [
-  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.0.0",
+  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.1.0",
   "npm i -g typescript-language-server@0.4.0 typescript@3.8.3"
 ]
 
@@ -20,6 +20,8 @@ command = [
 command = [
   "deno",
   "run",
+  "--lock=lock.json",
+  "--lock-write",
   "--allow-all",
   "index.ts"
 ]
@@ -29,3 +31,8 @@ command = [
   [tests.hello]
   code = "console.log(\"hello\")"
   output = "hello\n"
+
+versionCommand = [
+  "deno",
+  "--version"
+]
