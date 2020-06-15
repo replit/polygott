@@ -33,4 +33,4 @@ command = [
 
   [tests.hello]
   code = "echo \"hello world\""
-  output = "CC: main\nCC: stdlib_system\nhello world\n"
+  output = "CC: stdlib_io.nim\nCC: stdlib_system.nim\nCC: main.nim\nhello world\n"
