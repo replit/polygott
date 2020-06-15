@@ -43,10 +43,6 @@ COPY --from=0 /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
 
 ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
-ENV VIRTUAL_ENV="/opt/virtualenvs/python3"
-ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
-ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.8/site-packages"
-
 
 WORKDIR /home/runner
 
