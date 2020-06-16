@@ -7,9 +7,9 @@ packages = [
   "rust-gdb"
 ]
 setup = [
-  "curl --proto '=https' --tlsv1.2 -Sf https://static.rust-lang.org/dist/rust-1.36.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp",
-  "/tmp/rust-1.36.0-x86_64-unknown-linux-gnu/install.sh",
-  "rm -rf /tmp/rust-1.36.0-x86_64-unknown-linux-gnu"
+  "curl --proto '=https' --tlsv1.2 -Sf https://static.rust-lang.org/dist/rust-1.44.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp",
+  "/tmp/rust-1.44.0-x86_64-unknown-linux-gnu/install.sh",
+  "rm -rf /tmp/rust-1.44.0-x86_64-unknown-linux-gnu"
 ]
 
 [compile]
