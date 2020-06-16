@@ -16,8 +16,8 @@ packages = [
 ]
 popularity = 5.0
 setup = [
-  "pip3 install glfw",
-  "pip3 install git+https://github.com/amasad/pyxel",
+  "/opt/virtualenvs/python3/bin/python3 -m pip install glfw",
+  "/opt/virtualenvs/python3/bin/python3 -m pip install git+https://github.com/amasad/pyxel",
 ]
 [run]
 command = [

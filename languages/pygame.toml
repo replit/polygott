@@ -25,7 +25,7 @@ packages = [
 ]
 popularity = 5.0
 setup = [
-  "pip3 install pygame",
+  "/opt/virtualenvs/python3/bin/python3 -m pip install pygame",
 ]
 [run]
 command = [
