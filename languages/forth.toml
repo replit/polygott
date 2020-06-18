@@ -1,7 +1,7 @@
 name = "forth"
-entrypoint = "main.fs"
+entrypoint = "main.fth"
 extensions = [
-  "fs"
+  "fth"
 ]
 packages = [
   "gforth"
@@ -12,7 +12,7 @@ setup = [ ]
 command = [
   "gforth",
   "--",
-  "./main.fs",
+  "./main.fth",
   "-e",
   "bye"
 ]
