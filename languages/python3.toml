@@ -14,7 +14,9 @@ packages = [
   "libtk8.6",
   "libevent-dev",
   "gcc",
-  "tk-dev"
+  "tk-dev",
+  "librtmp",
+  "librtmp-dev"
 ]
 popularity = 5.0
 setup = [
