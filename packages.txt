@@ -39,3 +39,6 @@ golang-go
 
 libopus0
 libopusfile0
+
+librtmp
+librtmp-dev
