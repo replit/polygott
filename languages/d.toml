@@ -5,7 +5,9 @@ aliases = [
   "d",
   "dlang",
 ]
-
+extensions = [
+   "d" 
+]
 packages = [
   "gdc",
   "gdb"
