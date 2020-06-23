@@ -10,10 +10,11 @@ packages = [
   "gdc",
   "gdb"
 ]
-[compile]
 
+[compile]
 command = [
-  "dgc -g",
+  "gdc",
+  "-g",
   "main.d"
 ]
 
