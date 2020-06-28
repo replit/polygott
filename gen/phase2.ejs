@@ -31,5 +31,9 @@ chown runner:runner -R /home/runner
 chown runner:runner -R /config
 chown runner:runner -R /opt/virtualenvs
 
+chown runner:runner -R /usr/local/bin/chromedriver
+chown runner:runner -R /usr/bin/chromium-browser
+chown runner:runner -R /usr/bin/geckodriver
+
 rm -rf /var/lib/apt/lists/*
 rm /phase2.sh
