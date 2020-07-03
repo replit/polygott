@@ -46,7 +46,8 @@ ENV LANG=en_US.UTF-8
 ENV VIRTUAL_ENV="/opt/virtualenvs/python3"
 ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.8/site-packages"
+ENV USER=runner
 
+WORKDIR /home/
 
-WORKDIR /home/runner
 
