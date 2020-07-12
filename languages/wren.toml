@@ -1,0 +1,24 @@
+name = "wren"
+entrypoint = "main.wren"
+
+extensions = [
+    "wren"
+]
+
+setup = [
+    "wget https://github.com/wren-lang/wren-cli/releases/download/0.3.0/wren_cli-linux-0.3.0.zip",
+    "unzip wren_cli-linux-0.3.0.zip",
+    "install wren_cli-linux-0.3.0/wren_cli /usr/local/bin",
+    "rm -rf wren_cli-linux-0.3.0"
+]
+
+[run]
+command = [
+    "wren_cli",
+    "main.wren",
+]
+
+[tests]
+    [tests.hello]
+    code = "System.print(\"hello\")"
+    output = "hello"
