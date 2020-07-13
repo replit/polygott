@@ -1,0 +1,22 @@
+name = "stekovaya"
+entrypoint = "main.stk"
+extensions = [
+  "stk"
+]
+packages = [
+]
+setup = [
+  "wget https://repl.it/@theforarkld/Stekovaya.zip -q ; unzip -q -o Stekovaya.zip \"stkvy.exe\" ; rm Stekovaya.zip"
+]
+
+[run]
+command = [
+  "mono",
+  "stkvy.exe",
+  "main.stk"
+]
+
+[tests]
+[tests.hello]
+code = "STR hello END MSG"
+output = "hello\n"
