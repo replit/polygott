@@ -12,6 +12,7 @@ packages = [
 [compile]
 command = [
 	"gplc",
+	"--no-top-level",
 	"-o",
 	"main"
 ]
