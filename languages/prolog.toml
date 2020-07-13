@@ -1,0 +1,29 @@
+name = "prolog"
+entrypoint = "main.pro"
+extensions = [
+	"pro",
+	"prolog",
+	"wam"
+]
+packages = [
+	"gprolog"
+]
+
+[compile]
+command = [
+	"gplc",
+	"--no-top-level",
+	"-o",
+	"main"
+]
+
+[run]
+command = [
+	"./main"
+]
+
+[tests]
+
+	[tests.hello]
+	code = ":- initialization(main).\nmain :- write('hello, world\\n')."
+	output = "hello, world\n"
