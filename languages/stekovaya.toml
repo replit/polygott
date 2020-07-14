@@ -7,12 +7,13 @@ packages = [
   "mono-complete"
 ]
 setup = [
-  "wget https://repl.it/@theforarkld/Stekovaya.zip -q ; unzip -q -o Stekovaya.zip \"stkvy.exe\" ; rm Stekovaya.zip"
+  "wget https://repl.it/@theforarkld/Stekovaya.zip -q",
+  "unzip -q -o Stekovaya.zip \"stkvy.exe\"",
+  "rm Stekovaya.zip"
 ]
 
 [run]
 command = [
-  "wget https://repl.it/@theforarkld/Stekovaya.zip -q ; unzip -q -o Stekovaya.zip \"stkvy.exe\" ; rm Stekovaya.zip &&",
   "mono",
   "stkvy.exe",
   "main.stk"
