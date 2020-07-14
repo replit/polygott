@@ -20,6 +20,7 @@ command = [
 ]
 
 [tests]
+
   [tests.hello]
   code = "STR hello END MSG"
   output = "hello\n"
