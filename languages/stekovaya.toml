@@ -4,6 +4,7 @@ extensions = [
   "stk"
 ]
 packages = [
+  "mono-complete"
 ]
 setup = [
   "wget https://repl.it/@theforarkld/Stekovaya.zip -q ; unzip -q -o Stekovaya.zip \"stkvy.exe\" ; rm Stekovaya.zip"
