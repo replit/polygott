@@ -12,7 +12,7 @@ setup = [
   "cd /usr/src",
   "wget -q https://repl.it/@theforarkld/Stekovaya.zip",
   "unzip -q -o -d stekovaya Stekovaya.zip \"stkvy.exe\"",
-  "rm Stekovaya.zip"
+  "rm -f Stekovaya.zip"
 ]
 
 [run]
