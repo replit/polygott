@@ -16,8 +16,8 @@ packages = [
 [compile]
 command = [
   "gdc",
-  "-g",
-  "main.d"
+  "-o",
+  "main"
 ]
 
 [run]
