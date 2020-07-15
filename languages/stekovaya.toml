@@ -20,7 +20,7 @@ setup = [
 command = [
   "/bin/bash",
   "-c",
-  "mono ~/bin/stekovaya/stkvy.exe main.stk"
+  "mono ${HOME}/bin/stekovaya/stkvy.exe main.stk"
 ]
 
 [tests]
