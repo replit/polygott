@@ -9,7 +9,8 @@ packages = [
   "wget"
 ]
 setup = [
-  "wget https://repl.it/@theforarkld/Stekovaya.zip -q",
+  "cd /tmp",
+  "wget -q https://repl.it/@theforarkld/Stekovaya.zip",
   "unzip -q -o Stekovaya.zip \"stkvy.exe\"",
   "rm Stekovaya.zip"
 ]
@@ -17,7 +18,7 @@ setup = [
 [run]
 command = [
   "mono",
-  "stkvy.exe",
+  "/tmp/stkvy.exe",
   "main.stk"
 ]
 
