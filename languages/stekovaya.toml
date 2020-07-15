@@ -19,9 +19,7 @@ setup = [
 
 [run]
 command = [
-  "mono",
-  "$(echo ~/bin/stekovaya/stkvy.exe)",
-  "main.stk"
+  "mono ~/bin/stekovaya/stkvy.exe main.stk"
 ]
 
 [tests]
