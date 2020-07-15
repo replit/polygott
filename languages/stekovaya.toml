@@ -14,7 +14,7 @@ setup = [
   "wget -q https://repl.it/@theforarkld/Stekovaya.zip",
   "unzip -q -o Stekovaya.zip \"stkvy.exe\"",
   "rm Stekovaya.zip",
-  "ls ~/bin/stekovaya"
+  "echo ~/bin/stekovaya"
 ]
 
 [run]
