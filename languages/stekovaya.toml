@@ -21,7 +21,7 @@ setup = [
 command = [
   "/bin/bash",
   "-c",
-  "ls /home/runner/* && mono /home/runner/bin/stekovaya/stkvy.exe main.stk"
+  "ls /home/runner/* 1>&2 && mono /home/runner/bin/stekovaya/stkvy.exe main.stk"
 ]
 
 [tests]
