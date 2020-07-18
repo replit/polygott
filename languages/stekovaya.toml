@@ -5,8 +5,7 @@ extensions = [
 ]
 packages = [
   "mono-complete",
-  "unzip",
-  "wget"
+  "unzip"
 ]
 setup = [
   "cd /usr/src",
