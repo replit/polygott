@@ -4,11 +4,13 @@ extensions = [
   "night"
 ]
 packages = [
+  "unzip",
+  "wget"
 ]
 setup = [
   "cd /tmp",
   "wget -q https://repl.it/@DynamicSquid/Night.zip",
-  "unzip -q -o Night.zip \"./night\"",
+  "unzip -q -o Night.zip \"night\"",
   "cp -f night /usr/bin/night"
 ]
 
