@@ -4,6 +4,8 @@ extensions = [
   "night"
 ]
 packages = [
+  "unzip",
+  "wget"
 ]
 setup = [
   "cd /tmp",
