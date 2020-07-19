@@ -9,7 +9,7 @@ packages = [
 ]
 setup = [
   "cd /tmp",
-  "wget -q https://repl.it/@DynamicSquid/Night.zip",
+  "wget -q https://repl.it/@TheForArkLD/Night.zip",
   "unzip -q -o Night.zip \"night\"",
   "cp -f night /usr/bin/night",
   "chmod +x /usr/bin/night"
@@ -17,8 +17,7 @@ setup = [
 
 [run]
 command = [
-  "night",
-  "main.night"
+  "night"
 ]
 
 [tests]
