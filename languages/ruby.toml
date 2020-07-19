@@ -10,6 +10,7 @@ packages = [
   "ruby",
   "rubygems-integration",
   "rubygems",
+  "libsqlite3-dev",
 ]
 setup = [
   "gem install --source http://rubygems.org rspec:3.5 stripe rufo sinatra",
