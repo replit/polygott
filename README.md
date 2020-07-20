@@ -10,7 +10,8 @@ We previously used a separate Docker image for each language, but
 concluded that it was both simpler and more efficient to use a single
 image which contains all supported languages simultaneously. The code
 necessary to build this combined image, **Polygott**, resides in this
-repository.
+repository.  If you're lost and need some reference, we have 
+[a blog](https://blog.repl.it/elisp) where we added elisp.
 
 ## Build and run
 
