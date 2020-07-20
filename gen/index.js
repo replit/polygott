@@ -155,7 +155,7 @@ let ctx = {
 	undup,
 	lpad,
 	c: a => a.map((s) => {
-		if (/^[a-zA-Z0-9-]*$/.test(s)) return s;
+		if (/^(\S*|`[^`]+`)$/.test(s)) return s;
 		return `'${s.replace(/[$'\\]/g, (m) => '\\' + m)}'`;
 	}).join(" ")
 };
