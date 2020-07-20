@@ -70,8 +70,6 @@ for dl in "${GNUSTEP_SOURCES[@]}"; do
 	) || exit $?
 done
 
-export PATH="/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:$PATH"
-
 # Reinstall libdispatch-dev
 cd /tmp/gnustep-dev
 git clone https://github.com/plaurent/libdispatch.git
@@ -98,8 +96,6 @@ command = [
 
 [run]
 command = [
-	"export", 'PATH="/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:$PATH"',
-	"&&",
 	"./main"
 ]
 
