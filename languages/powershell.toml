@@ -1,0 +1,21 @@
+name = "powershell"
+entrypoint = "main.ps1"
+extensions = [
+  "ps1"
+]
+packages = [
+]
+setup = [
+  "curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.0.2/powershell-7.0.2-linux-x64.tar.gz",
+  "tar zxf /tmp/powershell.tar.gz -C pwsh"
+]
+[run]
+command = [
+  "./tmp/pwsh/pwsh",
+  "main.ps1"
+]
+[tests]
+
+  [tests.hello]
+  code = "$strString = \"Hello World\"; write-host $strString"
+  output = "Hello World\n"
