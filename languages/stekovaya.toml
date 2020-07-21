@@ -4,21 +4,21 @@ extensions = [
   "stk"
 ]
 packages = [
-  "mono-complete",
-  "unzip"
+  "mono"
 ]
 setup = [
-  "cd /usr/src",
+  "cd /tmp",
   "wget -q https://repl.it/@theforarkld/Stekovaya.zip",
   "unzip -q -o -d stekovaya Stekovaya.zip \"stkvy.exe\"",
-  "rm -f Stekovaya.zip"
+  "rm -f Stekovaya.zip",
+  "mv stkvy.exe /usr/bin/stkvy.exe"
 ]
 
 [run]
 command = [
-  "/bin/bash",
-  "-c",
-  "mono /usr/src/stekovaya/stkvy.exe main.stk"
+  "mono",
+  "/usr/bin/stkvy.exe",
+  "main.stk"
 ]
 
 [tests]
