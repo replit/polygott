@@ -7,12 +7,13 @@ packages = [
 ]
 setup = [
   "curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.0.2/powershell-7.0.2-linux-x64.tar.gz",
-  "mkdir ~/pwsh",
-  "tar zxf /tmp/powershell.tar.gz -C ~/pwsh"
+  "mkdir usr/local/pwsh",
+  "tar zxf /tmp/powershell.tar.gz -C usr/local/pwsh",
+  "ln -s -f usr/local/pwsh/pwsh usr/bin/pwsh"
 ]
 [run]
 command = [
-  "~/pwsh/pwsh",
+  "pwsh",
   "main.ps1"
 ]
 [tests]
