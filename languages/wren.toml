@@ -21,4 +21,4 @@ command = [
 [tests]
     [tests.hello]
     code = "System.print(\"hello\")"
-    output = "hello"
+    output = "hello\n"
