@@ -1,7 +1,9 @@
 name = "powershell"
 entrypoint = "main.ps1"
 extensions = [
-  "ps1"
+  "ps1",
+  "psm1",
+  "psd1"
 ]
 packages = [
 ]
