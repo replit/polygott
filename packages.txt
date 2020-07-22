@@ -1,5 +1,6 @@
 locales
 
+jq
 unzip
 curl
 wget
@@ -11,6 +12,7 @@ build-essential
 vim
 ca-certificates
 chromium-chromedriver
+firefox-geckodriver
 man
 rlwrap
 valgrind

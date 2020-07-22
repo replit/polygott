@@ -8,7 +8,7 @@ ADD languages languages
 ADD packages.txt packages.txt
 RUN node gen/index.js
 
-ARG PRYBAR_TAG=circleci_job_68_build_79
+ARG PRYBAR_TAG=circleci_pipeline_87_build_94
 ADD fetch-prybar.sh fetch-prybar.sh
 RUN sh fetch-prybar.sh $PRYBAR_TAG
 ADD build-prybar-lang.sh build-prybar-lang.sh
@@ -46,7 +46,8 @@ ENV LANG=en_US.UTF-8
 ENV VIRTUAL_ENV="/opt/virtualenvs/python3"
 ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.8/site-packages"
-
+ENV USER=runner
 
 WORKDIR /home/runner
+
 
