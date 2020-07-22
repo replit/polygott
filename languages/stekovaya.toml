@@ -8,7 +8,7 @@ packages = [
 ]
 setup = [
   "cd /tmp",
-  "wget -q -O Stekovaya.zip https://codeload.github.com/stekovaya-org/StekovayaLang/zip/v1.1.1",
+  "wget -q -O Stekovaya.zip https://codeload.github.com/stekovaya-org/Stekovaya/zip/v1.1.1",
   "unzip -q -o Stekovaya.zip \"stkvy.exe\"",
   "rm -f Stekovaya.zip",
   "mv stkvy.exe /usr/bin/stkvy.exe"
