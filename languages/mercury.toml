@@ -1,0 +1,36 @@
+name = "mercury"
+entrypoint = "main.m"
+extensions = [
+  "m"
+]
+
+aptKeys = ["6507444DBDF4EAD2"]
+aptRepos = ["deb http://dl.mercurylang.org/deb/ stretch main"]
+packages = [
+  "mercury-recommended",
+  "mercury-examples"
+]
+
+versionCommand = [
+  "mmc",
+  "--version"
+]
+
+[compile]
+command = [
+  "mmc",
+  "--make",
+  "main"
+]
+
+[run]
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = ":- module main.\n:- interface.\n:- import_module io.\n:- pred
+  main(io::di, io::uo) is det.\n:- implementation.\nmain(!IO) :-\n io.write_string(\"hello world\n\", !IO)."
+  output = "hello world\n"
