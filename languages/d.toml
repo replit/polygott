@@ -1,0 +1,32 @@
+name = "D"
+entrypoint = "main.d"
+
+aliases = [
+  "d",
+  "dlang",
+]
+extensions = [
+   "d" 
+]
+packages = [
+  "gdc",
+  "gdb"
+]
+
+[compile]
+command = [
+  "gdc",
+  "-o",
+  "main"
+]
+
+[run]
+  command = [
+  "./main"
+  ]
+
+[tests]
+  [tests.hello]
+    code="import std.stdio: writeln;void main(){writeln(\"hello\");}"
+    output="hello\n"
+    
