@@ -1,0 +1,167 @@
+ARG LANGS=
+FROM node:8.14.0-alpine
+ARG LANGS
+RUN mkdir -p out
+ADD gen gen
+RUN cd gen && npm install
+ADD languages languages
+ADD packages.txt packages.txt
+RUN node gen/index.js
+
+ARG PRYBAR_TAG=circleci_pipeline_87_build_94
+ADD fetch-prybar.sh fetch-prybar.sh
+RUN sh fetch-prybar.sh $PRYBAR_TAG
+ADD build-prybar-lang.sh build-prybar-lang.sh
+
+FROM ubuntu:18.04 AS layer0
+
+RUN groupadd -g 1000 runner
+RUN useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
+
+RUN apt-get update \
+    && apt-get install -y wget aria2 unzip \
+    && cd /tmp \
+    && wget https://github.com/ilikenwf/apt-fast/archive/1.9.9.zip \
+    && unzip 1.9.9.zip \
+    && cp apt-fast-1.9.9/apt-fast /usr/local/sbin/ \
+    && chmod +x /usr/local/sbin/apt-fast \
+    && cp apt-fast-1.9.9/apt-fast.conf /etc \
+    && rm -rf apt-fast-1.9.9 1.9.9.zip
+
+RUN DEBIAN_FRONTEND=noninteractive apt-fast install -y --no-install-recommends \
+    locales jq unzip curl wget git subversion mercurial gnupg build-essential vim ca-certificates chromium-chromedriver firefox-geckodriver man rlwrap valgrind libc6-dbg busybox software-properties-common apt-utils dirmngr gpg-agent x11vnc xserver-xorg-video-dummy x11-xserver-utils cmake ninja-build silversearcher-ag ssh redis-tools libboost-all-dev golang-go libopus0 libopusfile0 \
+&& rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8
+
+RUN mkdir /config && chown runner.runner /config
+ENV XDG_CONFIG_HOME=/config
+
+
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 09617FD37CC06B54
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 6494C6D6997C215E
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
+RUN curl -L 'https://packagecloud.io/cs50/repo/gpgkey' | apt-key add -
+    
+RUN add-apt-repository -y 'deb https://packagecloud.io/cs50/repo/ubuntu/ trusty main'
+RUN add-apt-repository -y 'deb https://dist.crystal-lang.org/apt crystal main'
+RUN add-apt-repository -y 'deb https://download.mono-project.com/repo/ubuntu stable-bionic main'
+RUN add-apt-repository -y 'deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main'
+RUN add-apt-repository -y 'ppa:kelleyk/emacs'
+RUN add-apt-repository -y 'ppa:longsleep/golang-backports'
+RUN add-apt-repository -y 'ppa:bartbes/love-stable'
+RUN add-apt-repository -y 'ppa:avsm/ppa'
+RUN add-apt-repository -y 'ppa:deadsnakes/ppa'
+RUN add-apt-repository -y 'deb https://dl.bintray.com/nxadm/rakudo-pkg-debs bionic main'
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-fast install --download-only -y --no-install-recommends \
+        nasm \
+        clang-7 clang-format-7 libcs50 \
+        sbcl \
+        openjdk-11-jre-headless \
+        libssl-dev crystal \
+        mono-complete \
+        dart=2.6.0-1  \ 
+        emacs26 sqlite3 \
+        erlang elixir \
+        erlang-ic \
+        gforth \
+        fsharp golang-1.14-go pkg-config guile-2.2 ghc maven openjdk-11-jdk love lua5.1 liblua5.1-0 liblua5.1-bitop0 lua-socket luarocks m4 ocaml opam fpc php-cli php-pear gprolog python3.8 python3.8-dev python3.8-tk python3.8-venv libtk8.6 libevent-dev gcc tk-dev libsdl-ttf2.0-dev libportmidi-dev libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev xfonts-base xfonts-100dpi xfonts-75dpi xfonts-cyrillic fontconfig fonts-freefont-ttf libfreetype6-dev python-pip python-wheel python-dev python-tk libglfw3-dev portaudio19-dev libsdl2-image-2.0-0 rakudo-pkg r-base r-base-dev r-recommended littler r-cran-littler r-cran-stringr rake-compiler ruby-dev ruby rubygems-integration rubygems libsqlite3-dev rust-gdb libedit2 python2.7-minimal libpython2.7 libxml2 clang libicu-dev tcl8.6 tklib tcllib tcl-dev || exit 1
+
+RUN update-ca-certificates
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+RUN npm install -g yarn
+
+RUN cd /home/runner \
+    && mkdir -p /opt/homes/default \
+    && mkdir -p /opt/virtualenvs \
+    && mv -nt /opt/homes/default/ $(ls -A /home/runner)
+
+RUN curl https://xpra.org/xorg.conf > /opt/xorg.conf
+
+COPY --from=0 /gocode /gocode
+COPY --from=0 /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
+COPY --from=0 /usr/bin/prybar_assets /usr/bin/prybar_assets
+
+FROM layer0 as assembly_layer
+RUN apt-fast install -y nasm \
+&& rm -rf /var/lib/apt/lists/*
+
+FROM layer0 as ballerina_layer
+RUN wget https://product-dist.ballerina.io/downloads/0.990.3/ballerina-linux-installer-x64-0.990.3.deb \
+    && apt-get install ./ballerina-linux-installer-x64-0.990.3.deb \
+    && rm -r ballerina-linux-installer-x64-0.990.3.deb \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN if [ -n "$(ls -A /home/runner)" ]; then \
+	echo Storing home for ballerina; \
+	mkdir -p /opt/homes/ballerina; \
+	cp -r /opt/homes/default/* /opt/homes/ballerina; \
+	mv -nt /opt/homes/ballerina/ /home/runner/*; \
+	ls -A /opt/homes/ballerina; \
+fi
+
+FROM layer0 as bash_layer
+RUN cd /tmp && wget --quiet https://github.com/ewiger/beautify_bash/archive/master.tar.gz && tar xfz master.tar.gz && cp beautify_bash-master/beautify_bash.py /bin/ && chmod +x /bin/beautify_bash.py && rm -rf beautify_bash-master && rm -rf master.tar.gz
+
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN if [ -n "$(ls -A /home/runner)" ]; then \
+	echo Storing home for bash; \
+	mkdir -p /opt/homes/bash; \
+	cp -r /opt/homes/default/* /opt/homes/bash; \
+	mv -nt /opt/homes/bash/ /home/runner/*; \
+	ls -A /opt/homes/bash; \
+fi
+
+FROM layer0 as c_layer
+RUN apt-fast install -y clang-7 clang-format-7 libcs50 \
+&& rm -rf /var/lib/apt/lists/*
+
+RUN cd /tmp && wget -q https://github.com/cquery-project/cquery/releases/download/v20180302/cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && tar xf cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && cd cquery-v20180302-x86_64-unknown-linux-gnu && cp bin/cquery /bin && cp -r lib/* /lib/ && cd /tmp && rm cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && rm -r cquery-v20180302-x86_64-unknown-linux-gnu \
+    && update-alternatives --install /usr/bin/clang-format clang-format `which clang-format-7` 100 \
+    && mkdir -p /config/cquery && echo -e '%clang\n%c -std=c11\n%cpp -std=c++17\n-pthread' | tee /config/cquery/.cquery
+
+RUN if [ -n "$(ls -A /home/runner)" ]; then \
+	echo Storing home for c; \
+	mkdir -p /opt/homes/c; \
+	cp -r /opt/homes/default/* /opt/homes/c; \
+	mv -nt /opt/homes/c/ /home/runner/*; \
+	ls -A /opt/homes/c; \
+fi
+
+FROM ubuntu:18.04 AS final_layer
+COPY --from=assembly_layer / /
+COPY --from=ballerina_layer / /
+COPY --from=bash_layer / /
+COPY --from=c_layer / /
+
+# COPY --from=0 /out/phase2.sh /phase2.sh
+# RUN /bin/bash phase2.sh
+
+# RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
+# ADD polygott-gitignore /etc/.gitignore
+
+# COPY --from=0 /out/run-project /usr/bin/run-project
+# COPY --from=0 /out/run-language-server /usr/bin/run-language-server
+# COPY --from=0 /out/detect-language /usr/bin/detect-language
+# COPY --from=0 /out/self-test /usr/bin/polygott-self-test
+# COPY --from=0 /out/polygott-survey /usr/bin/polygott-survey
+# COPY --from=0 /out/polygott-lang-setup /usr/bin/polygott-lang-setup
+# COPY --from=0 /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
+
+# ENV LC_ALL=en_US.UTF-8
+# ENV LANG=en_US.UTF-8
+# ENV VIRTUAL_ENV="/opt/virtualenvs/python3"
+# ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
+# ENV PYTHONPATH="${VIRTUAL_ENV}/lib/python3.8/site-packages"
+# ENV USER=runner
+
+# WORKDIR /home/runner
+
+
