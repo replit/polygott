@@ -1,7 +1,8 @@
 name = "cpp11"
 entrypoint = "main.cpp"
 extensions = [
-  "cpp"
+  "cpp",
+  "cc",
 ]
 packages = [
   "clang-7",
