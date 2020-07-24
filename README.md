@@ -199,7 +199,7 @@ This script does not interact with language configuration at all.
 
 When a commit is merged to `master`, [CircleCI](https://circleci.com/)
 automatically builds Polygott and pushes the image to [Docker
-Hub](https://hub.docker.com/r/replco/polygott), whence our evaluation
-server pulls it.
+Hub](https://hub.docker.com/r/replco/polygott). A Repl.it
+engineer has to then push the new Polygott to production.
 
 [repl.it]: https://repl.it/
