@@ -8,10 +8,12 @@ packages = [
 ]
 setup = [
 ]
+
 [compile]
 command = [
-  "gfortran",
-  "main.f90"
+  "bash",
+  "-c",
+  "gfortran main.f90"
 ]
 
 [run]
