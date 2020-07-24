@@ -17,6 +17,7 @@ packages = [
 ]
 
 setup = [
+  "cd $HOME",
   "opam init -c ocaml-system -n --disable-sandboxing",
   "/usr/bin/build-prybar-lang.sh ocaml"
 ]
