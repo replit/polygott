@@ -1,0 +1,28 @@
+name = "stekovaya"
+entrypoint = "main.stk"
+extensions = [
+  "stk"
+]
+packages = [
+  "mono-complete"
+]
+setup = [
+  "cd /tmp",
+  "git clone https://github.com/stekovaya-org/Stekovaya.git",
+  "mv Stekovaya/stkvy.exe stkvy.exe",
+  "rm -rf Stekovaya",
+  "mv stkvy.exe /usr/bin/stkvy.exe"
+]
+
+[run]
+command = [
+  "mono",
+  "/usr/bin/stkvy.exe",
+  "main.stk"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "STR hello END MSG"
+  output = "hello\n"
