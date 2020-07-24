@@ -11,18 +11,16 @@ setup = [
 [compile]
 command = [
   "gfortran",
-  "-o",
-  "main",
   "main.f90"
 ]
 
 [run]
 command = [
-  "./main"
+  "./a.out"
 ]
 
 [tests]
 
   [tests.hello]
-  code = "program mainprog\nprint '(\"hello\")'\nend program mainprog"
+  code = "program main\nprint '(\"hello\")'\nend program main"
   output = "hello\n"
