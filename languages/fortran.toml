@@ -1,0 +1,28 @@
+name = "fortran"
+entrypoint = "main.f90"
+extensions = [
+  "f90"
+]
+packages = [
+  "gfortran"
+]
+setup = [
+]
+[compile]
+command = [
+  "gfortran",
+  "-o",
+  "main",
+  "main.f90"
+]
+
+[run]
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "program main\nprint '("hello")'\nend program main"
+  output = "hello\n"
