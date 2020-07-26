@@ -26,3 +26,4 @@ command = [
   [tests.hello]
   code = "STR hello END MSG"
   output = "hello\n"
+  skip = true
