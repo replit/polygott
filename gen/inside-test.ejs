@@ -3,6 +3,7 @@
 CODE=0
 
 <% for ( let lang of languages ) { -%>
+polygott-lang-setup -l <%= lang.id %>
 # <%= lang.name %>
 <% for ( let tname in lang.tests ) { -%>
 <% let test = lang.tests[tname]; -%>
