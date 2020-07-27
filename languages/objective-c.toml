@@ -83,6 +83,8 @@ ldconfig
 
 # Remove temporary directory
 rm -rf /tmp/gnustep-dev
+
+cd $HOME
 	'''
 ]
 
