@@ -18,13 +18,15 @@ done
 
 case "$LANGUAGE" in
 <% for ( let lang of languages ) { -%>
-<%- lang.names.map(x => `"${x}"`).join('|') %>)
-  cp -a /opt/homes/<%= lang.name %>/* /home/runner/
-<% if ( lang.runtimeSetup ) { -%>
-<% for ( let line of lang.runtimeSetup ) { -%>
-  <%- line %>
-<% } -%>
-<% } -%>
+<%-  lang.names.map(x => `"${x}"`).join('|') %>)
+<%   if ( lang.runtimeSetup ) { -%>
+<%     for ( let line of lang.runtimeSetup ) { -%>
+<%-      line %>
+<%     } -%>
+<%   } -%>
+  if [ -d /opt/homes/<%= lang.name %> ]; then
+    cp -a /opt/homes/<%= lang.name %>/* /home/runner/
+  fi
   ;;
 <% } -%>
 *)
