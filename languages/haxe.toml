@@ -31,11 +31,11 @@ setup = [
 	"make install",
 	"cd ..",
 	"rm -rf hashlink-1.11",
-	"cd $OLD_PATH"
+	"cd $OLD_PATH",
+	"haxelib setup /home/runner"
 ]
 
 runtimeSetup = [
-	"haxelib setup /home/runner",
 	"(echo -m Main && echo --interp) > /home/runner/build.hxml"
 ]
 
