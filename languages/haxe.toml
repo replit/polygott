@@ -1,0 +1,63 @@
+name = "haxe"
+entrypoint = "Main.hx"
+extensions = [
+	"hx"
+]
+
+aptKeys = []
+aptRepos = [
+	"ppa:haxe/releases"
+]
+
+packages = [
+	"haxe",
+	"libpng-dev", "libturbojpeg-dev", "libvorbis-dev", # fmt
+	"libopenal-dev",                                   # openal
+	"libsdl2-dev",                                     # sdl
+	"libmbedtls-dev",                                  # ssl
+	"libuv1-dev"                                       # uv
+]
+
+setup = [
+	# install hashlink
+	"pushd /tmp",
+	"curl --output hashlink.tar.gz -ks https://codeload.github.com/HaxeFoundation/hashlink/tar.gz/1.11",
+	"tar -xz --file=hashlink.tar.gz",
+	"rm hashlink.tar.gz",
+	"cd hashlink-1.11",
+	"sed -i '92s|.*|LFLAGS += -lm -Wl,-rpath,.:'$ORIGIN/../lib':$(PREFIX)/lib -Wl,--export-dynamic -Wl,--no-undefined|' Makefile",
+	"make all",
+	"make install",
+	"cd ..",
+	"rm -rf hashlink-1.11",
+	"popd",
+	"haxelib setup /home/runner"
+]
+
+runtimeSetup = [
+	"(echo -m Main && echo --interp) > /home/runner/build.hxml"
+]
+
+versionCommand = [
+	"haxe",
+	"--version"
+]
+
+[run]
+command = [
+	"haxe",
+	"build.hxml"
+]
+
+[tests]
+
+	[tests.hello]
+	code = "class Main {\n\tstatic function main() {\n\t\ttrace(\"Hello, world!\");\n\t}\n}"
+	output = "Main.hx:3: Hello, world!\n"
+
+[languageServer]
+command = [
+	"haxe",
+	"--server-listen",
+	"stdio"
+]
