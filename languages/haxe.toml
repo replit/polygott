@@ -20,8 +20,7 @@ packages = [
 
 setup = [
 	# install hashlink
-	"export OLD_DIR=`pwd`",
-	"cd /tmp",
+	"pushd /tmp",
 	"curl --output hashlink.tar.gz -ks https://codeload.github.com/HaxeFoundation/hashlink/tar.gz/1.11",
 	"tar -xz --file=hashlink.tar.gz",
 	"rm hashlink.tar.gz",
@@ -31,7 +30,7 @@ setup = [
 	"make install",
 	"cd ..",
 	"rm -rf hashlink-1.11",
-	"cd $OLD_PATH",
+	"popd",
 	"haxelib setup /home/runner"
 ]
 
