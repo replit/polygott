@@ -10,27 +10,35 @@ packages = [
   "openjdk-11-jre-headless"
 ]
 setup = [
-  "wget https://download.clojure.org/install/linux-install-1.10.1.478.sh",
-  "chmod +x linux-install-1.10.1.478.sh",
-  "./linux-install-1.10.1.478.sh",
-  "rm linux-install-1.10.1.478.sh",
+  "wget https://download.clojure.org/install/linux-install-1.10.1.536.sh",
+  "chmod +x linux-install-1.10.1.536.sh",
+  "./linux-install-1.10.1.536.sh",
+  "rm linux-install-1.10.1.536.sh",
 
-  # this ensures that we cache the maven deps in the image ($XDG_CONFIG_HOME)
-  # https://clojure.org/reference/deps_and_cli#_command_line_tools
-  # pretty ridiculous but what else can you do?
-  "clojure -Sverbose -Sdeps '{:mvn/local-repo \"/home/runner/.m2/repository\"}' --eval ''",
-  "mv /root/.m2/repository $XDG_CONFIG_HOME/clojure/repository && rm -rf /root/.m2",
+  # Trigger downloading of Clojure JARs now to avoid downloading them at runtime.
+  # (https://clojure.org/reference/deps_and_cli#_command_line_tools)
+  """su runner \
+    -c 'clojure \
+        -Sdeps "{:deps {org.clojure/tools.namespace {:mvn/version \\\"1.0.0\\\"}} :paths [\\\"src\\\" \\\".\\\"]}" \
+        -Sforce \
+        -Sverbose \
+        --eval ""'""",
+
   "/usr/bin/build-prybar-lang.sh clojure"
 ]
 versionCommand = [
-  "clojure",
-  "-e",
+  "clj",
+  "-Sdeps",
+  """{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."]}""",
+  "--eval",
   "(clojure-version)"
 ]
 
 [run]
 command = [
-  "clojure",
+  "clj",
+  "-Sdeps",
+  """{:deps {org.clojure/tools.namespace {:mvn/version "1.0.0"}} :paths ["src" "."]}""",
   "main.clj"
 ]
 
