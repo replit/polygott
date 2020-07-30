@@ -6,9 +6,9 @@ extensions = [
 packages = [
 ]
 setup = [
-  "wget https://product-dist.ballerina.io/downloads/0.990.3/ballerina-linux-installer-x64-0.990.3.deb",
-  "apt-get install ./ballerina-linux-installer-x64-0.990.3.deb",
-  "rm -r ballerina-linux-installer-x64-0.990.3.deb"
+  "wget https://dist.ballerina.io/downloads/1.2.6/ballerina-linux-installer-x64-1.2.6.deb",
+  "apt-get install ./ballerina-linux-installer-x64-1.2.6.deb",
+  "rm -r ballerina-linux-installer-x64-1.2.6.deb"
 ]
 
 
