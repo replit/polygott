@@ -1,0 +1,34 @@
+name = "gapl"
+entrypoint = "main.apl"
+extensions = [
+  "apl"
+]
+packages = [
+  "liblapack-dev",
+  "libreadline5-dev",
+  "gettext"
+]
+setup = [
+  "cd /tmp",
+  "wget ftp://ftp.gnu.org/gnu/apl/apl-1.8.tar.gz",
+  "tar -xvf apl-1.8.tar.gz",
+  "cd apl-1.8",
+  "./configure",
+  "make",
+  "make install",
+  "cd src",
+  "mv apl /usr/bin/apl"
+]
+
+[run]
+command = [
+  "bash",
+  "-c",
+  "apl --silent -f main.apl"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "program main\nprint '(\"hello\")'\nend program main"
+  output = "hello\n"
