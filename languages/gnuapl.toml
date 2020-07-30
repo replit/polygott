@@ -4,8 +4,7 @@ extensions = [
   "apl"
 ]
 packages = [
-  "lapack",
-  "readline",
+  "liblapack-dev",
   "gettext"
 ]
 setup = [
