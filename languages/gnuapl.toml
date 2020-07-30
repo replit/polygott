@@ -30,4 +30,4 @@ command = [
 
   [tests.hello]
   code = "'hello'"
-  output = "hello\n"
+  output = "hello\n\n"
