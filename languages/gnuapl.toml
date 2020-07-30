@@ -23,11 +23,11 @@ setup = [
 command = [
   "bash",
   "-c",
-  "apl --silent -f main.apl"
+  "apl --silent --noColor --noCIN --OFF -f main.apl"
 ]
 
 [tests]
 
   [tests.hello]
-  code = "program main\nprint '(\"hello\")'\nend program main"
+  code = "'hello'"
   output = "hello\n"
