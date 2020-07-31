@@ -15,7 +15,7 @@ packages = [
 
 setup = [
   "pushd /tmp",
-  "wget -O gforth-0.7.9.tar.xz http://www.complang.tuwien.ac.at/forth/gforth/Snapshots/current/gforth.tar.xz",
+  "wget -O gforth-0.7.9.tar.xz http://www.complang.tuwien.ac.at/forth/gforth/Snapshots/0.7.9_20200716/gforth-0.7.9_20200716.tar.xz",
   "tar -Jxf gforth-0.7.9.tar.xz",
   "rm gforth-0.7.9.tar.xz",
   "mv gforth-0.7.9_* gforth-0.7.9",
