@@ -29,5 +29,5 @@ command = [
 [tests]
 
   [tests.hello]
-  code = "(format t \"hello world~%\")"
+  code = "(format t \"hello world\")"
   output = "hello world\n"
