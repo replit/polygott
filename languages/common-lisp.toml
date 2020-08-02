@@ -23,7 +23,7 @@ versionCommand = [
 command = [
   "sbcl",
   "--load",
-  "./main"
+  "./main.lisp"
 ]
 
 [tests]
