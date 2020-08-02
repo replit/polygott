@@ -1,0 +1,33 @@
+name = "common-lisp"
+entrypoint = "main.lisp"
+extensions = [
+  "asd",
+  "lisp"
+]
+aliases = ["cl", "lisp"]
+
+packages = [
+  "cl-quicklisp",
+  "sbcl"
+]
+setup = [
+  "sbcl --non-interactive --load /usr/share/common-lisp/source/quicklisp/quicklisp.lisp --eval '(quicklisp-quickstart:install)' --eval '(ql-util:without-prompting (ql:add-to-init-file))'"
+]
+
+versionCommand = [
+  "sbcl",
+  "--version"
+]
+
+[run]
+command = [
+  "sbcl",
+  "--load",
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "(format t \"hello world~%\")"
+  output = "hello world\n"
