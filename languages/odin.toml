@@ -1,0 +1,33 @@
+name = "odin"
+entrypoint = "main.odin"
+extensions = [
+  "odin"
+]
+packages = [
+  "llvm",
+  "clang"
+]
+setup = [
+  "cd /tmp",
+  "git clone https://github.com/odin-lang/odin",
+  "cd odin",
+  "make",
+  "ln -s /tmp/odin/odin /usr/local/bin/odin"
+]
+versionCommand = [
+  "odin",
+  "version"
+]
+
+[run]
+command = [
+  "odin",
+  "run",
+  "."
+]
+
+[tests]
+
+  [tests.hello]
+  code = "package main\nimport \"core:fmt\"\nmain::proc(){fmt.println(\"Hello, World!\");}"
+  output = "Hello, World!\n"
