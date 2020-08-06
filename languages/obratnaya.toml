@@ -28,5 +28,5 @@ command = [
 [tests]
 
   [tests.hello]
-  code = ".data:\n    .text hello\n.main:\n    mov 0,@\n    msg @\n    cr\n    lf"
+  code = ".data:\n    .text hello\n.main:\n    mov 0,@\n    msg @\n    cr\n    lf\n    ret"
   output = "hello\r\n"
