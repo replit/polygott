@@ -4,15 +4,16 @@ extensions = [
   "odin"
 ]
 packages = [
-  "llvm",
-  "clang"
+  "llvm-10",
+  "clang-10"
 ]
 setup = [
-  "cd /tmp",
+  "cd /usr/local/share",
   "git clone https://github.com/odin-lang/odin",
   "cd odin",
   "make",
-  "ln -s /tmp/odin/odin /usr/local/bin/odin"
+  "find . ! -name bin ! -name core -name shared -name odin -maxdepth 1 -type f -delete",
+  "ln -s /use/local/share/odin/odin /usr/local/bin/odin"
 ]
 versionCommand = [
   "odin",
