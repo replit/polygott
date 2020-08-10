@@ -16,7 +16,9 @@ setup = [
   "make",
   "make install",
   "cd src",
-  "mv apl /usr/bin/apl"
+  "mv apl /usr/bin/apl",
+  "cd ../..",
+  "rm -rf /tmp/*"
 ]
 
 [run]
