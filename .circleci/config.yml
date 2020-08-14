@@ -29,6 +29,8 @@ jobs:
             echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
             docker tag polygott:latest replco/polygott:latest
             docker push replco/polygott:latest
+            docker tag polygott:latest "replco/polygott:${CIRCLE_SHA1}"
+            docker push "replco/polygott:${CIRCLE_SHA1}"
 workflows:
   ci:
     jobs:

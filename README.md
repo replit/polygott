@@ -10,7 +10,8 @@ We previously used a separate Docker image for each language, but
 concluded that it was both simpler and more efficient to use a single
 image which contains all supported languages simultaneously. The code
 necessary to build this combined image, **Polygott**, resides in this
-repository.
+repository.  If you're lost and need some reference, we have 
+[a blog](https://blog.repl.it/elisp) where we added elisp.
 
 ## Build and run
 
@@ -179,7 +180,7 @@ nothing.
 Execute the `compile` and `run` commands on the `entrypoint` file in
 the current directory. `LANG` defaults to the output of
 `detect-language`. If `-s` is passed, then the `entrypoint` file is
-written with the contents of stdin. If `-s` is passed, then some
+written with the contents of stdin. If `-b` is passed, then some
 special logic is used instead of the `compile` and `run` commands;
 [see the source for details](gen/run-project.ejs).
 
@@ -198,7 +199,7 @@ This script does not interact with language configuration at all.
 
 When a commit is merged to `master`, [CircleCI](https://circleci.com/)
 automatically builds Polygott and pushes the image to [Docker
-Hub](https://hub.docker.com/r/replco/polygott), whence our evaluation
-server pulls it.
+Hub](https://hub.docker.com/r/replco/polygott). A Repl.it
+engineer has to then push the new Polygott to production.
 
 [repl.it]: https://repl.it/
