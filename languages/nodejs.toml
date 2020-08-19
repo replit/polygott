@@ -6,7 +6,12 @@ extensions = [
 packages = [
 ]
 setup = [
-  "npm install -g ffmpeg-static jest@23.1.0 prettier@1.13.4 babylon@6.15 babel-traverse@6.21 walker@1.0.7",
+  "npm install -g jest@23.1.0 prettier@1.13.4 babylon@6.15 babel-traverse@6.21 walker@1.0.7",
+  "cd /usr/lib/node_modules",
+  "mkdir ffmpeg-static",
+  "cd ffmpeg-static",
+  "wget https://github.com/eugeneware/ffmpeg-static/releases/download/b4.3.1/linux-x64",
+  "mv linux-x64 ffmpeg",
   "/usr/bin/build-prybar-lang.sh nodejs"
 ]
 
