@@ -12,6 +12,10 @@ setup = [
   "cd ffmpeg-static",
   "wget https://github.com/eugeneware/ffmpeg-static/releases/download/b4.3.1/linux-x64",
   "mv linux-x64 ffmpeg",
+  "wget https://cdn.jsdelivr.net/npm/ffmpeg-static@4.2.7/install.js",
+  "wget https://cdn.jsdelivr.net/npm/ffmpeg-static@4.2.7/index.js",
+  "wget https://cdn.jsdelivr.net/npm/ffmpeg-static@4.2.7/package.json",
+  "npm i",
   "/usr/bin/build-prybar-lang.sh nodejs"
 ]
 
