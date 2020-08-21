@@ -5,7 +5,7 @@ jobs:
       - image: docker:18.09.3
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
           version: 18.09.3
       - run: apk add --no-cache --no-progress make git
       - run: make test
