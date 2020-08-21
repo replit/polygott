@@ -2,26 +2,29 @@ version: 2.1
 jobs:
   build_and_test:
     docker:
-      - image: docker:18.09
+      - image: docker:18.09.3
     steps:
       - checkout
       - setup_remote_docker
+          version: 18.09.3
       - run: apk add --no-cache --no-progress make git
       - run: make test
   build_and_test_changed:
     docker:
-      - image: docker:18.09
+      - image: docker:18.09.3
     steps:
       - checkout
       - setup_remote_docker
+          version: 18.09.3
       - run: apk add --no-cache --no-progress make git
       - run: make changed-test
   build_test_and_deploy:
     docker:
-      - image: docker:18.09
+      - image: docker:18.09.3
     steps:
       - checkout
       - setup_remote_docker
+          version: 18.09.3
       - run: apk add --no-cache --no-progress make git
       - run: make test
       - deploy:
