@@ -17,6 +17,7 @@ man
 rlwrap
 valgrind
 libc6-dbg
+strace
 
 busybox
 software-properties-common
