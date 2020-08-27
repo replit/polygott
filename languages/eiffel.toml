@@ -10,13 +10,13 @@ setup = [
 [compile]
 command = [
   "ec",
-  "-clean"
+  "-clean",
   "-finalize"
 ]
 
 [run]
 command = [
-  ./example
+  "./example"
 ]
 
 [tests]
