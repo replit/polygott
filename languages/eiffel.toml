@@ -1,0 +1,42 @@
+name = "Eiffel"
+entrypoint = "APPLICATION.e"
+extensions = [
+  "e"
+ ]
+  
+setup = [
+]
+
+[compile]
+command = [
+  "ec",
+  "-clean"
+  "-finalize"
+]
+
+[run]
+command = [
+  ./example
+]
+
+[tests]
+
+  [tests.hello]
+  code = """
+    class APPLICATION
+
+    create
+      make
+
+    feature {NONE} -- Initialization
+
+      make
+        do
+          print ("Hello World")
+        end
+  """
+  output = "Hello World"
+
+[languageServer]
+command = [
+]
