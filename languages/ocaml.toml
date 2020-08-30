@@ -26,11 +26,14 @@ setup = [
 
 [compile]
 command = [
+  "CAML_LD_LIBRARY_PATH=/opt/homes/ocaml/.opam/4.10.0/lib/stublibs:/opt/homes/ocaml/.opam/4.10.0/lib/ocaml/stublibs:/opt/homes/ocaml/.opam/4.10.0/lib/ocaml",
+  "OCAML_TOPLEVEL_PATH=/opt/homes/ocaml/.opam/4.10.0/lib/toplevel",
+  "PATH=/opt/homes/ocaml/.opam/4.10.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
   "/opt/homes/ocaml/.opam/4.10.0/bin/ocamlfind",
   "ocamlopt",
   "-linkpkg",
   "-package",
-  "base,containers,yojson,zarith",
+  "base,containers",
   "-o",
   "main",
 ]
