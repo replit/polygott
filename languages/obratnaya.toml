@@ -13,8 +13,9 @@ packages = [
 setup = [
   "cd /tmp",
   "wget https://repl.it/@obratnaya/Obratnaya.zip",
-  "unzip Obratnaya.zip \"obrya.exe\"",
+  "unzip Obratnaya.zip \"obrya.exe\" \"lib/*\"",
   "mv obrya.exe /usr/bin/obrya.exe",
+  "mv lib/* /usr/bin/",
   "rm -rf Obratnaya.zip"
 ]
 
