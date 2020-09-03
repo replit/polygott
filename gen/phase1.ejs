@@ -23,6 +23,8 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- pa
 # Build a newer version of libvncserver because the library distributed with
 # apt is broken
 git clone https://github.com/LibVNC/libvncserver.git /tmp/libvncserver
+cd /tmp/libvncserver
+git checkout 87c52ee0551b7c4e76855d270d475b9e3039fe08
 mkdir -p /tmp/libvncserver/build
 cd /tmp/libvncserver/build
 cmake ..
