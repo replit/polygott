@@ -1,18 +1,19 @@
 #!/bin/bash
 
 unset LD_PRELOAD
-log="/tmp/polygott-x11-vnc.log"
+log="/tmp/x11"
+mkdir -p $log
 
 echo -n "."
 if [ ! -f /tmp/.X11-unix/ ]; then
-	nohup Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile /home/runner/.x.log -config /opt/xorg.conf :0 >> "$log" 2>&1 &
+	nohup Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile "$log/xorg.log" -config /opt/xorg.conf :0 >> "$log/xorg_nohup.log" 2>&1 &
 fi
 
 export DISPLAY=:0
 
 echo -n "."
 TRIES=0
-while ! xset q >> "$log" 2>&1 ; do
+while ! xset q >> "$log/xset.log" 2>&1 ; do
     echo -n "."
     sleep 0.50s
     TRIES=$(( TRIES + 1 ))
@@ -23,7 +24,7 @@ while ! xset q >> "$log" 2>&1 ; do
 done
 
 echo -n "."
-nohup x11vnc -display $DISPLAY -forever -nopw -shared -bg -reopen -quiet -N -noxkb -oa /home/runner/.vnc.log >> "$log" 2>&1
+nohup x11vnc -display $DISPLAY -forever -nopw -shared -bg -reopen -N -noxkb -oa "$log/x11vnc.log" >> "$log/x11vnc_nohup.log" 2>&1
 setxkbmap -display :0 -keycodes xfree86 -layout us
 xrandr -s ${RESOLUTION:-800x600}
 echo -n "."
