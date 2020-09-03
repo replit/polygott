@@ -20,6 +20,15 @@ apt-get update
 
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- packages.join(' ') %> || exit 1
 
+# Build a newer version of libvncserver because the library distributed with
+# apt is broken
+git clone https://github.com/LibVNC/libvncserver.git /tmp/libvncserver
+mkdir -p /tmp/libvncserver/build
+cd /tmp/libvncserver/build
+cmake ..
+make -j install
+ln -s /usr/local/lib/libvncserver.so /usr/local/lib/libvncserver1.so
+
 update-ca-certificates
 
 curl -sL https://deb.nodesource.com/setup_10.x | bash -
