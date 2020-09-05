@@ -43,3 +43,5 @@ libopus0
 libopusfile0
 
 ffmpeg
+
+genisoimage
