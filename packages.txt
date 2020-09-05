@@ -45,3 +45,4 @@ libopusfile0
 ffmpeg
 
 genisoimage
+qemu
