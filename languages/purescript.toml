@@ -1,0 +1,38 @@
+name = "purescript"
+entrypoint = "src/Main.purs"
+extensions = [
+  "purs"
+]
+packages=["netbase"]
+setup = [
+  "yarn global add purescript@0.13.8 spago@0.16.0"
+]
+
+versionCommand = [
+  "purs",
+  "--version"
+]
+
+runtimeSetup = [
+  "spago -q init"
+]
+
+[compile]
+command = [
+  "spago",
+  "-q",
+  "build",
+  "-p"
+]
+
+[run]
+command = [
+  "spago",
+  "-q",
+  "run"
+]
+
+[tests]
+  [tests.hello]
+  code = "module Main where\nimport Prelude (Unit)\nimport Effect (Effect)\nimport Effect.Class.Console (log)\nmain :: Effect Unit\nmain = log \"Hello, World\"\n"
+  output = "Hello, World\n"
