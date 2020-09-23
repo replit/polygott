@@ -1,22 +1,51 @@
-name = "Eiffel"
-entrypoint = "APPLICATION.e"
+name = "eiffel"
+entrypoint = "application.e"
 extensions = [
   "e"
  ]
+ 
+packages = [
+  "pkg-config"
+]
   
+  
+#setup = [
+#	"curl -sSL http://downloads.sourceforge.net/eiffelstudio/Eiffel_20.05_rev_104521-linux-x86-64.tar.bz2 | tar -x -p -s --bzip2",
+#	"export current_dir=$PWD ; echo current_dir=$current_dir ; cd ..",
+#	"export ISE_EIFFEL=/Eiffel_20.05",
+#	"export ISE_PLATFORM=linux-x86-64",
+#	"export PATH=$PATH:$ISE_EIFFEL/studio/spec/$ISE_PLATFORM/bin:$PATH:$ISE_EIFFEL/tools/spec/$ISE_PLATFORM/bin"
+#]
+
 setup = [
+        "cd /opt/",
+	"curl -fsSL https://www.eiffel.org/setup/install.sh -o eiffelstudio.sh",
+	"bash eiffelstudio.sh > eiffel.rc",
+	"echo 'export ISE_EIFFEL=/opt/Eiffel_20.05' >> /opt/homes/default/.bashrc",
+	"echo 'export ISE_PLATFORM=linux-x86-64' >> /opt/homes/default/.bashrc",
+	"echo 'export PATH=$PATH:$ISE_EIFFEL/studio/spec/$ISE_PLATFORM/bin:$PATH:$ISE_EIFFEL/tools/spec/$ISE_PLATFORM/bin' >> /opt/homes/default/.bashrc"
+]
+
+runtimeSetup = [
+	"source /home/runner/.bashrc"
+]
+
+versionCommand = [
+	"ecb",
+	"-version"
 ]
 
 [compile]
 command = [
-  "ec",
+  "ecb",
+  "application.e",
   "-clean",
   "-finalize"
 ]
 
 [run]
 command = [
-  "./example"
+  "./EIFGENs/application/F_code/application"
 ]
 
 [tests]
@@ -37,6 +66,3 @@ command = [
   """
   output = "Hello World"
 
-[languageServer]
-command = [
-]
