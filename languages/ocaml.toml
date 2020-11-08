@@ -21,16 +21,10 @@ setup = [
   "/usr/bin/build-prybar-lang.sh ocaml"
 ]
 
-[compile]
-command = [
-  "ocamlc",
-  "-o",
-  "main"
-]
-
 [run]
 command = [
-  "./main"
+  "ocaml",
+  "main.ml"
 ]
 
 [tests]
