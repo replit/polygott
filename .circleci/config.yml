@@ -54,6 +54,10 @@ workflows:
           filters:
             branches:
               ignore: master
+      - build_and_test_popular:
+          filters:
+            branches:
+              ignore: master
       - build_test_and_deploy:
           context: Docker Hub
           filters:
