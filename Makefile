@@ -2,6 +2,14 @@
 # 'make help' target below.
 
 # Default task:
+.PHONY: popular
+popular: ## Build Docker image with popular languages
+	docker build -t populargott:latest --build-arg LANGS="python3 java cpp c nodejs bash" .
+
+.PHONY: populartest
+populartest: popular ## Build and test popular languages
+	docker run populargott:latest bash -c polygott-self-test
+
 .PHONY: image
 image: ## Build Docker image with all languages
 	docker build -t polygott:latest .

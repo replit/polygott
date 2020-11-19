@@ -18,6 +18,15 @@ jobs:
           version: 18.09.3
       - run: apk add --no-cache --no-progress make git
       - run: make changed-test
+  build_and_test_popular:
+    docker:
+      - image: docker:18.09
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 18.09.3
+      - run: apk add --no-cache --no-progress make git
+      - run: make populartest
   build_test_and_deploy:
     docker:
       - image: docker:18.09
