@@ -3,14 +3,12 @@ entrypoint = "main.py"
 extensions = [
   "py"
 ]
-aptRepos = [
-  "ppa:deadsnakes/ppa"
-]
 packages = [
   "python3.8",
   "python3.8-dev",
   "python3.8-tk",
   "python3.8-venv",
+  "python3-pip",
   "libtk8.6",
   "libevent-dev",
   "gcc",
@@ -19,15 +17,10 @@ packages = [
 popularity = 5.0
 setup = [
   "ln -s /usr/bin/python3.8 /usr/local/bin/python3",
-  "curl https://bootstrap.pypa.io/get-pip.py | python3",
   "python3 -m venv /opt/virtualenvs/python3",
   "/opt/virtualenvs/python3/bin/pip3 install --disable-pip-version-check pipreqs-amasad==0.4.10 pylint==1.6.4 jedi==0.13.2 mccabe==0.6.1 pycodestyle==2.4.0 pyflakes==2.1.1 python-language-server==0.21.5 rope==0.11.0 yapf==0.25.0 dephell==0.7.7 poetry==0.12.16",
   "/opt/virtualenvs/python3/bin/pip3 install poetry==1.0.5 bpython matplotlib nltk numpy ptpython requests scipy replit",
-  "/opt/virtualenvs/python3/bin/pip3 install cs50",
-  # lots of people use tensorflow, but it's too big to install in a repl.it workspace directory
-  # so we pre-install it here. we chose this wheel based on https://www.tensorflow.org/install/pip#virtual-environment-install
-  "/opt/virtualenvs/python3/bin/pip3 install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.2.0-cp38-cp38-manylinux2010_x86_64.whl",
-  "/usr/bin/build-prybar-lang.sh python3",
+  "/opt/virtualenvs/python3/bin/pip3 install cs50"
 ]
 
 [run]

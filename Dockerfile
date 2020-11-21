@@ -8,12 +8,12 @@ ADD languages languages
 ADD packages.txt packages.txt
 RUN node gen/index.js
 
-ARG PRYBAR_TAG=circleci_pipeline_87_build_94
-ADD fetch-prybar.sh fetch-prybar.sh
-RUN sh fetch-prybar.sh $PRYBAR_TAG
-ADD build-prybar-lang.sh build-prybar-lang.sh
+# ARG PRYBAR_TAG=circleci_pipeline_87_build_94
+# ADD fetch-prybar.sh fetch-prybar.sh
+# RUN sh fetch-prybar.sh $PRYBAR_TAG
+# ADD build-prybar-lang.sh build-prybar-lang.sh
 
-FROM ubuntu:18.04
+FROM ubuntu:20.10
 
 COPY --from=0 /out/phase0.sh /phase0.sh
 RUN /bin/bash phase0.sh
@@ -23,9 +23,9 @@ ENV XDG_CONFIG_HOME=/config
 COPY --from=0 /out/phase1.sh /phase1.sh
 RUN /bin/bash phase1.sh
 
-COPY --from=0 /gocode /gocode
-COPY --from=0 /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
-COPY --from=0 /usr/bin/prybar_assets /usr/bin/prybar_assets
+# COPY --from=0 /gocode /gocode
+# COPY --from=0 /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
+# COPY --from=0 /usr/bin/prybar_assets /usr/bin/prybar_assets
 
 COPY --from=0 /out/phase2.sh /phase2.sh
 RUN /bin/bash phase2.sh
