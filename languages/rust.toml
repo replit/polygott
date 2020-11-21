@@ -7,9 +7,9 @@ packages = [
   "rust-gdb"
 ]
 setup = [
-  "curl --proto '=https' --tlsv1.2 -Sf https://static.rust-lang.org/dist/rust-1.44.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp",
-  "/tmp/rust-1.44.0-x86_64-unknown-linux-gnu/install.sh",
-  "rm -rf /tmp/rust-1.44.0-x86_64-unknown-linux-gnu"
+  "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | CARGO_HOME=/opt/rust RUSTUP_HOME=/opt/rust sh -s -- -y --default-toolchain 1.49.0 --component rust-src",
+  "curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o /usr/local/bin/rust-analyzer",
+  "chmod +x /usr/local/bin/rust-analyzer",
 ]
 
 [compile]
@@ -22,6 +22,11 @@ command = [
 [run]
 command = [
   "./main"
+]
+
+[languageServer]
+command = [
+  "rust-analyzer"
 ]
 
 [tests]

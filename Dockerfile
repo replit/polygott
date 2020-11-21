@@ -62,11 +62,13 @@ ENV \
         LC_ALL=en_US.UTF-8 \
         LD_LIBRARY_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/home/runner/.apt/usr/lib:${LD_LIBRARY_PATH}" \
         LIBRARY_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/home/runner/.apt/usr/lib:${LIBRARY_PATH}" \
-        PATH="/usr/local/go/bin:/opt/virtualenvs/python3/bin:/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:/home/runner/.apt/usr/bin:${PATH}" \
+        PATH="/opt/rust/bin:/usr/local/go/bin:/opt/virtualenvs/python3/bin:/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:/home/runner/.apt/usr/bin:${PATH}" \
         PKG_CONFIG_PATH="${HOME}/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:${HOME}/.apt/usr/lib/i386-linux-gnu/pkgconfig:${HOME}/.apt/usr/lib/pkgconfig:${PKG_CONFIG_PATH}" \
         PYTHONPATH="/opt/virtualenvs/python3/lib/python3.8/site-packages" \
         USER=runner \
-        VIRTUAL_ENV="/opt/virtualenvs/python3"
+        VIRTUAL_ENV="/opt/virtualenvs/python3" \
+        CARGO_HOME="/opt/rust" \
+        RUSTUP_HOME="/opt/rust"
 
 COPY run_dir /run_dir/
 
