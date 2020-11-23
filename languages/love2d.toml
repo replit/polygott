@@ -3,9 +3,6 @@ entrypoint = "main.lua"
 extensions = [
   "lua"
 ]
-aptRepos = [
-  "ppa:bartbes/love-stable"
-]
 packages = [
   "love"
 ]

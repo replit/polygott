@@ -4,12 +4,6 @@ extensions = [
   "ml"
 ]
 
-aptKeys = []
-aptRepos = [
-  "ppa:avsm/ppa"
-]
-
-
 packages = [
   "m4",
   "ocaml",

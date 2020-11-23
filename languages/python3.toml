@@ -3,9 +3,6 @@ entrypoint = "main.py"
 extensions = [
   "py"
 ]
-aptRepos = [
-  "ppa:deadsnakes/ppa"
-]
 packages = [
   "python3.8",
   "python3.8-dev",

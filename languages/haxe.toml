@@ -4,11 +4,6 @@ extensions = [
 	"hx"
 ]
 
-aptKeys = []
-aptRepos = [
-	"ppa:haxe/releases"
-]
-
 packages = [
 	"haxe",
 	"libpng-dev", "libturbojpeg-dev", "libvorbis-dev", # fmt

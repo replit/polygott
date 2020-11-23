@@ -13,7 +13,7 @@ ADD fetch-prybar.sh fetch-prybar.sh
 RUN sh fetch-prybar.sh $PRYBAR_TAG
 ADD build-prybar-lang.sh build-prybar-lang.sh
 
-FROM ubuntu:18.04
+FROM ubuntu:20.10
 
 COPY --from=0 /out/phase0.sh /phase0.sh
 RUN /bin/bash phase0.sh
