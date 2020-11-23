@@ -5,6 +5,7 @@ shopt -s dotglob
 export HOME=/home/runner
 
 ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin
+echo "`date` phase2 $( df | grep '/$' )" >> /root/df.log
 
 <% for ( let lang of languages ) { -%>
 <% if ( lang.setup ) { -%>
@@ -23,6 +24,7 @@ if [ -n "$(ls -A /home/runner)" ]; then
 	ls -A /opt/homes/<%= lang.name %>
 fi
 <% } -%>
+echo "`date` <%= lang.name %> $( df | grep '/$' )" >> /root/df.log
 <% } -%>
 
 chown runner:runner -R /opt/homes
