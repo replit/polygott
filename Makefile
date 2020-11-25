@@ -4,9 +4,15 @@
 # Default task:
 .PHONY: image
 image: ## Build Docker image with all languages
+	mkdir -p out
+	cd gen && npm install
+	node gen/index.js
 	DOCKER_BUILDKIT=1 docker build --progress=plain -t polygott:latest .
 
 image-%: ## Build Docker image with single language LANG
+	mkdir -p out
+	cd gen && npm install
+	node gen/index.js
 	DOCKER_BUILDKIT=1 docker build --progress=plain -t polygott-$(*) --build-arg LANGS=$(*) .
 
 .PHONY: run

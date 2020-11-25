@@ -1,12 +1,7 @@
 ARG LANGS=
 FROM node:8.14.0-alpine
 ARG LANGS
-RUN mkdir -p out
-ADD gen gen
-RUN cd gen && npm install
-ADD languages languages
-ADD packages.txt packages.txt
-RUN node gen/index.js
+ADD out out
 
 ARG PRYBAR_TAG=circleci_pipeline_87_build_94
 ADD fetch-prybar.sh fetch-prybar.sh
