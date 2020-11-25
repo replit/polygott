@@ -7,13 +7,15 @@ image: ## Build Docker image with all languages
 	mkdir -p out
 	cd gen && npm install
 	node gen/index.js
-	DOCKER_BUILDKIT=1 docker build --progress=plain -t polygott:latest .
+	cp fetch-prybar.sh build-prybar-lang.sh polygott-gitignore out/
+	DOCKER_BUILDKIT=1 docker build --progress=plain -t polygott:latest ./out
 
 image-%: ## Build Docker image with single language LANG
 	mkdir -p out
 	cd gen && npm install
 	LANGS=$(*) node gen/index.js
-	DOCKER_BUILDKIT=1 docker build --progress=plain -t polygott-$(*) --build-arg LANGS=$(*) .
+	cp fetch-prybar.sh build-prybar-lang.sh polygott-gitignore out/
+	DOCKER_BUILDKIT=1 docker build --progress=plain -t polygott-$(*) --build-arg LANGS=$(*) ./out
 
 .PHONY: run
 run: image ## Build and run image with all languages

@@ -172,6 +172,7 @@ let objects = {
 	"polygott-survey": "versions.ejs",
 	"polygott-lang-setup": "lang-setup.ejs",
 	"polygott-x11-vnc": "x11-vnc.ejs",
+	"Dockerfile": "Dockerfile.ejs",
 };
 
 for (let target in objects) {
