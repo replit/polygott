@@ -4,10 +4,10 @@
 # Default task:
 .PHONY: image
 image: ## Build Docker image with all languages
-	docker build -t polygott:latest .
+	DOCKER_BUILDKIT=1 docker build --progress=plain -t polygott:latest .
 
 image-%: ## Build Docker image with single language LANG
-	docker build -t polygott-$(*) --build-arg LANGS=$(*) .
+	DOCKER_BUILDKIT=1 docker build --progress=plain -t polygott-$(*) --build-arg LANGS=$(*) .
 
 .PHONY: run
 run: image ## Build and run image with all languages
