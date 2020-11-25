@@ -186,6 +186,23 @@ for (let target in objects) {
 	fs.chmodSync(path.join(dest, target), 0o755);
 }
 
+for (let language of languages) {
+	const target = `phase2-${language.id}.sh`;
+	const justLanguage = [language];
+	const emptyCtx = {};
+	const languageCtx = Object.assign(emptyCtx, ctx);
+	languageCtx['languages'] = justLanguage;
+	let tp = path.join(dest, target);
+	fs.writeFileSync(
+		tp,
+		ejs.compile(fs.readFileSync(path.join(__dirname, "phase2.ejs"), "utf8"))(
+			ctx
+		),
+		"utf8"
+	);
+	fs.chmodSync(path.join(dest, target), 0o755);
+}
+
 // Local Variables:
 // indent-tabs-mode: t
 // js-indent-level: 8
