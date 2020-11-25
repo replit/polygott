@@ -9,8 +9,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git curl bash
-      - node/install
+      - run: apk add --no-cache --no-progress make git nodejs npm
       - run: make test
   build_and_test_changed:
     docker:
@@ -19,8 +18,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git curl bash
-      - node/install
+      - run: apk add --no-cache --no-progress make git nodejs npm
       - run: make changed-test
   build_test_and_deploy:
     docker:
@@ -29,8 +27,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git curl bash
-      - node/install
+      - run: apk add --no-cache --no-progress make git nodejs npm
       - run: make test
       - deploy:
           command: |
