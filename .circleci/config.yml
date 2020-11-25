@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  node: circleci/node@4.1.0
 jobs:
   build_and_test:
     docker:
@@ -7,7 +9,8 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git node
+      - run: apk add --no-cache --no-progress make git
+      - node/install
       - run: make test
   build_and_test_changed:
     docker:
@@ -16,7 +19,8 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git node
+      - run: apk add --no-cache --no-progress make git
+      - node/install
       - run: make changed-test
   build_test_and_deploy:
     docker:
@@ -25,7 +29,8 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git node
+      - run: apk add --no-cache --no-progress make git
+      - node/install
       - run: make test
       - deploy:
           command: |
