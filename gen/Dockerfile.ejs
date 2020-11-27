@@ -22,9 +22,11 @@ COPY --from=0 /gocode /gocode
 COPY --from=0 /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
 COPY --from=0 /usr/bin/prybar_assets /usr/bin/prybar_assets
 
+RUN ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin
+
 <% for ( let lang of languages ) { -%>
-COPY --from=0 /out/phase2-<%= lang.name %>.sh /phase2-<%= lang.name %>.sh
-RUN /bin/bash phase2-<%= lang.name %>.sh
+COPY --from=0 /out/phase2-<%= lang.id %>.sh /phase2-<%= lang.id %>.sh
+RUN /bin/bash phase2-<%= lang.id %>.sh
 <% } -%>
 
 RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig

@@ -165,7 +165,7 @@ let objects = {
 	"self-test": "inside-test.ejs",
 	"phase0.sh": "phase0.ejs",
 	"phase1.sh": "phase1.ejs",
-	"phase2.sh": "phase2.ejs",
+	// "phase2.sh": "phase2.ejs",
 	"run-project": "run-project.ejs",
 	"run-language-server": "run-language-server.ejs",
 	"detect-language": "detect-language.ejs",
@@ -197,7 +197,7 @@ for (let language of languages) {
 	fs.writeFileSync(
 		tp,
 		ejs.compile(fs.readFileSync(path.join(__dirname, "phase2.ejs"), "utf8"))(
-			ctx
+			languageCtx
 		),
 		"utf8"
 	);
