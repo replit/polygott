@@ -29,6 +29,14 @@ COPY --from=0 /out/phase2-<%= lang.id %>.sh /phase2-<%= lang.id %>.sh
 RUN /bin/bash phase2-<%= lang.id %>.sh
 <% } -%>
 
+RUN chown runner:runner -R /opt/homes
+RUN cp -r /opt/homes/default/* /home/runner
+RUN chown runner:runner -R /home/runner
+RUN chown runner:runner -R /config
+RUN chown runner:runner -R /opt/virtualenvs
+
+RUN rm -rf /var/lib/apt/lists/*
+
 RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
 ADD polygott-gitignore /etc/.gitignore
 

@@ -22,11 +22,3 @@ if [ -n "$(ls -A /home/runner)" ]; then
 fi
 <% } -%>
 <% } -%>
-
-chown runner:runner -R /opt/homes
-cp -r /opt/homes/default/* /home/runner
-chown runner:runner -R /home/runner
-chown runner:runner -R /config
-chown runner:runner -R /opt/virtualenvs
-
-rm -rf /var/lib/apt/lists/*
