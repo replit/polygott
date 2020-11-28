@@ -1,10 +1,9 @@
 version: 2.1
-orbs:
-  node: circleci/node@4.1.0
 jobs:
   build_and_test:
     docker:
       - image: docker:18.09
+    resource_class: xlarge
     steps:
       - checkout
       - setup_remote_docker:
