@@ -3,7 +3,6 @@ jobs:
   build_and_test:
     docker:
       - image: docker:18.09
-    resource_class: xlarge
     steps:
       - checkout
       - setup_remote_docker:
