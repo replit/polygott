@@ -30,9 +30,7 @@ RUN /bin/bash phase2-<%= lang.id %>.sh
 <% } -%>
 
 RUN chown runner:runner -R /opt/homes
-RUN if compgen -G "/opt/homes/default/*" > /dev/null; then \
-		cp -r /opt/homes/default/* /home/runner \
-	fi
+RUN if compgen -G "/opt/homes/default/*" > /dev/null; then cp -r /opt/homes/default/* /home/runner;	fi
 RUN chown runner:runner -R /home/runner
 RUN chown runner:runner -R /config
 RUN chown runner:runner -R /opt/virtualenvs
