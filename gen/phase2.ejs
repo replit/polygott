@@ -16,7 +16,9 @@ echo Setup <%= lang.id %>
 if [ -n "$(ls -A /home/runner)" ]; then
 	echo Storing home for <%= lang.id %>
 	mkdir -p /opt/homes/<%= lang.id %>
-	cp -r /opt/homes/default/* /opt/homes/<%= lang.id %>
+	if compgen -G "/opt/homes/default/*" > /dev/null; then
+		cp -r /opt/homes/default/* /opt/homes/<%= lang.id %>
+	fi
 	mv -nt /opt/homes/<%= lang.id %>/ /home/runner/*
 	ls -A /opt/homes/<%= lang.id %>
 fi
