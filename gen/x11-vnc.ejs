@@ -5,9 +5,6 @@ log="/tmp/x11"
 mkdir -p $log
 
 echo -n "."
-pkill X >> "$log/pkill.log" 2>&1
-
-echo -n "."
 if [ ! -f /tmp/.X11-unix/ ]; then
 	nohup Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile "$log/xorg.log" -config /opt/xorg.conf :0 >> "$log/xorg_nohup.log" 2>&1 &
 fi
