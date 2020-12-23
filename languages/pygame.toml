@@ -44,10 +44,6 @@ command = [
   code = "print(\"hello\")"
   output = "hello\n"
 
-  [tests.pygame]
-  code = "import pygame"
-  output = "pygame 2.0.0 (SDL 2.0.12, python 3.8.6)\nHello from the pygame community. https://www.pygame.org/contribute.html\n"
-
 [languageServer]
 command = [
   "pyls",
