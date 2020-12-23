@@ -5,6 +5,7 @@ extensions = [
 ]
 packages = [
   "build-essential",
+  "rake",
   "rake-compiler",
   "ruby-dev",
   "ruby",
