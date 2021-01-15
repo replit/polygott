@@ -4,24 +4,35 @@
 # Default task:
 .PHONY: image
 image: ## Build Docker image with all languages
-	docker build -t polygott:latest .
+	DOCKER_BUILDKIT=1 docker build \
+		--progress=plain \
+		-t polygott:latest .
 
 image-%: ## Build Docker image with single language LANG
-	docker build -t polygott-$(*) --build-arg LANGS=$(*) .
+	DOCKER_BUILDKIT=1 docker build \
+		--progress=plain \
+		--build-arg LANGS=$(*) \
+		-t polygott-$(*) .
 
 .PHONY: run
 run: image ## Build and run image with all languages
-	docker run -it --rm polygott
+	DOCKER_BUILDKIT=1 docker run -it --rm \
+		polygott
 
 run-%: image-% ## Build and run image with single language LANG
-	docker run -it --rm polygott-$(*)
+	DOCKER_BUILDKIT=1 docker run -it --rm \
+		polygott-$(*)
 
 .PHONY: test
 test: image ## Build and test all languages
-	docker run polygott:latest bash -c polygott-self-test
+	DOCKER_BUILDKIT=1 docker run \
+		polygott:latest \
+		bash -c polygott-self-test
 
 test-%: image-% ## Build and test single language LANG
-	docker run polygott-$(*) bash -c polygott-self-test
+	DOCKER_BUILDKIT=1 docker run \
+		polygott-$(*) \
+		bash -c polygott-self-test
 
 .PHONY: changed-test
 changed-test: $(addprefix test-,$(basename $(notdir $(shell git diff --name-only origin/master -- languages)))) ## Build and test only changed/added languages

@@ -11,6 +11,13 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- ba
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 
+wget -nv \
+  https://launchpad.net/ubuntu/+archive/primary/+files/libtinfo6_6.1+20181013-2ubuntu2_amd64.deb \
+  https://launchpad.net/ubuntu/+archive/primary/+files/libreadline8_8.0-1_amd64.deb \
+  https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb
+dpkg -i *.deb
+rm *.deb
+
 mkdir /config
 chown runner.runner /config
 

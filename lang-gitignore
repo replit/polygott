@@ -1,0 +1,8 @@
+# common
+.bash_logout
+.bashrc
+.profile
+.config/
+.replit/
+.upm/
+.env

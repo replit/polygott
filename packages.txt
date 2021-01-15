@@ -24,9 +24,13 @@ apt-utils
 dirmngr
 gpg-agent
 
-x11vnc
-xserver-xorg-video-dummy
-x11-xserver-utils
+fluxbox
+gnuplot-qt
+libsdl-dev
+libsdl2-dev
+mesa-utils
+tigervnc-standalone-server
+x11-apps
 
 cmake
 ninja-build
