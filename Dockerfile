@@ -1,17 +1,6 @@
-ARG UPM_IMAGE
-
 FROM replco/upm:light AS upm
 
-ARG LANGS=
 FROM node:8.14.0-alpine AS alpine
-
-ARG LANGS
-RUN mkdir -p out
-ADD gen gen
-RUN cd gen && npm install
-ADD languages languages
-ADD packages.txt packages.txt
-RUN node gen/index.js
 
 ARG PRYBAR_TAG=circleci_pipeline_87_build_94
 ADD fetch-prybar.sh fetch-prybar.sh
@@ -22,33 +11,40 @@ FROM gcc AS websockify
 RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify && \
     cd /root/websockify && make
 
-FROM ubuntu:18.04
-
-COPY --from=alpine /out/phase0.sh /phase0.sh
-RUN /bin/bash phase0.sh
-
-ENV XDG_CONFIG_HOME=/config
-
-COPY --from=alpine /out/phase1.sh /phase1.sh
-RUN /bin/bash phase1.sh
+FROM ubuntu:18.04 AS polygott-phase0
 
 COPY --from=alpine /gocode /gocode
 COPY --from=alpine /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
 COPY --from=alpine /usr/bin/prybar_assets /usr/bin/prybar_assets
 
-COPY --from=alpine /out/phase2.sh /phase2.sh
+COPY ./out/phase0.sh /phase0.sh
+RUN /bin/bash phase0.sh
+
+# Environment variables that are depended on by phase1 files.
+ENV XDG_CONFIG_HOME=/config
+
+FROM polygott-phase0 AS polygott-phase1
+
+COPY ./out/phase1.sh /phase1.sh
+RUN /bin/bash phase1.sh
+
+FROM polygott-phase1 AS polygott-phase2
+
+COPY ./out/phase2.sh /phase2.sh
 RUN /bin/bash phase2.sh
+
+FROM polygott-phase2 AS polygott-tools
 
 RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
 ADD polygott-gitignore /etc/.gitignore
 
-COPY --from=alpine /out/run-project /usr/bin/run-project
-COPY --from=alpine /out/run-language-server /usr/bin/run-language-server
-COPY --from=alpine /out/detect-language /usr/bin/detect-language
-COPY --from=alpine /out/self-test /usr/bin/polygott-self-test
-COPY --from=alpine /out/polygott-survey /usr/bin/polygott-survey
-COPY --from=alpine /out/polygott-lang-setup /usr/bin/polygott-lang-setup
-COPY --from=alpine /out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
+COPY ./out/run-project /usr/bin/run-project
+COPY ./out/run-language-server /usr/bin/run-language-server
+COPY ./out/detect-language /usr/bin/detect-language
+COPY ./out/self-test /usr/bin/polygott-self-test
+COPY ./out/polygott-survey /usr/bin/polygott-survey
+COPY ./out/polygott-lang-setup /usr/bin/polygott-lang-setup
+COPY ./out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
 COPY --from=upm /usr/local/bin/upm /usr/local/bin/upm
 COPY --from=websockify /root/websockify /usr/local/websockify
 
@@ -70,8 +66,8 @@ ENV \
 
 COPY run_dir /run_dir/
 
-COPY xorg.conf /opt/xorg.conf
 COPY fluxbox-init /etc/X11/fluxbox/init
+RUN ln -sf /usr/lib/chromium-browser/chromedriver /usr/local/bin
 
 COPY extra/apt-install /usr/bin/install-pkg
 

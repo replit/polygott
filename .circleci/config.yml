@@ -7,7 +7,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git
+      - run: apk add --no-cache --no-progress make git npm
       - run: make test
   build_and_test_ci:
     docker:
@@ -16,7 +16,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git
+      - run: apk add --no-cache --no-progress make git npm
       - run: make test-ci
   build_and_test_changed:
     docker:
@@ -25,7 +25,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git
+      - run: apk add --no-cache --no-progress make git npm
       - run: make changed-test
   build_test_and_deploy:
     docker:
@@ -34,7 +34,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-      - run: apk add --no-cache --no-progress make git
+      - run: apk add --no-cache --no-progress make git npm
       - run: make test
       - run: make test-ci
       - deploy:

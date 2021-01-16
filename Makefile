@@ -3,19 +3,26 @@
 
 # Default task:
 .PHONY: image
-image: ## Build Docker image with all languages
+image: out/.gen.stamp ## Build Docker image with all languages
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		-t polygott:latest .
 
 .PHONY: image-ci
-image-ci: ## Build Docker image with all languages needed for CI
+image-ci: out/.gen.stamp ## Build Docker image with all languages needed for CI
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=python3,ruby,java \
 		-t polygott-ci:latest .
 
-image-%: ## Build Docker image with single language LANG
+out:
+	mkdir $@
+
+out/.gen.stamp: $(wildcard gen/*.*) | out
+	(cd gen && npm install) && node gen/index.js
+	touch $@
+
+image-%: languages/%.toml out/.gen.stamp ## Build Docker image with single language LANG
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=$(*) \
@@ -26,7 +33,10 @@ run: image ## Build and run image with all languages
 	DOCKER_BUILDKIT=1 docker run -it --rm \
 		polygott
 
-run-%: image-% ## Build and run image with single language LANG
+.PHONY: run-lang
+run-lang:
+
+run-%: image-% run-lang ## Build and run image with single language LANG
 	DOCKER_BUILDKIT=1 docker run -it --rm \
 		polygott-$(*)
 
@@ -42,7 +52,10 @@ test-ci: image-ci ## Build and test all languages needed for CI
 		polygott-ci:latest \
 		bash -c polygott-self-test
 
-test-%: image-% ## Build and test single language LANG
+.PHONY: test-lang
+test-lang:
+
+test-%: image-% test-lang ## Build and test single language LANG
 	DOCKER_BUILDKIT=1 docker run \
 		polygott-$(*) \
 		bash -c polygott-self-test
