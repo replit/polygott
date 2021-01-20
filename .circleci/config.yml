@@ -9,6 +9,15 @@ jobs:
           version: 18.09.3
       - run: apk add --no-cache --no-progress make git
       - run: make test
+  build_and_test_ci:
+    docker:
+      - image: docker:18.09
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 18.09.3
+      - run: apk add --no-cache --no-progress make git
+      - run: make test-ci
   build_and_test_changed:
     docker:
       - image: docker:18.09
@@ -27,6 +36,7 @@ jobs:
           version: 18.09.3
       - run: apk add --no-cache --no-progress make git
       - run: make test
+      - run: make test-ci
       - deploy:
           command: |
             echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
@@ -34,10 +44,18 @@ jobs:
             docker push replco/polygott:latest
             docker tag polygott:latest "replco/polygott:${CIRCLE_SHA1}"
             docker push "replco/polygott:${CIRCLE_SHA1}"
+            docker tag polygott-ci:latest replco/polygott-ci:latest
+            docker push replco/polygott-ci:latest
+            docker tag polygott-ci:latest "replco/polygott-ci:${CIRCLE_SHA1}"
+            docker push "replco/polygott-ci:${CIRCLE_SHA1}"
 workflows:
   ci:
     jobs:
       - build_and_test:
+          filters:
+            branches:
+              ignore: master
+      - build_and_test_ci:
           filters:
             branches:
               ignore: master

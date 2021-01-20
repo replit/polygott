@@ -8,6 +8,13 @@ image: ## Build Docker image with all languages
 		--progress=plain \
 		-t polygott:latest .
 
+.PHONY: image-ci
+image-ci: ## Build Docker image with all languages needed for CI
+	DOCKER_BUILDKIT=1 docker build \
+		--progress=plain \
+		--build-arg LANGS=python3,ruby \
+		-t polygott-ci:latest .
+
 image-%: ## Build Docker image with single language LANG
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
@@ -27,6 +34,12 @@ run-%: image-% ## Build and run image with single language LANG
 test: image ## Build and test all languages
 	DOCKER_BUILDKIT=1 docker run \
 		polygott:latest \
+		bash -c polygott-self-test
+
+.PHONY: test-ci
+test-ci: image-ci ## Build and test all languages needed for CI
+	DOCKER_BUILDKIT=1 docker run \
+		polygott-ci:latest \
 		bash -c polygott-self-test
 
 test-%: image-% ## Build and test single language LANG
