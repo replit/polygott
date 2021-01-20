@@ -4,20 +4,33 @@ shopt -s dotglob
 
 # Languages: <%= languages.map((l) => l.name).join(', ') %>
 
-<% for ( let key of aptKeys ) { %>
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv <%- c([key]) %>
-<% } %>
+<% for (const [key, langs] of Object.entries(aptKeys)) { -%>
+if [[ -z "${LANGS}" || <%- langs.map(l => `",\${LANGS}," == *",${l},"*`).join(' || ') %> ]]; then
+	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv <%- c([key]) %>
+fi
+<% } -%>
 
-<% for ( let keyUrl of aptKeyUrls ) { %>
-curl -L <%- c([keyUrl]) %> | apt-key add -
-<% } %>    
+<% for (const [keyUrl, langs] of Object.entries(aptKeyUrls)) { %>
+if [[ -z "${LANGS}" || <%- langs.map(l => `",\${LANGS}," == *",${l},"*`).join(' || ') %> ]]; then
+	curl -L <%- c([keyUrl]) %> | apt-key add -
+fi
+<% } -%>
 
-<% for ( let repo of aptRepos ) { %>
-add-apt-repository -y <%- c([repo]) %>
-<% } %>
+<% for (const [repo, langs] of Object.entries(aptRepos)) { -%>
+if [[ -z "${LANGS}" || <%- langs.map(l => `",\${LANGS}," == *",${l},"*`).join(' || ') %> ]]; then
+	add-apt-repository -y <%- c([repo]) %>
+fi
+<% } -%>
+
+packages=()
+<% for (const [package, langs] of Object.entries(packages)) { -%>
+if [[ -z "${LANGS}" || <%- langs.map(l => `",\${LANGS}," == *",${l},"*`).join(' || ') %> ]]; then
+	packages+=('<%= package %>')
+fi
+<% } -%>
 
 DEBIAN_FRONTEND=noninteractive apt-get update -y
-DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- packages.join(' ') %> || exit 1
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${packages[@]}" || exit 1
 rm -rf /var/lib/apt/lists/*
 
 rm /phase1.sh

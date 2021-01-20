@@ -1,11 +1,43 @@
 #!/bin/bash
 
+set -e
+
+# If the language is explicitly passed in, use that.
+LANGUAGE=
+while getopts ":sl:" opt; do
+  case "${opt}" in
+    l )
+      LANGUAGE="${OPTARG}"
+      ;;
+    \? )
+      echo "Usage: detect-language [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+case "${LANGUAGE}" in
+<% for ( let lang of languages ) { -%>
+<%- lang.names.map(x => `"${x}"`).join('|') %>)
+  echo '<%= lang.id %>';
+  exit 0
+  ;;
+<% } -%>
+*)
+  echo "Unknown Language: ${LANGUAGE}"
+  exit 1
+  ;;
+esac
+
+# No language explicitly provided. Detect the existence of entrypoint files.
 <% for ( let lang of lbypop ) { -%>
 <% if ( lang.entrypoint ) { -%>
 if [ -f <%= lang.entrypoint %> ]; then echo '<%= lang.id %>'; exit 0; fi
 <% } -%>
 <% } -%>
 
+# No entrypoint files detected. Try to sniff out the existence of files based
+# on extension.
 <% for ( let lang of lbypop ) { -%>
 <% if ( lang.extensions ) { -%>
 <% for ( let ex of lang.extensions ) { -%>

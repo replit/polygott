@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+<% for ( let lang of languages ) { -%>
+# <%= lang.name %>
+/usr/share/polygott/self-test.d/<%= lang.id %> || CODE=1
+<% } -%>
+
+exit $CODE

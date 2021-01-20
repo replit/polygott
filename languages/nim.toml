@@ -5,20 +5,21 @@ extensions = [
 ]
 
 setup = [
-  'NIM_VER="1.2.0"',
-  "wget https://nim-lang.org/download/nim-$NIM_VER.tar.xz",
-  "tar xf nim-$NIM_VER.tar.xz",
-  "rm -rf nim-$NIM_VER.tar.xz",
-  "chown -R root: nim-$NIM_VER/",
-  "cd nim-$NIM_VER",
-  "sh build.sh",
-  "./bin/nim c koch.nim",
-  "./koch tools",
-  "sh install.sh /usr/local/bin",
-  "cp ./bin/* /usr/local/bin",
-  "cd ..",
-  "rm -rf nim-$NIM_VER",
-  "unset NIM_VER"
+  """
+  NIM_VER="1.2.0"
+  wget https://nim-lang.org/download/nim-$NIM_VER.tar.xz
+  tar xf nim-$NIM_VER.tar.xz
+  rm -rf nim-$NIM_VER.tar.xz
+  chown -R root: nim-$NIM_VER/
+  cd nim-$NIM_VER
+  sh build.sh
+  ./bin/nim c koch.nim
+  ./koch tools
+  sh install.sh /usr/local/bin
+  cp ./bin/* /usr/local/bin
+  cd ..
+  rm -rf nim-$NIM_VER
+  unset NIM_VER"""
 ]
 
 [run]

@@ -1,16 +1,23 @@
 #!/bin/bash
 
+set -e
+
 CODE=0
 
-<% for ( let lang of languages ) { -%>
-# <%= lang.name %>
+if [[ -n "${LANGS}" && ",${LANGS}," != *",<%= lang.id %>,"* ]]; then
+	echo S '<%= lang.name %>:*'
+	exit $CODE
+fi
+
 polygott-lang-setup -l '<%= lang.id %>'
-<%   for ( let tname in lang.tests ) { -%>
-<%     let test = lang.tests[tname]; -%>
-<%     if ( test.input ) continue; -%>
-<%     if ( test.skip ) { -%>
+
+<% for ( let tname in lang.tests ) { -%>
+<%   let test = lang.tests[tname]; -%>
+<%   if ( test.input ) continue; -%>
+<%   if ( test.skip ) { -%>
 echo S '<%= lang.name %>:<%= tname %>'
-<%     } else { -%>
+<%   } else { -%>
+# <%= lang.name %>:<%= tname %>
 SUCCESS=true
 OUTPUT="$(echo '<%= btoa(test.code) %>' | \
           base64 --decode | \
@@ -32,8 +39,7 @@ else
   echo ❌ '<%= lang.name %>:<%= tname %>'
   CODE=1
 fi
-<%     } %>
-<%   } %>
+<%   } -%>
 <% } -%>
 
 exit $CODE

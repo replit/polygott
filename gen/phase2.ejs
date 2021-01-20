@@ -9,22 +9,22 @@ export HOME=/home/runner
  mv -nt /opt/homes/default/ $(ls -A /home/runner))
 
 <% for ( let lang of languages ) { -%>
-<% if ( lang.setup ) { -%>
-
-
-echo Setup <%= lang.name %>
+<% if (!lang.setup) continue; -%>
+if [[ -z "${LANGS}" || ",${LANGS}," == *",<%= lang.id %>,"* ]]; then
+	echo 'Setup <%= lang.name %>'
 <% for ( let line of lang.setup ) { -%>
-<%- undup(line) %>
+  <%- undup(line) %>
 <% } -%>
 
-if [ -n "$(ls -A /home/runner)" ]; then
-	echo Storing home for <%= lang.name %>
-	mkdir -p /opt/homes/<%= lang.name %>
-	cp -r /opt/homes/default/* /opt/homes/<%= lang.name %>
-	mv -nt /opt/homes/<%= lang.name %>/ /home/runner/*
-	ls -A /opt/homes/<%= lang.name %>
+	if [ -n "$(ls -A /home/runner)" ]; then
+		echo Storing home for <%= lang.name %>
+		mkdir -p /opt/homes/<%= lang.name %>
+		cp -r /opt/homes/default/* /opt/homes/<%= lang.name %>
+		mv -nt /opt/homes/<%= lang.name %>/ /home/runner/*
+		ls -A /opt/homes/<%= lang.name %>
+	fi
 fi
-<% } -%>
+
 <% } -%>
 
 chown runner:runner -R /opt/homes

@@ -12,18 +12,18 @@ const schema = require("./schema.json");
 
 const btoa = b => Buffer.from(b).toString("base64");
 
-let packages = fs
+const basePackages = fs
 	.readFileSync(path.join(base, "packages.txt"), "utf8")
 	.split(/\r?\n/)
 	.filter(x => !/^#|^\s*$/.test(x));
-
-let basePackages = [].concat(packages);
+basePackages.sort();
 
 console.log(basePackages);
 
-let aptKeys = [];
-let aptKeyUrls = []
-let aptRepos = [];
+let aptKeys = {};
+let aptKeyUrls = {};
+let aptRepos = {};
+let packages = {};
 
 let list = glob.sync(path.join(base, "languages", "*.toml"));
 let languages = [];
@@ -32,12 +32,11 @@ list.sort();
 
 let dc = [];
 function undup(line) {
-	if (dc.indexOf(line) == -1) {
-		dc.push(line);
-		return line;
-	} else {
-		return "#" + line;
+	if (dc.indexOf(line) != -1) {
+		return `# undup:${line}`;
 	}
+	dc.push(line);
+	return line;
 }
 
 function handleLanguage(language, dependency = false) {
@@ -108,25 +107,38 @@ function handleLanguage(language, dependency = false) {
 
 	if (info.aptKeys) {
 		for (let p of info.aptKeys) {
-			if (aptKeys.indexOf(p) == -1) aptKeys.push(p);
+			if (!aptKeys[p]) {
+				aptKeys[p] = [];
+			}
+			aptKeys[p].push(info.id);
 		}
 	}
 
 	if (info.aptKeyUrls) {
 		for (let p of info.aptKeyUrls) {
-			if (aptKeyUrls.indexOf(p) == -1) aptKeyUrls.push(p);
+			if (!aptKeyUrls[p]) {
+				aptKeyUrls[p] = [];
+			}
+			aptKeyUrls[p].push(info.id);
 		}
 	}
 
 	if (info.aptRepos) {
 		for (let p of info.aptRepos) {
-			if (aptRepos.indexOf(p) == -1) aptRepos.push(p);
+			if (!aptRepos[p]) {
+				aptRepos[p] = [];
+			}
+			aptRepos[p].push(info.id);
 		}
 	}
 
 	if (info.packages) {
 		for (let p of info.packages) {
-			if (packages.indexOf(p) == -1) packages.push(p);
+			if (basePackages.indexOf(p) != -1) continue;
+			if (!packages[p]) {
+				packages[p] = [];
+			}
+			packages[p].push(info.id);
 		}
 	}
 	languages.push(info);
@@ -162,7 +174,7 @@ let ctx = {
 
 let objects = {
 	"test.sh": "tests.ejs",
-	"self-test": "inside-test.ejs",
+	"self-test": "self-test.ejs",
 	"phase0.sh": "phase0.ejs",
 	"phase1.sh": "phase1.ejs",
 	"phase2.sh": "phase2.ejs",
@@ -184,6 +196,34 @@ for (let target in objects) {
 		"utf8"
 	);
 	fs.chmodSync(path.join(dest, target), 0o755);
+}
+
+const perLangScripts = [
+	'self-test',
+];
+
+for (const perLangScript of perLangScripts) {
+	const dirname = path.join(dest, `share/polygott/${perLangScript}.d`);
+	fs.mkdirSync(dirname, { recursive: true, mode: 0o755 });
+	for (const lang of languages) {
+		const scriptPath = path.join(dirname, lang.id);
+		fs.writeFileSync(
+			scriptPath,
+			ejs.compile(
+				fs.readFileSync(
+					path.join(__dirname, `${perLangScript}-per-lang.ejs`),
+					'utf8',
+				),
+			)(
+				{
+					...ctx,
+					lang,
+				},
+			),
+			'utf8'
+		);
+		fs.chmodSync(scriptPath, 0o755);
+	}
 }
 
 // Local Variables:

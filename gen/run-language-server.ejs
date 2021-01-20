@@ -1,5 +1,8 @@
 #!/bin/bash
-LANGUAGE=`detect-language`
+
+set -e
+
+LANGUAGE="$(detect-language "$@")"
 
 while getopts ":sl:" opt; do
   case ${opt} in
