@@ -12,7 +12,7 @@ image: ## Build Docker image with all languages
 image-ci: ## Build Docker image with all languages needed for CI
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
-		--build-arg LANGS=python3,ruby \
+		--build-arg LANGS=python3,ruby,java \
 		-t polygott-ci:latest .
 
 image-%: ## Build Docker image with single language LANG
