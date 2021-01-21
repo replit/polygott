@@ -10,7 +10,7 @@ We previously used a separate Docker image for each language, but
 concluded that it was both simpler and more efficient to use a single
 image which contains all supported languages simultaneously. The code
 necessary to build this combined image, **Polygott**, resides in this
-repository.  If you're lost and need some reference, we have 
+repository.  If you're lost and need some reference, we have
 [a blog](https://blog.repl.it/elisp) where we added elisp.
 
 ## Build and run
@@ -189,11 +189,6 @@ special logic is used instead of the `compile` and `run` commands;
 Run the `languageServer` command configured in the language's
 configuration file. `LANG` defaults to the output of
 `detect-language`.
-
-    polygott-x11-vnc
-
-Start VNC forwarding for X11. Fork into the background and return.
-This script does not interact with language configuration at all.
 
 ## Deployment
 

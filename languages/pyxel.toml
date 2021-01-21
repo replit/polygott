@@ -38,7 +38,7 @@ command = [
 
   [tests.pyxel]
   code = "import pyxel"
-  output = ""
+  output = "\n"
 
 [languageServer]
 command = [
