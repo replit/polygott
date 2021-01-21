@@ -1,12 +1,10 @@
 name = "react_native"
 entrypoint = "index.js"
+languages = [
+  "jest"
+]
 extensions = [
   "js"
-]
-packages = []
-setup = [
-  "yarn global add jest",
-  "yarn"
 ]
 
 [run]
