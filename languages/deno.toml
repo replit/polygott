@@ -3,17 +3,14 @@ entrypoint = "index.ts"
 extensions = [
   "ts"
 ]
-packages = [
-]
 setup = [
-  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.1.0",
-  "npm i -g typescript-language-server@0.4.0 typescript@3.8.3"
+  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.7.0"
 ]
 
 [languageServer]
 command = [
-  "typescript-language-server",
-  "--stdio"
+  "deno",
+  "lsp"
 ]
 
 [run]
@@ -27,7 +24,6 @@ command = [
 ]
 
 [tests]
-
   [tests.hello]
   code = "console.log(\"hello\")"
   output = "hello\n"
