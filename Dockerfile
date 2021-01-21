@@ -60,13 +60,14 @@ ENV \
         CPATH="${INCLUDE_PATH}" \
         CPPPATH="${INCLUDE_PATH}" \
         DISPLAY=:0 \
-        INCLUDE_PATH="/home/runner/.apt/usr/include:$HOME/.apt/usr/include/x86_64-linux-gnu:${INCLUDE_PATH}" \
+        HOME=/home/runner \
+        INCLUDE_PATH="/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu:${INCLUDE_PATH}" \
         LANG=en_US.UTF-8 \
         LC_ALL=en_US.UTF-8 \
         LD_LIBRARY_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/home/runner/.apt/usr/lib:${LD_LIBRARY_PATH}" \
         LIBRARY_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/home/runner/.apt/usr/lib:${LIBRARY_PATH}" \
         PATH="/usr/local/go/bin:/opt/virtualenvs/python3/bin:/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:/home/runner/.apt/usr/bin:${PATH}" \
-        PKG_CONFIG_PATH="${HOME}/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:${HOME}/.apt/usr/lib/i386-linux-gnu/pkgconfig:${HOME}/.apt/usr/lib/pkgconfig:${PKG_CONFIG_PATH}" \
+        PKG_CONFIG_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/i386-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/pkgconfig:${PKG_CONFIG_PATH}" \
         PYTHONPATH="/opt/virtualenvs/python3/lib/python3.8/site-packages" \
         USER=runner \
         VIRTUAL_ENV="/opt/virtualenvs/python3"

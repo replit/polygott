@@ -1,15 +1,14 @@
 name = "elixir"
+languages = [
+  "erlang"
+]
 entrypoint = "main.exs"
 extensions = [
   "ex",
   "exs"
 ]
-setup = [
-  "wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb",
-  "dpkg -i erlang-solutions_2.0_all.deb",
-  "rm -r erlang-solutions_2.0_all.deb",
-  "apt-get update",
-  "apt-get install -y esl-erlang elixir",
+packages = [
+  "elixir",
 ]
 
 [run]

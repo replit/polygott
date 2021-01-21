@@ -3,8 +3,14 @@ entrypoint = "main.erl"
 extensions = [
   "erl"
 ]
+aptKeyUrls = [
+  "https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc"
+]
+aptRepos = [
+  "deb https://packages.erlang-solutions.com/ubuntu bionic contrib"
+]
 packages = [
-  "erlang-ic"
+  "esl-erlang"
 ]
 
 versionCommand = [

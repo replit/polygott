@@ -1,15 +1,20 @@
 name = "quil"
+languages = [
+  "python3"
+]
 entrypoint = "main.quil"
 extensions = [
   "quil"
 ]
 packages = []
 setup = [
-  "pip3 install referenceqvm==0.3 pyquil==1.9.0"
+  "/opt/virtualenvs/python3/bin/pip3 install referenceqvm==0.3 pyquil==1.9.0",
+  # Avoid using older versions of the typing library.
+  "/opt/virtualenvs/python3/bin/python3 -m pip uninstall -y typing",
 ]
 
 versionCommand = [
   "/bin/bash",
   "-c",
-  "pip3 show pyquil | grep Version "
+  "/opt/virtualenvs/python3/bin/pip3 show pyquil | grep Version "
 ]
