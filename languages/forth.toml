@@ -14,27 +14,28 @@ packages = [
 ]
 
 setup = [
-  "pushd /tmp",
-  "wget -O gforth-0.7.9.tar.xz http://www.complang.tuwien.ac.at/forth/gforth/Snapshots/0.7.9_20200716/gforth-0.7.9_20200716.tar.xz",
-  "tar -Jxf gforth-0.7.9.tar.xz",
-  "rm gforth-0.7.9.tar.xz",
-  "mv gforth-0.7.9_* gforth-0.7.9",
-  "cd gforth-0.7.9",
+  """
+  pushd /tmp
+  wget -O gforth-0.7.9.tar.xz http://www.complang.tuwien.ac.at/forth/gforth/Snapshots/0.7.9_20200716/gforth-0.7.9_20200716.tar.xz
+  tar -Jxf gforth-0.7.9.tar.xz
+  rm gforth-0.7.9.tar.xz
+  mv gforth-0.7.9_* gforth-0.7.9
+  cd gforth-0.7.9
 
-  "cd unix",
-  "[ -e stat-fsi.c ] || wget -O stat-fsi.c https://git.savannah.gnu.org/cgit/gforth.git/plain/unix/stat-fsi.c",
-  "gcc stat-fsi.c -o stat-fsi",
-  "./stat-fsi > stat.fs",
-  "cd ..",
+  cd unix
+  [ -e stat-fsi.c ] || wget -O stat-fsi.c https://git.savannah.gnu.org/cgit/gforth.git/plain/unix/stat-fsi.c
+  gcc stat-fsi.c -o stat-fsi
+  ./stat-fsi > stat.fs
+  cd ..
 
-  "./autogen.sh",
-  "./configure",
-  "make",
-  "make more",
-  "make install",
-  "cd ..",
-  "rm -rf /tmp/gforth-0.7.9",
-  "popd"
+  ./autogen.sh
+  ./configure
+  make
+  make more
+  make install
+  cd ..
+  rm -rf /tmp/gforth-0.7.9
+  popd"""
 ]
 
 [run]

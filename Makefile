@@ -15,10 +15,8 @@ image-ci: out/.gen.stamp ## Build Docker image with all languages needed for CI
 		--build-arg LANGS=python3,ruby,java \
 		-t polygott-ci:latest .
 
-out:
-	mkdir $@
-
-out/.gen.stamp: $(wildcard gen/*.*) | out
+out/.gen.stamp: $(wildcard gen/*.*) $(wildcard languages/*.toml)
+	rm -rf out/ && mkdir out
 	(cd gen && npm install) && node gen/index.js
 	touch $@
 
@@ -38,7 +36,7 @@ run-lang:
 
 run-%: image-% run-lang ## Build and run image with single language LANG
 	DOCKER_BUILDKIT=1 docker run -it --rm \
-		polygott-$(*)
+		"polygott-$(*)"
 
 .PHONY: test
 test: image ## Build and test all languages
@@ -50,6 +48,7 @@ test: image ## Build and test all languages
 test-ci: image-ci ## Build and test all languages needed for CI
 	DOCKER_BUILDKIT=1 docker run \
 		polygott-ci:latest \
+		env LANGS=python3,ruby,java \
 		bash -c polygott-self-test
 
 .PHONY: test-lang
@@ -57,7 +56,8 @@ test-lang:
 
 test-%: image-% test-lang ## Build and test single language LANG
 	DOCKER_BUILDKIT=1 docker run \
-		polygott-$(*) \
+		"polygott-$(*)" \
+		env "LANGS=$(*)" \
 		bash -c polygott-self-test
 
 .PHONY: changed-test

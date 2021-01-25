@@ -12,6 +12,8 @@ RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify
     cd /root/websockify && make
 
 FROM ubuntu:18.04 AS polygott-phase0
+ARG LANGS
+ENV LANGS=${LANGS}
 
 COPY --from=alpine /gocode /gocode
 COPY --from=alpine /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
@@ -24,11 +26,15 @@ RUN /bin/bash phase0.sh
 ENV XDG_CONFIG_HOME=/config
 
 FROM polygott-phase0 AS polygott-phase1
+ARG LANGS
+ENV LANGS=${LANGS}
 
 COPY ./out/phase1.sh /phase1.sh
 RUN /bin/bash phase1.sh
 
 FROM polygott-phase1 AS polygott-phase2
+ARG LANGS
+ENV LANGS=${LANGS}
 
 COPY ./out/phase2.sh /phase2.sh
 RUN /bin/bash phase2.sh
@@ -45,6 +51,7 @@ COPY ./out/self-test /usr/bin/polygott-self-test
 COPY ./out/polygott-survey /usr/bin/polygott-survey
 COPY ./out/polygott-lang-setup /usr/bin/polygott-lang-setup
 COPY ./out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
+COPY ./out/share/ /usr/share/
 COPY --from=upm /usr/local/bin/upm /usr/local/bin/upm
 COPY --from=websockify /root/websockify /usr/local/websockify
 
