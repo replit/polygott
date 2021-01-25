@@ -16,33 +16,8 @@ curl -L <%- c([keyUrl]) %> | apt-key add -
 add-apt-repository -y <%- c([repo]) %>
 <% } %>
 
-apt-get update
-
+DEBIAN_FRONTEND=noninteractive apt-get update -y
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- packages.join(' ') %> || exit 1
-
-# Build a newer version of libvncserver because the library distributed with
-# apt is broken
-git clone https://github.com/LibVNC/libvncserver.git /tmp/libvncserver
-cd /tmp/libvncserver
-git checkout 87c52ee0551b7c4e76855d270d475b9e3039fe08
-mkdir -p /tmp/libvncserver/build
-cd /tmp/libvncserver/build
-cmake ..
-make -j install
-ln -s /usr/local/lib/libvncserver.so /usr/local/lib/libvncserver1.so
-
-update-ca-certificates
-
-curl -sL https://deb.nodesource.com/setup_10.x | bash -
-DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
-npm install -g yarn
-
-cd /home/runner
-mkdir -p /opt/homes/default
-mkdir -p /opt/virtualenvs
-mv -nt /opt/homes/default/ $(ls -A /home/runner)
-
-curl https://xpra.org/xorg.conf > /opt/xorg.conf
-
 rm -rf /var/lib/apt/lists/*
+
 rm /phase1.sh

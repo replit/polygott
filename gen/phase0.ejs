@@ -5,11 +5,25 @@ shopt -s dotglob
 groupadd -g 1000 runner
 useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
 
-apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- basePackages.join(' ') %>
+
+# Lots of images depend on node / yarn to be installed. Choose the most recent
+# one from the 10.x series.
+# TODO: Move this to dependencies between images.
+curl -sL https://deb.nodesource.com/setup_10.x | bash -
+node_version="$(apt-cache show nodejs | \
+                awk '/^Version: 10\./ {print $2}' | \
+                sort -V | \
+                tail -n1)"
+DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs="${node_version}"
+npm install -g yarn
+
+rm -rf /var/lib/apt/lists/*
 
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
+update-ca-certificates
 
 wget -nv \
   https://launchpad.net/ubuntu/+archive/primary/+files/libtinfo6_6.1+20181013-2ubuntu2_amd64.deb \
@@ -21,5 +35,4 @@ rm *.deb
 mkdir /config
 chown runner.runner /config
 
-rm -rf /var/lib/apt/lists/*
 rm /phase0.sh
