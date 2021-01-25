@@ -3,8 +3,10 @@ set -ev
 shopt -s dotglob
 
 export HOME=/home/runner
-
-ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin
+(cd /home/runner && \
+ mkdir -p /opt/homes/default && \
+ mkdir -p /opt/virtualenvs && \
+ mv -nt /opt/homes/default/ $(ls -A /home/runner))
 
 <% for ( let lang of languages ) { -%>
 <% if ( lang.setup ) { -%>

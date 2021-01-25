@@ -1,4 +1,3 @@
-.dir-locals-2.el
+*.stamp
 gen/node_modules/
-import/node_modules/
-out
+out/
