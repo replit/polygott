@@ -20,134 +20,150 @@ basePackages.sort();
 
 console.log(basePackages);
 
-let aptKeys = {};
-let aptKeyUrls = {};
-let aptRepos = {};
-let packages = {};
+const aptKeys = {};
+const aptKeyUrls = {};
+const aptRepos = {};
+const packages = {};
 
-let list = glob.sync(path.join(base, "languages", "*.toml"));
-let languages = [];
-let handledLanguages = {};
-list.sort();
+const languageIds = glob
+	.sync(path.join(base, "languages", "*.toml"))
+	.map(filename => path.basename(filename, '.toml'))
+	.sort();
 
-let dc = [];
-function undup(line) {
-	if (dc.indexOf(line) != -1) {
-		return `# undup:${line}`;
+const languageInfo = languageIds
+	.map(languageId => {
+		const filepath = path.join(base, "languages", `${languageId}.toml`);
+		const info = toml.parse(fs.readFileSync(filepath, 'utf8'));
+
+		const result = tv4.validateMultiple(info, schema);
+		if (!result.valid) {
+			console.log(`Warning: ${filepath} schema invalid.`);
+			for (const error of result.errors) {
+				console.log(`-> ${error.message} @ ${error.dataPath}`);
+			}
+			process.exit(1);
+		}
+
+		info.id = languageId;
+		return info;
+	}).reduce((result, info) => {
+		result[info.id] = info;
+		return result;
+	}, {});
+
+for (const childLanguage of Object.values(languageInfo)) {
+	if (!childLanguage.languages) {
+		continue;
 	}
-	dc.push(line);
-	return line;
+
+	const queue = [].concat(childLanguage.languages);
+	while (queue.length) {
+		const parentLanguage = languageInfo[queue.shift()];
+		if (!parentLanguage.childLanguages) {
+			parentLanguage.childLanguages = new Set();
+		}
+		if (parentLanguage.childLanguages.has(childLanguage.id)) {
+			continue;
+		}
+		parentLanguage.childLanguages.add(childLanguage.id);
+
+		if (parentLanguage.languages) {
+			queue.push(...parentLanguage.languages);
+		}
+	}
 }
 
+const languages = [];
+const handledLanguages = {};
 function handleLanguage(language, dependency = false) {
-	if (language in handledLanguages) {
+	if (language.id in handledLanguages) {
 		return;
 	}
 
-	let file = path.join(base, "languages", language + ".toml");
-	let info = toml.parse(fs.readFileSync(file, "utf8"));
-
-	let result = tv4.validateMultiple(info, schema);
-	if (!result.valid) {
-		console.log(`Warning: ${file} schema invalid.`);
-		for (let error of result.errors) {
-			console.log(`-> ${error.message} @ ${error.dataPath}`);
-		}
-		process.exit(1);
-	}
-
-	let name = info.name;
-	info.id = path.basename(file).replace(/.toml$/, '');
-	let names = [name, info.id];
-	if (info.aliases) {
-		names = names.concat(info.aliases);
+	let name = language.name;
+	let names = [name, language.id];
+	if (language.aliases) {
+		names = names.concat(language.aliases);
 	};
-	info.names = [...new Set(names)];
-	if (process.env.LANGS) {
-		let set = process.env.LANGS.split(/[ ,]+/);
-		if (set.indexOf(info.id) == -1 && !dependency) return;
+	language.names = [...new Set(names)];
+	language.popularity = language.popularity || 2;
+
+	for (const parentLanguageId of (language.languages || [])) {
+		handleLanguage(languageInfo[parentLanguageId]);
 	}
 
-	if (info.languages) {
-		for (let l of info.languages) {
-			handleLanguage(l, true);
-		}
-	}
-
-	info.popularity = info.popularity || 2;
-
-	if (!info.versionCommand) {
+	if (!language.versionCommand) {
 		let flag = "--version";
-		if (["lua"].indexOf(info.name) !== -1) {
+		if (["lua"].indexOf(language.name) !== -1) {
 			flag = "-v";
 		}
 
-		if (["go"].indexOf(info.name) !== -1) {
+		if (["go"].indexOf(language.name) !== -1) {
 			flag = "version";
 		}
 
-		if (["java"].indexOf(info.name) !== -1) {
+		if (["java"].indexOf(language.name) !== -1) {
 			flag = "-version";
 		}
 
-		if (info.compile) {
-			info.versionCommand = [info.compile.command[0], flag];
-		} else if (info.run) {
-			info.versionCommand = [info.run.command[0], flag];
+		if (language.compile) {
+			language.versionCommand = [language.compile.command[0], flag];
+		} else if (language.run) {
+			language.versionCommand = [language.run.command[0], flag];
 		} else {
-			info.versionCommand = ["/bin/false"];
+			language.versionCommand = ["/bin/false"];
 		}
 	}
 
-	if ("tests" in info) {
-	} else {
+	if (!("tests" in language)) {
 		console.log(`Warning ${name} has no tests.`);
-		info.tests = {};
+		language.tests = {};
 	}
 
-	if (info.aptKeys) {
-		for (let p of info.aptKeys) {
+	const languageIds = [language.id, ...(language.childLanguages || [])];
+
+	if (language.aptKeys) {
+		for (let p of language.aptKeys) {
 			if (!aptKeys[p]) {
 				aptKeys[p] = [];
 			}
-			aptKeys[p].push(info.id);
+			aptKeys[p].push(...languageIds);
 		}
 	}
 
-	if (info.aptKeyUrls) {
-		for (let p of info.aptKeyUrls) {
+	if (language.aptKeyUrls) {
+		for (let p of language.aptKeyUrls) {
 			if (!aptKeyUrls[p]) {
 				aptKeyUrls[p] = [];
 			}
-			aptKeyUrls[p].push(info.id);
+			aptKeyUrls[p].push(...languageIds);
 		}
 	}
 
-	if (info.aptRepos) {
-		for (let p of info.aptRepos) {
+	if (language.aptRepos) {
+		for (let p of language.aptRepos) {
 			if (!aptRepos[p]) {
 				aptRepos[p] = [];
 			}
-			aptRepos[p].push(info.id);
+			aptRepos[p].push(...languageIds);
 		}
 	}
 
-	if (info.packages) {
-		for (let p of info.packages) {
+	if (language.packages) {
+		for (let p of language.packages) {
 			if (basePackages.indexOf(p) != -1) continue;
 			if (!packages[p]) {
 				packages[p] = [];
 			}
-			packages[p].push(info.id);
+			packages[p].push(...languageIds);
 		}
 	}
-	languages.push(info);
-	handledLanguages[language] = true;
+	languages.push(language);
+	handledLanguages[language.id] = true;
 }
 
-for (let file of list) {
-	let language = path.basename(file, ".toml");
-	handleLanguage(language);
+for (const languageId of languageIds ) {
+	handleLanguage(languageInfo[languageId]);
 }
 
 let lbypop = JSON.parse(JSON.stringify(languages));
@@ -164,7 +180,6 @@ let ctx = {
 	aptRepos,
 	aptKeys,
 	aptKeyUrls,
-	undup,
 	lpad,
 	c: a => a.map((s) => {
 		if (/^(\S*|`[^`]+`)$/.test(s)) return s;

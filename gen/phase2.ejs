@@ -3,35 +3,40 @@ set -ev
 shopt -s dotglob
 
 export HOME=/home/runner
-(cd /home/runner && \
- mkdir -p /opt/homes/default && \
- mkdir -p /opt/virtualenvs && \
- mv -nt /opt/homes/default/ $(ls -A /home/runner))
+mkdir -p /opt/homes/default /opt/virtualenvs
+find /home/runner/ -mindepth 1 -maxdepth 1 -exec mv -n {} /opt/homes/default/ \;
 
-<% for ( let lang of languages ) { -%>
-<% if (!lang.setup) continue; -%>
-if [[ -z "${LANGS}" || ",${LANGS}," == *",<%= lang.id %>,"* ]]; then
+<% for (const lang of languages) { -%>
+<%   if (!lang.setup || !lang.setup.length) continue; -%>
+if [[ -z "${LANGS}" || <%- [...new Set([lang.id, ...(lang.childLanguages || [])])].sort().map(id => `",\${LANGS}," == *",${id},"*`).join(' || ') %> ]]; then
+<%   if (lang.languages && lang.languages.length) { -%>
+	echo 'Setup parents of <%= lang.name %>'
+<%     for (const parentLanguage of (lang.languages || [])) { -%>
+	find /opt/homes/<%= parentLanguage %>/ -mindepth 1 -maxdepth 1 -exec cp -r {} /home/runner/ \;
+<%     } -%>
+<%   } -%>
+<%   if (lang.setup && lang.setup.length) { -%>
 	echo 'Setup <%= lang.name %>'
-<% for ( let line of lang.setup ) { -%>
-  <%- undup(line) %>
-<% } -%>
+	cd "${HOME}"
 
-	if [ -n "$(ls -A /home/runner)" ]; then
+<%     for ( let line of lang.setup ) { -%>
+	<%- line %>
+<%     } -%>
+
+<%   } -%>
+	if [[ -n "$(ls -A /home/runner)" ]]; then
 		echo Storing home for <%= lang.name %>
 		mkdir -p /opt/homes/<%= lang.name %>
 		cp -r /opt/homes/default/* /opt/homes/<%= lang.name %>
-		mv -nt /opt/homes/<%= lang.name %>/ /home/runner/*
+		find /home/runner/ -mindepth 1 -maxdepth 1 -exec mv -n {} /opt/homes/<%= lang.name %>/ \;
 		ls -A /opt/homes/<%= lang.name %>
 	fi
 fi
 
 <% } -%>
 
-chown runner:runner -R /opt/homes
+chown runner:runner -R /home/runner /opt/homes /config /opt/virtualenvs
 cp -r /opt/homes/default/* /home/runner
-chown runner:runner -R /home/runner
-chown runner:runner -R /config
-chown runner:runner -R /opt/virtualenvs
 
 rm -rf /var/lib/apt/lists/*
 rm /phase2.sh

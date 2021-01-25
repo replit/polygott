@@ -7,6 +7,7 @@ packages = [
 ]
 setup = [
   "npm install -g jest@23.1.0 prettier@1.13.4 babylon@6.15 babel-traverse@6.21 walker@1.0.7",
+  "yarn global add jest",
   "/usr/bin/build-prybar-lang.sh nodejs"
 ]
 

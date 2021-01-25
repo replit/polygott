@@ -1,16 +1,11 @@
 name = "cpp11"
+languages = [
+  "c"
+]
 entrypoint = "main.cpp"
 extensions = [
   "cpp",
   "cc",
-]
-packages = [
-  "clang-7",
-  "clang-format-7"
-]
-setup = [
-  "cd /tmp && wget -q https://github.com/cquery-project/cquery/releases/download/v20180302/cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && tar xf cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && cd cquery-v20180302-x86_64-unknown-linux-gnu && cp bin/cquery /bin && cp -r lib/* /lib/ && cd /tmp && rm cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && rm -r cquery-v20180302-x86_64-unknown-linux-gnu",
-  "update-alternatives --install /usr/bin/clang-format clang-format `which clang-format-7` 100",
 ]
 
 [compile]
