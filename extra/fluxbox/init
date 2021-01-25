@@ -5,6 +5,7 @@ session.screen0.toolbar.tools:  prevworkspace, workspacename, nextworkspace, clo
 session.screen0.toolbar.visible:    false
 session.screen0.window.focus.alpha: 255
 session.screen0.window.unfocus.alpha:   255
+session.screen0.windowPlacement: RowSmartPlacement
 session.screen0.clientMenu.usePixmap:   true
 session.screen0.strftimeFormat: %d %b, %a %02k:%M:%S
 session.screen0.edgeSnapThreshold:  10
@@ -17,6 +18,7 @@ session.screen0.opaqueMove: false
 session.screen0.focusModel: ClickFocus
 session.keyFile:    ~/.fluxbox/keys
 session.menuFile:   ~/.fluxbox/menu
+session.appsFile:   /etc/X11/fluxbox/apps
 session.colorsPerChannel:   4
 session.ignoreBorder:   false
 session.styleFile:  /usr/share/fluxbox/styles/Meta
