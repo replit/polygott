@@ -23,10 +23,6 @@ case "${LANGUAGE}" in
   exit 0
   ;;
 <% } -%>
-*)
-  echo "Unknown Language: ${LANGUAGE}"
-  exit 1
-  ;;
 esac
 
 # No language explicitly provided. Detect the existence of entrypoint files.
