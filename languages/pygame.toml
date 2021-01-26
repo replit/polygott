@@ -26,6 +26,8 @@ packages = [
 popularity = 5.0
 setup = [
   "/opt/virtualenvs/python3/bin/python3 -m pip install pygame",
+  # Avoid using older versions of the typing library.
+  "/opt/virtualenvs/python3/bin/python3 -m pip uninstall -y typing",
 ]
 [run]
 command = [

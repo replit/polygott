@@ -1,13 +1,14 @@
 name = "nextjs"
+languages = [
+	"nodejs"
+]
 entrypoint = "pages/index.js"
 extensions = [
   "js"
 ]
 packages = []
 setup = [
-  "npm install -g prettier@1.13.4",
-  "mkdir -p /home/runner/pages",
-  "yarn install"
+  "mkdir -p /home/runner/pages"
 ]
 
 [run]

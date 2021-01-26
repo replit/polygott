@@ -1,4 +1,7 @@
 name = "fsharp"
+languages = [
+  "csharp"
+]
 aliases = [
   "f#"
 ]
@@ -6,15 +9,9 @@ entrypoint = "main.fs"
 extensions = [
   "fs"
 ]
-aptKeys = ['3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF']
-
-aptRepos = [
-  'deb https://download.mono-project.com/repo/ubuntu stable-bionic main'
-]
 
 packages = [
   "fsharp",
-  "mono-complete"
 ]
 
 [compile]

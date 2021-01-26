@@ -7,7 +7,7 @@ aptKeyUrls = [
   "https://packagecloud.io/cs50/repo/gpgkey"
 ]
 aptRepos = [
-  "deb https://packagecloud.io/cs50/repo/ubuntu/ trusty main"
+  "deb https://packagecloud.io/cs50/repo/ubuntu/ bionic main"
 ]
 packages = [
   "clang-7",
