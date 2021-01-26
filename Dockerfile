@@ -73,7 +73,6 @@ ENV \
 
 COPY run_dir /run_dir/
 
-COPY fluxbox-init /etc/X11/fluxbox/init
 RUN ln -sf /usr/lib/chromium-browser/chromedriver /usr/local/bin
 
 COPY extra/apt-install /usr/bin/install-pkg
@@ -87,6 +86,8 @@ COPY extra/config.toml ${XDG_CONFIG_HOME}/pypoetry/config.toml
 COPY extra/replit-v2.py /usr/local/lib/python3.6/dist-packages/replit.py
 COPY extra/replit-v2.py /usr/local/lib/python2.7/dist-packages/replit.py
 COPY extra/matplotlibrc /config/matplotlib/matplotlibrc
+COPY extra/fluxbox/init /etc/X11/fluxbox/init
+COPY extra/fluxbox/apps /etc/X11/fluxbox/apps
 
 ADD lang-gitignore /etc/.gitignore
 
