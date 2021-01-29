@@ -1,0 +1,130 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+# assembly
+/usr/share/polygott/self-test.d/assembly || CODE=1
+# ballerina
+/usr/share/polygott/self-test.d/ballerina || CODE=1
+# bash
+/usr/share/polygott/self-test.d/bash || CODE=1
+# c
+/usr/share/polygott/self-test.d/c || CODE=1
+# common lisp
+/usr/share/polygott/self-test.d/clisp || CODE=1
+# clojure
+/usr/share/polygott/self-test.d/clojure || CODE=1
+# cpp
+/usr/share/polygott/self-test.d/cpp || CODE=1
+# cpp11
+/usr/share/polygott/self-test.d/cpp11 || CODE=1
+# crystal
+/usr/share/polygott/self-test.d/crystal || CODE=1
+# csharp
+/usr/share/polygott/self-test.d/csharp || CODE=1
+# D
+/usr/share/polygott/self-test.d/d || CODE=1
+# dart
+/usr/share/polygott/self-test.d/dart || CODE=1
+# deno
+/usr/share/polygott/self-test.d/deno || CODE=1
+# elisp
+/usr/share/polygott/self-test.d/elisp || CODE=1
+# erlang
+/usr/share/polygott/self-test.d/erlang || CODE=1
+# elixir
+/usr/share/polygott/self-test.d/elixir || CODE=1
+# nodejs
+/usr/share/polygott/self-test.d/nodejs || CODE=1
+# enzyme
+/usr/share/polygott/self-test.d/enzyme || CODE=1
+# express
+/usr/share/polygott/self-test.d/express || CODE=1
+# flow
+/usr/share/polygott/self-test.d/flow || CODE=1
+# forth
+/usr/share/polygott/self-test.d/forth || CODE=1
+# fortran
+/usr/share/polygott/self-test.d/fortran || CODE=1
+# fsharp
+/usr/share/polygott/self-test.d/fsharp || CODE=1
+# gatsbyjs
+/usr/share/polygott/self-test.d/gatsbyjs || CODE=1
+# go
+/usr/share/polygott/self-test.d/go || CODE=1
+# guile
+/usr/share/polygott/self-test.d/guile || CODE=1
+# haskell
+/usr/share/polygott/self-test.d/haskell || CODE=1
+# haxe
+/usr/share/polygott/self-test.d/haxe || CODE=1
+# java
+/usr/share/polygott/self-test.d/java || CODE=1
+# jest
+/usr/share/polygott/self-test.d/jest || CODE=1
+# julia
+/usr/share/polygott/self-test.d/julia || CODE=1
+# kotlin
+/usr/share/polygott/self-test.d/kotlin || CODE=1
+# love2d
+/usr/share/polygott/self-test.d/love2d || CODE=1
+# lua
+/usr/share/polygott/self-test.d/lua || CODE=1
+# mercury
+/usr/share/polygott/self-test.d/mercury || CODE=1
+# nextjs
+/usr/share/polygott/self-test.d/nextjs || CODE=1
+# nim
+/usr/share/polygott/self-test.d/nim || CODE=1
+# objective-c
+/usr/share/polygott/self-test.d/objective-c || CODE=1
+# ocaml
+/usr/share/polygott/self-test.d/ocaml || CODE=1
+# pascal
+/usr/share/polygott/self-test.d/pascal || CODE=1
+# php
+/usr/share/polygott/self-test.d/php || CODE=1
+# powershell
+/usr/share/polygott/self-test.d/powershell || CODE=1
+# prolog
+/usr/share/polygott/self-test.d/prolog || CODE=1
+# python3
+/usr/share/polygott/self-test.d/python3 || CODE=1
+# pygame
+/usr/share/polygott/self-test.d/pygame || CODE=1
+# python
+/usr/share/polygott/self-test.d/python || CODE=1
+# pyxel
+/usr/share/polygott/self-test.d/pyxel || CODE=1
+# quil
+/usr/share/polygott/self-test.d/quil || CODE=1
+# raku
+/usr/share/polygott/self-test.d/raku || CODE=1
+# react_native
+/usr/share/polygott/self-test.d/react_native || CODE=1
+# reactjs
+/usr/share/polygott/self-test.d/reactjs || CODE=1
+# reactts
+/usr/share/polygott/self-test.d/reactts || CODE=1
+# rlang
+/usr/share/polygott/self-test.d/rlang || CODE=1
+# ruby
+/usr/share/polygott/self-test.d/ruby || CODE=1
+# rust
+/usr/share/polygott/self-test.d/rust || CODE=1
+# scala
+/usr/share/polygott/self-test.d/scala || CODE=1
+# sqlite
+/usr/share/polygott/self-test.d/sqlite || CODE=1
+# swift
+/usr/share/polygott/self-test.d/swift || CODE=1
+# tcl
+/usr/share/polygott/self-test.d/tcl || CODE=1
+# WebAssembly
+/usr/share/polygott/self-test.d/webassembly || CODE=1
+# wren
+/usr/share/polygott/self-test.d/wren || CODE=1
+
+exit $CODE

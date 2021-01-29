@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",gatsbyjs,"* ]]; then
+	echo S 'gatsbyjs:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'gatsbyjs'
+
+
+exit $CODE

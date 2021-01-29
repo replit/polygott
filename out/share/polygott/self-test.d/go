@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",go,"* ]]; then
+	echo S 'go:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'go'
+
+# go:hello
+SUCCESS=true
+OUTPUT="$(echo 'cGFja2FnZSBtYWluIAppbXBvcnQgImZtdCIgCmZ1bmMgbWFpbigpIHsgCmZtdC5QcmludGxuKCJoZWxsbyIpIAp9' | \
+          base64 --decode | \
+          run-project -s -l 'go' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'go' \
+      <( echo 'aGVsbG8K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'go:hello'
+else
+  echo ❌ 'go:hello'
+  CODE=1
+fi
+# go:version
+SUCCESS=true
+OUTPUT="$(echo 'cGFja2FnZSBtYWluIAppbXBvcnQgKCJmbXQiIAoicnVudGltZSIpIApmdW5jIG1haW4oKXtmbXQuUHJpbnQocnVudGltZS5WZXJzaW9uKClbOjddKX0=' | \
+          base64 --decode | \
+          run-project -s -l 'go' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'go' \
+      <( echo 'Z28xLjE0Lg==' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'go:version'
+else
+  echo ❌ 'go:version'
+  CODE=1
+fi
+
+exit $CODE

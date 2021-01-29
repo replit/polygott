@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",crystal,"* ]]; then
+	echo S 'crystal:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'crystal'
+
+# crystal:hello
+SUCCESS=true
+OUTPUT="$(echo 'cHV0cyAiaGVsbG8gd29ybGQi' | \
+          base64 --decode | \
+          run-project -s -l 'crystal' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'crystal' \
+      <( echo 'aGVsbG8gd29ybGQK' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'crystal:hello'
+else
+  echo ❌ 'crystal:hello'
+  CODE=1
+fi
+
+exit $CODE

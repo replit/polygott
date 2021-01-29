@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",rust,"* ]]; then
+	echo S 'rust:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'rust'
+
+# rust:hello
+SUCCESS=true
+OUTPUT="$(echo 'Zm4gbWFpbigpIHsKICBwcmludGxuISgiaGVsbG8iKTsKfQ==' | \
+          base64 --decode | \
+          run-project -s -l 'rust' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'rust' \
+      <( echo 'aGVsbG8K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'rust:hello'
+else
+  echo ❌ 'rust:hello'
+  CODE=1
+fi
+
+exit $CODE

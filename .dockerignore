@@ -1,2 +1,14 @@
+.circleci/
+.git/
 **/*.stamp
-gen/node_modules
+gen/node_modules/
+ignore/
+LICENSE
+README.md
+Makefile
+
+# The contents of these files/directories are merged into the artifacts that go
+# into out/
+packages.txt
+gen/
+languages/

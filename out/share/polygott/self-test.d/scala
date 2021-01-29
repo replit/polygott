@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",scala,"* ]]; then
+	echo S 'scala:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'scala'
+
+# scala:hello
+SUCCESS=true
+OUTPUT="$(echo 'b2JqZWN0IE1haW4geyBkZWYgbWFpbihhcmdzOiBBcnJheVtTdHJpbmddKSB7IHByaW50bG4oIkhlbGxvLCB3b3JsZCEiKSB9IH0K' | \
+          base64 --decode | \
+          run-project -s -l 'scala' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'scala' \
+      <( echo 'SGVsbG8sIHdvcmxkIQo=' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'scala:hello'
+else
+  echo ❌ 'scala:hello'
+  CODE=1
+fi
+
+exit $CODE

@@ -166,8 +166,16 @@ for (const languageId of languageIds ) {
 	handleLanguage(languageInfo[languageId]);
 }
 
-let lbypop = JSON.parse(JSON.stringify(languages));
-lbypop.sort((a, b) => b.popularity - a.popularity);
+// Ensure this is stable-sorted.
+const lbypop = JSON.parse(JSON.stringify(languages))
+	.map((value, index) => [index, value])
+	.sort(([aIndex, aValue], [bIndex, bValue]) => {
+		if (aValue.popularity == bValue.popularity) {
+			return aIndex - bIndex;
+		}
+		return bValue.popularity - aValue.popularity;
+	})
+	.map(([, value]) => value);
 
 let lpad = (s, n) => s + new Array(n - s.length).fill(" ").join("");
 
