@@ -3,9 +3,9 @@ FROM replco/upm:light AS upm
 FROM node:8.14.0-alpine AS alpine
 
 ARG PRYBAR_TAG=circleci_pipeline_87_build_94
-ADD fetch-prybar.sh fetch-prybar.sh
+COPY ./extra/fetch-prybar.sh fetch-prybar.sh
 RUN sh fetch-prybar.sh $PRYBAR_TAG
-ADD build-prybar-lang.sh build-prybar-lang.sh
+COPY ./extra/build-prybar-lang.sh build-prybar-lang.sh
 
 FROM gcc AS websockify
 RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify && \
@@ -42,7 +42,7 @@ RUN /bin/bash phase2.sh
 FROM polygott-phase2 AS polygott-tools
 
 RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
-ADD polygott-gitignore /etc/.gitignore
+COPY ./extra/polygott-gitignore /etc/.gitignore
 
 COPY ./out/run-project /usr/bin/run-project
 COPY ./out/run-language-server /usr/bin/run-language-server
@@ -72,24 +72,24 @@ ENV \
         USER=runner \
         VIRTUAL_ENV="/opt/virtualenvs/python3"
 
-COPY run_dir /run_dir/
+COPY ./run_dir /run_dir/
 
 RUN ln -sf /usr/lib/chromium-browser/chromedriver /usr/local/bin
 
-COPY extra/apt-install /usr/bin/install-pkg
+COPY ./extra/apt-install /usr/bin/install-pkg
 
-COPY extra/_test_runner.py /home/runner/_test_runner.py
-COPY extra/cquery11 /opt/homes/cpp11/.cquery
-COPY extra/pycodestyle ${XDG_CONFIG_HOME}/pycodestyle
-COPY extra/pylintrc /etc/pylintrc
-COPY extra/config.toml ${XDG_CONFIG_HOME}/pypoetry/config.toml
+COPY ./extra/_test_runner.py /home/runner/_test_runner.py
+COPY ./extra/cquery11 /opt/homes/cpp11/.cquery
+COPY ./extra/pycodestyle ${XDG_CONFIG_HOME}/pycodestyle
+COPY ./extra/pylintrc /etc/pylintrc
+COPY ./extra/config.toml ${XDG_CONFIG_HOME}/pypoetry/config.toml
 
-COPY extra/replit-v2.py /usr/local/lib/python3.6/dist-packages/replit.py
-COPY extra/replit-v2.py /usr/local/lib/python2.7/dist-packages/replit.py
-COPY extra/matplotlibrc /config/matplotlib/matplotlibrc
-COPY extra/fluxbox/init /etc/X11/fluxbox/init
-COPY extra/fluxbox/apps /etc/X11/fluxbox/apps
+COPY ./extra/replit-v2.py /usr/local/lib/python3.6/dist-packages/replit.py
+COPY ./extra/replit-v2.py /usr/local/lib/python2.7/dist-packages/replit.py
+COPY ./extra/matplotlibrc /config/matplotlib/matplotlibrc
+COPY ./extra/fluxbox/init /etc/X11/fluxbox/init
+COPY ./extra/fluxbox/apps /etc/X11/fluxbox/apps
 
-ADD lang-gitignore /etc/.gitignore
+COPY ./extra/lang-gitignore /etc/.gitignore
 
 WORKDIR /home/runner
