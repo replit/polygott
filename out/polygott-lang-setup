@@ -22,6 +22,11 @@ case "$LANGUAGE" in
     cp -a "/opt/homes/assembly"/* /home/runner/
   fi
   ;;
+"java")
+  if [ -d "/opt/homes/java" ]; then
+    cp -a "/opt/homes/java"/* /home/runner/
+  fi
+  ;;
 "ballerina")
   if [ -d "/opt/homes/ballerina" ]; then
     cp -a "/opt/homes/ballerina"/* /home/runner/
@@ -157,11 +162,6 @@ case "$LANGUAGE" in
     cp -a "/opt/homes/haxe"/* /home/runner/
   fi
 (echo -m Main && echo --interp) > /home/runner/build.hxml
-  ;;
-"java")
-  if [ -d "/opt/homes/java" ]; then
-    cp -a "/opt/homes/java"/* /home/runner/
-  fi
   ;;
 "jest")
   if [ -d "/opt/homes/jest" ]; then

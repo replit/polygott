@@ -1,15 +1,15 @@
 name = "ballerina"
 entrypoint = "main.bal"
+languages = [
+  "java"
+]
 extensions = [
   "bal"
 ]
-packages = [
-  "openjdk-8-jdk"
-]
 setup = [
-  "wget https://dist.ballerina.io/downloads/1.2.6/ballerina-linux-installer-x64-1.2.6.deb",
-  "dpkg -i ballerina-linux-installer-x64-1.2.6.deb",
-  "rm -r ballerina-linux-installer-x64-1.2.6.deb"
+  "wget https://dist.ballerina.io/downloads/1.2.13/ballerina-linux-installer-x64-1.2.13.deb",
+  "dpkg -i ballerina-linux-installer-x64-1.2.13.deb",
+  "rm -r ballerina-linux-installer-x64-1.2.13.deb"
 ]
 
 

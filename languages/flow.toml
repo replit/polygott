@@ -1,4 +1,7 @@
 name = "flow"
+languages = [
+  "nodejs"
+]
 entrypoint = "src/index.js"
 extensions = [
   "js"

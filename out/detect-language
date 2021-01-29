@@ -21,6 +21,10 @@ case "${LANGUAGE}" in
   echo 'assembly';
   exit 0
   ;;
+"java")
+  echo 'java';
+  exit 0
+  ;;
 "ballerina")
   echo 'ballerina';
   exit 0
@@ -127,10 +131,6 @@ case "${LANGUAGE}" in
   ;;
 "haxe")
   echo 'haxe';
-  exit 0
-  ;;
-"java")
-  echo 'java';
   exit 0
   ;;
 "jest")
@@ -268,6 +268,7 @@ if [ -f main.py ]; then echo 'python3'; exit 0; fi
 if [ -f main.py ]; then echo 'pygame'; exit 0; fi
 if [ -f main.py ]; then echo 'pyxel'; exit 0; fi
 if [ -f main.asm ]; then echo 'assembly'; exit 0; fi
+if [ -f Main.java ]; then echo 'java'; exit 0; fi
 if [ -f main.bal ]; then echo 'ballerina'; exit 0; fi
 if [ -f main.sh ]; then echo 'bash'; exit 0; fi
 if [ -f main.c ]; then echo 'c'; exit 0; fi
@@ -293,7 +294,6 @@ if [ -f main.go ]; then echo 'go'; exit 0; fi
 if [ -f main.scm ]; then echo 'guile'; exit 0; fi
 if [ -f main.hs ]; then echo 'haskell'; exit 0; fi
 if [ -f Main.hx ]; then echo 'haxe'; exit 0; fi
-if [ -f Main.java ]; then echo 'java'; exit 0; fi
 if [ -f config.json ]; then echo 'jest'; exit 0; fi
 if [ -f main.jl ]; then echo 'julia'; exit 0; fi
 if [ -f main.kt ]; then echo 'kotlin'; exit 0; fi
@@ -333,6 +333,7 @@ if [ -n "$(find . -name '*.py')" ]; then echo 'pygame'; exit 0; fi
 if [ -n "$(find . -name '*.py')" ]; then echo 'pyxel'; exit 0; fi
 if [ -n "$(find . -name '*.asm')" ]; then echo 'assembly'; exit 0; fi
 if [ -n "$(find . -name '*.s')" ]; then echo 'assembly'; exit 0; fi
+if [ -n "$(find . -name '*.java')" ]; then echo 'java'; exit 0; fi
 if [ -n "$(find . -name '*.bal')" ]; then echo 'ballerina'; exit 0; fi
 if [ -n "$(find . -name '*.sh')" ]; then echo 'bash'; exit 0; fi
 if [ -n "$(find . -name '*.c')" ]; then echo 'c'; exit 0; fi
@@ -366,7 +367,6 @@ if [ -n "$(find . -name '*.go')" ]; then echo 'go'; exit 0; fi
 if [ -n "$(find . -name '*.scm')" ]; then echo 'guile'; exit 0; fi
 if [ -n "$(find . -name '*.hs')" ]; then echo 'haskell'; exit 0; fi
 if [ -n "$(find . -name '*.hx')" ]; then echo 'haxe'; exit 0; fi
-if [ -n "$(find . -name '*.java')" ]; then echo 'java'; exit 0; fi
 if [ -n "$(find . -name '*.js')" ]; then echo 'jest'; exit 0; fi
 if [ -n "$(find . -name '*.jl')" ]; then echo 'julia'; exit 0; fi
 if [ -n "$(find . -name '*.kt')" ]; then echo 'kotlin'; exit 0; fi

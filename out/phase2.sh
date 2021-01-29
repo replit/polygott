@@ -8,13 +8,39 @@ rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/default
 find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
 expected_mtime="$(find /var/lib/apt/lists -type f -print0 | xargs -0 stat --format="%Y" | sort -n | tail -n1)"
 
+if [[ -z "${LANGS}" || ",${LANGS}," == *",ballerina,"* || ",${LANGS}," == *",java,"* || ",${LANGS}," == *",scala,"* ]]; then
+	echo 'Setup java'
+	cd "${HOME}"
+
+	mkdir -p /config/language-server && cd /config/language-server && wget http://download.eclipse.org/jdtls/milestones/0.21.0/jdt-language-server-0.21.0-201806152234.tar.gz && tar -xzf jdt-language-server-0.21.0-201806152234.tar.gz && rm jdt-language-server-0.21.0-201806152234.tar.gz && chown runner:runner -R /config/language-server
+	echo '<project> <modelVersion>4.0.0</modelVersion> <groupId>mygroupid</groupId> <artifactId>myartifactid</artifactId> <version>0.0-SNAPSHOT</version> <build><plugins> <plugin> <groupId>de.qaware.maven</groupId> <artifactId>go-offline-maven-plugin</artifactId> <version>1.2.5</version> <configuration> <dynamicDependencies> <DynamicDependency> <groupId>org.apache.maven.surefire</groupId> <artifactId>surefire-junit4</artifactId> <version>2.20.1</version> <repositoryType>PLUGIN</repositoryType> </DynamicDependency> <DynamicDependency> <groupId>com.querydsl</groupId> <artifactId>querydsl-apt</artifactId> <version>4.2.1</version> <classifier>jpa</classifier> <repositoryType>MAIN</repositoryType> </DynamicDependency> </dynamicDependencies> </configuration> </plugin> </plugins></build> </project>' > /tmp/emptypom.xml
+	mvn -f /tmp/emptypom.xml -Dmaven.repo.local=/home/runner/.m2/repository de.qaware.maven:go-offline-maven-plugin:resolve-dependencies dependency:copy-dependencies
+	rm /tmp/emptypom.xml
+
+	if [[ -n "$(ls -A /home/runner)" ]]; then
+		echo Storing home for java
+		mkdir -p /opt/homes/java
+		cp -rp /opt/homes/default/* /opt/homes/java
+		rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/java
+		find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+		ls -A /opt/homes/java
+	fi
+	last_mtime="$(find /var/lib/apt/lists -type f -print0 | xargs -0 stat --format="%Y" | sort -n | tail -n1)"
+	if [[ "${last_mtime}" != "${expected_mtime}" ]]; then
+		echo 'Language java just touched the apt lists!'
+		exit 1
+	fi
+fi
+
 if [[ -z "${LANGS}" || ",${LANGS}," == *",ballerina,"* ]]; then
+	echo 'Setup parents of ballerina'
+	find /opt/homes/java/ -mindepth 1 -maxdepth 1 -exec cp -rp {} /home/runner/ \;
 	echo 'Setup ballerina'
 	cd "${HOME}"
 
-	wget https://dist.ballerina.io/downloads/1.2.6/ballerina-linux-installer-x64-1.2.6.deb
-	dpkg -i ballerina-linux-installer-x64-1.2.6.deb
-	rm -r ballerina-linux-installer-x64-1.2.6.deb
+	wget https://dist.ballerina.io/downloads/1.2.13/ballerina-linux-installer-x64-1.2.13.deb
+	dpkg -i ballerina-linux-installer-x64-1.2.13.deb
+	rm -r ballerina-linux-installer-x64-1.2.13.deb
 
 	if [[ -n "$(ls -A /home/runner)" ]]; then
 		echo Storing home for ballerina
@@ -173,7 +199,7 @@ if [[ -z "${LANGS}" || ",${LANGS}," == *",elisp,"* ]]; then
 	fi
 fi
 
-if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* || ",${LANGS}," == *",gatsbyjs,"* || ",${LANGS}," == *",jest,"* || ",${LANGS}," == *",nextjs,"* || ",${LANGS}," == *",nodejs,"* || ",${LANGS}," == *",react_native,"* || ",${LANGS}," == *",reactjs,"* || ",${LANGS}," == *",reactts,"* ]]; then
+if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* || ",${LANGS}," == *",flow,"* || ",${LANGS}," == *",gatsbyjs,"* || ",${LANGS}," == *",jest,"* || ",${LANGS}," == *",nextjs,"* || ",${LANGS}," == *",nodejs,"* || ",${LANGS}," == *",react_native,"* || ",${LANGS}," == *",reactjs,"* || ",${LANGS}," == *",reactts,"* ]]; then
 	echo 'Setup nodejs'
 	cd "${HOME}"
 
@@ -220,6 +246,8 @@ if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* ]]; then
 fi
 
 if [[ -z "${LANGS}" || ",${LANGS}," == *",flow,"* ]]; then
+	echo 'Setup parents of flow'
+	find /opt/homes/nodejs/ -mindepth 1 -maxdepth 1 -exec cp -rp {} /home/runner/ \;
 	echo 'Setup flow'
 	cd "${HOME}"
 
@@ -357,30 +385,6 @@ if [[ -z "${LANGS}" || ",${LANGS}," == *",haxe,"* ]]; then
 	last_mtime="$(find /var/lib/apt/lists -type f -print0 | xargs -0 stat --format="%Y" | sort -n | tail -n1)"
 	if [[ "${last_mtime}" != "${expected_mtime}" ]]; then
 		echo 'Language haxe just touched the apt lists!'
-		exit 1
-	fi
-fi
-
-if [[ -z "${LANGS}" || ",${LANGS}," == *",java,"* ]]; then
-	echo 'Setup java'
-	cd "${HOME}"
-
-	mkdir -p /config/language-server && cd /config/language-server && wget http://download.eclipse.org/jdtls/milestones/0.21.0/jdt-language-server-0.21.0-201806152234.tar.gz && tar -xzf jdt-language-server-0.21.0-201806152234.tar.gz && rm jdt-language-server-0.21.0-201806152234.tar.gz && chown runner:runner -R /config/language-server
-	echo '<project> <modelVersion>4.0.0</modelVersion> <groupId>mygroupid</groupId> <artifactId>myartifactid</artifactId> <version>0.0-SNAPSHOT</version> <build><plugins> <plugin> <groupId>de.qaware.maven</groupId> <artifactId>go-offline-maven-plugin</artifactId> <version>1.2.5</version> <configuration> <dynamicDependencies> <DynamicDependency> <groupId>org.apache.maven.surefire</groupId> <artifactId>surefire-junit4</artifactId> <version>2.20.1</version> <repositoryType>PLUGIN</repositoryType> </DynamicDependency> <DynamicDependency> <groupId>com.querydsl</groupId> <artifactId>querydsl-apt</artifactId> <version>4.2.1</version> <classifier>jpa</classifier> <repositoryType>MAIN</repositoryType> </DynamicDependency> </dynamicDependencies> </configuration> </plugin> </plugins></build> </project>' > /tmp/emptypom.xml
-	mvn -f /tmp/emptypom.xml -Dmaven.repo.local=/home/runner/.m2/repository de.qaware.maven:go-offline-maven-plugin:resolve-dependencies dependency:copy-dependencies
-	rm /tmp/emptypom.xml
-
-	if [[ -n "$(ls -A /home/runner)" ]]; then
-		echo Storing home for java
-		mkdir -p /opt/homes/java
-		cp -rp /opt/homes/default/* /opt/homes/java
-		rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/java
-		find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
-		ls -A /opt/homes/java
-	fi
-	last_mtime="$(find /var/lib/apt/lists -type f -print0 | xargs -0 stat --format="%Y" | sort -n | tail -n1)"
-	if [[ "${last_mtime}" != "${expected_mtime}" ]]; then
-		echo 'Language java just touched the apt lists!'
 		exit 1
 	fi
 fi
@@ -897,6 +901,8 @@ if [[ -z "${LANGS}" || ",${LANGS}," == *",rust,"* ]]; then
 fi
 
 if [[ -z "${LANGS}" || ",${LANGS}," == *",scala,"* ]]; then
+	echo 'Setup parents of scala'
+	find /opt/homes/java/ -mindepth 1 -maxdepth 1 -exec cp -rp {} /home/runner/ \;
 	echo 'Setup scala'
 	cd "${HOME}"
 

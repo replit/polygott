@@ -2,7 +2,7 @@
 set -ev
 shopt -s dotglob
 
-# Languages: assembly, ballerina, bash, c, common lisp, clojure, cpp, cpp11, crystal, csharp, D, dart, deno, elisp, erlang, elixir, nodejs, enzyme, express, flow, forth, fortran, fsharp, gatsbyjs, go, guile, haskell, haxe, java, jest, julia, kotlin, love2d, lua, mercury, nextjs, nim, objective-c, ocaml, pascal, php, powershell, prolog, python3, pygame, python, pyxel, quil, raku, react_native, reactjs, reactts, rlang, ruby, rust, scala, sqlite, swift, tcl, WebAssembly, wren
+# Languages: assembly, java, ballerina, bash, c, common lisp, clojure, cpp, cpp11, crystal, csharp, D, dart, deno, elisp, erlang, elixir, nodejs, enzyme, express, flow, forth, fortran, fsharp, gatsbyjs, go, guile, haskell, haxe, jest, julia, kotlin, love2d, lua, mercury, nextjs, nim, objective-c, ocaml, pascal, php, powershell, prolog, python3, pygame, python, pyxel, quil, raku, react_native, reactjs, reactts, rlang, ruby, rust, scala, sqlite, swift, tcl, WebAssembly, wren
 
 if [[ -z "${LANGS}" || ",${LANGS}," == *",crystal,"* ]]; then
 	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 09617FD37CC06B54
@@ -29,7 +29,7 @@ if [[ -z "${LANGS}" || ",${LANGS}," == *",elixir,"* || ",${LANGS}," == *",erlang
 	curl -L https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | apt-key add -
 fi
 
-if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* || ",${LANGS}," == *",gatsbyjs,"* || ",${LANGS}," == *",jest,"* || ",${LANGS}," == *",nextjs,"* || ",${LANGS}," == *",nodejs,"* || ",${LANGS}," == *",react_native,"* || ",${LANGS}," == *",reactjs,"* || ",${LANGS}," == *",reactts,"* ]]; then
+if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* || ",${LANGS}," == *",flow,"* || ",${LANGS}," == *",gatsbyjs,"* || ",${LANGS}," == *",jest,"* || ",${LANGS}," == *",nextjs,"* || ",${LANGS}," == *",nodejs,"* || ",${LANGS}," == *",react_native,"* || ",${LANGS}," == *",reactjs,"* || ",${LANGS}," == *",reactts,"* ]]; then
 	curl -L https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 fi
 
@@ -51,7 +51,7 @@ fi
 if [[ -z "${LANGS}" || ",${LANGS}," == *",elixir,"* || ",${LANGS}," == *",erlang,"* ]]; then
 	add-apt-repository -y 'deb https://packages.erlang-solutions.com/ubuntu bionic contrib'
 fi
-if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* || ",${LANGS}," == *",gatsbyjs,"* || ",${LANGS}," == *",jest,"* || ",${LANGS}," == *",nextjs,"* || ",${LANGS}," == *",nodejs,"* || ",${LANGS}," == *",react_native,"* || ",${LANGS}," == *",reactjs,"* || ",${LANGS}," == *",reactts,"* ]]; then
+if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* || ",${LANGS}," == *",flow,"* || ",${LANGS}," == *",gatsbyjs,"* || ",${LANGS}," == *",jest,"* || ",${LANGS}," == *",nextjs,"* || ",${LANGS}," == *",nodejs,"* || ",${LANGS}," == *",react_native,"* || ",${LANGS}," == *",reactjs,"* || ",${LANGS}," == *",reactts,"* ]]; then
 	add-apt-repository -y 'deb https://deb.nodesource.com/node_10.x bionic main'
 fi
 if [[ -z "${LANGS}" || ",${LANGS}," == *",haxe,"* ]]; then
@@ -77,8 +77,11 @@ packages=()
 if [[ -z "${LANGS}" || ",${LANGS}," == *",assembly,"* ]]; then
 	packages+=('nasm')
 fi
-if [[ -z "${LANGS}" || ",${LANGS}," == *",ballerina,"* ]]; then
-	packages+=('openjdk-8-jdk')
+if [[ -z "${LANGS}" || ",${LANGS}," == *",ballerina,"* || ",${LANGS}," == *",java,"* || ",${LANGS}," == *",scala,"* ]]; then
+	packages+=('maven')
+fi
+if [[ -z "${LANGS}" || ",${LANGS}," == *",ballerina,"* || ",${LANGS}," == *",java,"* || ",${LANGS}," == *",kotlin,"* || ",${LANGS}," == *",scala,"* ]]; then
+	packages+=('openjdk-11-jdk')
 fi
 if [[ -z "${LANGS}" || ",${LANGS}," == *",c,"* || ",${LANGS}," == *",cpp,"* || ",${LANGS}," == *",cpp11,"* ]]; then
 	packages+=('clang-7')
@@ -125,7 +128,7 @@ fi
 if [[ -z "${LANGS}" || ",${LANGS}," == *",elixir,"* ]]; then
 	packages+=('elixir')
 fi
-if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* || ",${LANGS}," == *",gatsbyjs,"* || ",${LANGS}," == *",jest,"* || ",${LANGS}," == *",nextjs,"* || ",${LANGS}," == *",nodejs,"* || ",${LANGS}," == *",react_native,"* || ",${LANGS}," == *",reactjs,"* || ",${LANGS}," == *",reactts,"* ]]; then
+if [[ -z "${LANGS}" || ",${LANGS}," == *",enzyme,"* || ",${LANGS}," == *",flow,"* || ",${LANGS}," == *",gatsbyjs,"* || ",${LANGS}," == *",jest,"* || ",${LANGS}," == *",nextjs,"* || ",${LANGS}," == *",nodejs,"* || ",${LANGS}," == *",react_native,"* || ",${LANGS}," == *",reactjs,"* || ",${LANGS}," == *",reactts,"* ]]; then
 	packages+=('nodejs')
 fi
 if [[ -z "${LANGS}" || ",${LANGS}," == *",forth,"* ]]; then
@@ -184,12 +187,6 @@ if [[ -z "${LANGS}" || ",${LANGS}," == *",haxe,"* ]]; then
 fi
 if [[ -z "${LANGS}" || ",${LANGS}," == *",haxe,"* ]]; then
 	packages+=('libuv1-dev')
-fi
-if [[ -z "${LANGS}" || ",${LANGS}," == *",java,"* ]]; then
-	packages+=('maven')
-fi
-if [[ -z "${LANGS}" || ",${LANGS}," == *",java,"* || ",${LANGS}," == *",kotlin,"* || ",${LANGS}," == *",scala,"* ]]; then
-	packages+=('openjdk-11-jdk')
 fi
 if [[ -z "${LANGS}" || ",${LANGS}," == *",love2d,"* ]]; then
 	packages+=('love')
