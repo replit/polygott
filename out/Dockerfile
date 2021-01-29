@@ -1,3 +1,6 @@
+# syntax = docker/dockerfile:1.2@sha256:e2a8561e419ab1ba6b2fe6cbdf49fd92b95912df1cf7d313c3e2230a333fdbcc
+
+
 ## Import UPM.
 FROM replco/upm:light@sha256:7969cc1285d7900023d68cd3c5fd5155bc9506ac1b0bae56dc49dc690de2c383 AS upm
 
@@ -22,24 +25,31 @@ COPY --from=prybar /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
 COPY --from=prybar /usr/bin/prybar_assets /usr/bin/prybar_assets
 
 COPY ./out/phase0.sh /phase0.sh
-RUN /bin/bash phase0.sh
+RUN --mount=type=tmpfs,target=/var/log \
+    /bin/bash phase0.sh
 
 # Environment variables that are depended on by phase1 files.
 ENV XDG_CONFIG_HOME=/config
 
+
+## Runs apt-get update and installs the base packages.
 FROM polygott-phase0 AS polygott-phase1
 ARG LANGS
 ENV LANGS=${LANGS}
 
 COPY ./out/phase1.sh /phase1.sh
-RUN /bin/bash phase1.sh
+RUN --mount=type=tmpfs,target=/var/log \
+    /bin/bash phase1.sh
 
+
+## Installs the per-language packages.
 FROM polygott-phase1 AS polygott-phase2
 ARG LANGS
 ENV LANGS=${LANGS}
 
 COPY ./out/phase2.sh /phase2.sh
-RUN /bin/bash phase2.sh
+RUN --mount=type=tmpfs,target=/var/log \
+    /bin/bash phase2.sh
 
 
 ## Image to build websockify
