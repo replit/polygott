@@ -11,7 +11,7 @@ jobs:
       - run: |
           # Make sure all of the artifacts are up-to-date.
           rm -rf out/*
-          make out/.gen.stamp
+          make out/Dockerfile
           if ! git diff --exit-code out/ ; then
             echo "There are changes to out/ that need to be checked in."
             exit 1

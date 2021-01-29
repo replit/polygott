@@ -133,6 +133,8 @@ subdirectory](languages). The meaningful keys are as follows:
   shell scripts using the language configuration via the
   [EJS](https://ejs.co/) templating system. This is done by [a Node.js
   script](gen/index.js) inside the Docker image.
+* The multi-stage [`Dockerfile`](gen/Dockerfile.ejs) is created from the
+  language configuration files.
 * Languages are installed in several phases. [In phase
   0](gen/phase0.ejs), shared packages [in
   `packages.txt`](packages.txt) are installed. [In phase

@@ -1,23 +1,25 @@
-FROM replco/upm:light AS upm
+## Import UPM.
+FROM replco/upm:light@sha256:7969cc1285d7900023d68cd3c5fd5155bc9506ac1b0bae56dc49dc690de2c383 AS upm
 
-FROM node:8.14.0-alpine AS alpine
+
+## Image for prybar resources
+FROM node:8.14.0-alpine@sha256:fa979a27cee3c8664a689e27e778b766af72da52920454160421854027374f09 AS prybar
 
 ARG PRYBAR_TAG=circleci_pipeline_87_build_94
 COPY ./extra/fetch-prybar.sh fetch-prybar.sh
 RUN sh fetch-prybar.sh $PRYBAR_TAG
 COPY ./extra/build-prybar-lang.sh build-prybar-lang.sh
 
-FROM gcc AS websockify
-RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify && \
-    cd /root/websockify && make
 
-FROM ubuntu:18.04 AS polygott-phase0
+## The base image from which all others will extend.
+## Installs the base packages, certificats, and a few choice .deb files.
+FROM ubuntu:18.04@sha256:ea188fdc5be9b25ca048f1e882b33f1bc763fb976a8a4fea446b38ed0efcbeba AS polygott-phase0
 ARG LANGS
 ENV LANGS=${LANGS}
 
-COPY --from=alpine /gocode /gocode
-COPY --from=alpine /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
-COPY --from=alpine /usr/bin/prybar_assets /usr/bin/prybar_assets
+COPY --from=prybar /gocode /gocode
+COPY --from=prybar /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
+COPY --from=prybar /usr/bin/prybar_assets /usr/bin/prybar_assets
 
 COPY ./out/phase0.sh /phase0.sh
 RUN /bin/bash phase0.sh
@@ -39,7 +41,15 @@ ENV LANGS=${LANGS}
 COPY ./out/phase2.sh /phase2.sh
 RUN /bin/bash phase2.sh
 
-FROM polygott-phase2 AS polygott-tools
+
+## Image to build websockify
+FROM polygott-phase2 AS websockify
+RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify && \
+    cd /root/websockify && make
+
+
+## The polygott-specific tools.
+FROM polygott-phase2 AS polygott
 
 RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
 COPY ./extra/polygott-gitignore /etc/.gitignore
@@ -54,23 +64,6 @@ COPY ./out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
 COPY ./out/share/ /usr/share/
 COPY --from=upm /usr/local/bin/upm /usr/local/bin/upm
 COPY --from=websockify /root/websockify /usr/local/websockify
-
-ENV \
-        APT_OPTIONS="-o debug::nolocking=true -o dir::cache=/tmp/apt/cache -o dir::state=/tmp/apt/state -o dir::etc::sourcelist=/tmp/apt/sources/sources.list" \
-        CPATH="${INCLUDE_PATH}" \
-        CPPPATH="${INCLUDE_PATH}" \
-        DISPLAY=:0 \
-        HOME=/home/runner \
-        INCLUDE_PATH="/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu:${INCLUDE_PATH}" \
-        LANG=en_US.UTF-8 \
-        LC_ALL=en_US.UTF-8 \
-        LD_LIBRARY_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/home/runner/.apt/usr/lib:${LD_LIBRARY_PATH}" \
-        LIBRARY_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/home/runner/.apt/usr/lib:${LIBRARY_PATH}" \
-        PATH="/usr/local/go/bin:/opt/virtualenvs/python3/bin:/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:/home/runner/.apt/usr/bin:${PATH}" \
-        PKG_CONFIG_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/i386-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/pkgconfig:${PKG_CONFIG_PATH}" \
-        PYTHONPATH="/opt/virtualenvs/python3/lib/python3.8/site-packages" \
-        USER=runner \
-        VIRTUAL_ENV="/opt/virtualenvs/python3"
 
 COPY ./run_dir /run_dir/
 
@@ -92,4 +85,6 @@ COPY ./extra/fluxbox/apps /etc/X11/fluxbox/apps
 
 COPY ./extra/lang-gitignore /etc/.gitignore
 
+ENV \
+        <%- Object.entries(env).map(([key, value]) => `${key}="${value}"`).sort().join(' \\\n        ') %>
 WORKDIR /home/runner

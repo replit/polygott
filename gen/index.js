@@ -25,6 +25,25 @@ const aptKeyUrls = {};
 const aptRepos = {};
 const packages = {};
 
+// TODO: Move this to a configuration file instead of having it here.
+const env = {
+	APT_OPTIONS: '-o debug::nolocking=true -o dir::cache=/tmp/apt/cache -o dir::state=/tmp/apt/state -o dir::etc::sourcelist=/tmp/apt/sources/sources.list',
+	CPATH: '/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu',
+	CPPPATH: '/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu',
+	DISPLAY: ':0',
+	HOME: '/home/runner',
+	INCLUDE_PATH: '/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu',
+	LANG: 'en_US.UTF-8',
+	LC_ALL: 'en_US.UTF-8',
+	LD_LIBRARY_PATH: '/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/usr/local/lib:/home/runner/.apt/usr/lib',
+	LIBRARY_PATH: '/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/usr/local/lib:/home/runner/.apt/usr/lib',
+	PATH: '/usr/local/go/bin:/opt/virtualenvs/python3/bin:/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:/home/runner/.apt/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+	PKG_CONFIG_PATH: '/home/runner/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/i386-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/pkgconfig',
+	PYTHONPATH: '/opt/virtualenvs/python3/lib/python3.8/site-packages',
+	USER: 'runner',
+	VIRTUAL_ENV: '/opt/virtualenvs/python3',
+};
+
 const languageIds = glob
 	.sync(path.join(base, "languages", "*.toml"))
 	.map(filename => path.basename(filename, '.toml'))
@@ -189,6 +208,7 @@ let ctx = {
 	aptKeys,
 	aptKeyUrls,
 	lpad,
+	env,
 	c: a => a.map((s) => {
 		if (/^(\S*|`[^`]+`)$/.test(s)) return s;
 		return `'${s.replace(/[$'\\]/g, (m) => '\\' + m)}'`;
@@ -201,6 +221,7 @@ let objects = {
 	"phase0.sh": "phase0.ejs",
 	"phase1.sh": "phase1.ejs",
 	"phase2.sh": "phase2.ejs",
+	"Dockerfile": "Dockerfile.ejs",
 	"run-project": "run-project.ejs",
 	"run-language-server": "run-language-server.ejs",
 	"detect-language": "detect-language.ejs",
