@@ -3,28 +3,33 @@
 
 # Default task:
 .PHONY: image
-image: out/.gen.stamp ## Build Docker image with all languages
+image: out/Dockerfile ## Build Docker image with all languages
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
-		-t polygott:latest .
+		-f out/Dockerfile \
+		-t polygott:latest \
+		.
 
 .PHONY: image-ci
-image-ci: out/.gen.stamp ## Build Docker image with all languages needed for CI
+image-ci: out/Dockerfile ## Build Docker image with all languages needed for CI
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=python3,ruby,java \
-		-t polygott-ci:latest .
+		-f out/Dockerfile \
+		-t polygott-ci:latest \
+		.
 
-out/.gen.stamp: $(wildcard gen/*.*) $(wildcard languages/*.toml)
+out/Dockerfile: $(wildcard gen/*.*) $(wildcard languages/*.toml)
 	rm -rf out/ && mkdir out
 	(cd gen && npm install) && node gen/index.js
-	touch $@
 
-image-%: languages/%.toml out/.gen.stamp ## Build Docker image with single language LANG
+image-%: languages/%.toml out/Dockerfile ## Build Docker image with single language LANG
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=$(*) \
-		-t polygott-$(*) .
+		-f out/Dockerfile \
+		-t polygott-$(*) \
+		.
 
 .PHONY: run
 run: image ## Build and run image with all languages
