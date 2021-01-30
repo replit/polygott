@@ -6,6 +6,8 @@ CODE=0
 
 # assembly
 /usr/share/polygott/self-test.d/assembly || CODE=1
+# java
+/usr/share/polygott/self-test.d/java || CODE=1
 # ballerina
 /usr/share/polygott/self-test.d/ballerina || CODE=1
 # bash
@@ -60,8 +62,6 @@ CODE=0
 /usr/share/polygott/self-test.d/haskell || CODE=1
 # haxe
 /usr/share/polygott/self-test.d/haxe || CODE=1
-# java
-/usr/share/polygott/self-test.d/java || CODE=1
 # jest
 /usr/share/polygott/self-test.d/jest || CODE=1
 # julia

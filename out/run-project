@@ -59,6 +59,12 @@ case "$LANGUAGE" in
   ./main
   ;;
 
+"java")
+  maybe_read_stdin Main.java
+  javac -classpath .:/run_dir/junit-4.12.jar:/run_dir/hamcrest-core-1.3.jar:/run_dir/json-simple-1.1.1.jar -d . Main.java 1>&2
+  java -classpath .:/run_dir/junit-4.12.jar:/run_dir/hamcrest-core-1.3.jar:/run_dir/json-simple-1.1.1.jar Main
+  ;;
+
 "ballerina")
   maybe_read_stdin main.bal
   ballerina run main.bal
@@ -202,12 +208,6 @@ case "$LANGUAGE" in
 "haxe")
   maybe_read_stdin Main.hx
   haxe build.hxml
-  ;;
-
-"java")
-  maybe_read_stdin Main.java
-  javac -classpath .:/run_dir/junit-4.12.jar:/run_dir/hamcrest-core-1.3.jar:/run_dir/json-simple-1.1.1.jar -d . Main.java 1>&2
-  java -classpath .:/run_dir/junit-4.12.jar:/run_dir/hamcrest-core-1.3.jar:/run_dir/json-simple-1.1.1.jar Main
   ;;
 
 "jest")

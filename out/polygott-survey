@@ -1,4 +1,5 @@
 echo "assembly            " $(/bin/bash --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
+echo "java                " $(javac -version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "ballerina           " $(ballerina --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "bash                " $(/bin/bash --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "c                   " $(clang-7 --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
@@ -26,7 +27,6 @@ echo "go                  " $(go version 2>&1  </dev/null | head -n 1 | sed -E '
 echo "guile               " $(guile --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "haskell             " $(ghc --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "haxe                " $(haxe --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
-echo "java                " $(javac -version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "jest                " $(jest --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "julia               " $(prybar-julia --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "kotlin              " $(kotlin -version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')

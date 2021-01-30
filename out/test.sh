@@ -4,6 +4,12 @@
 echo "c2VjdGlvbiAudGV4dApnbG9iYWwgX3N0YXJ0Cl9zdGFydDoKbW92IHJheCwgMQptb3YgcmRpLCAxCm1vdiByc2ksIGJ1Zgptb3YgcmR4LCA1CnN5c2NhbGwKbW92IHJheCwgNjAKeG9yIHJkaSwgcmRpCnN5c2NhbGwKc2VjdGlvbiAuZGF0YQpidWY6IGRiICJoZWxsbyI="  | base64 --decode | docker run --rm -i polygott run-project -s -l assembly | diff -u --label "assembly" <( echo "aGVsbG8=" | base64 --decode ) - && echo ✓ assembly:hello
 
 
+# java
+
+
+echo "Y2xhc3MgTWFpbiB7IHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsgU3lzdGVtLm91dC5wcmludGxuKCJoZWxsbyIpOyB9IH0="  | base64 --decode | docker run --rm -i polygott run-project -s -l java | diff -u --label "java" <( echo "aGVsbG8K" | base64 --decode ) - && echo ✓ java:hello
+
+
 # ballerina
 
 
@@ -160,12 +166,6 @@ echo "bWFpbiA9IHB1dFN0ckxuICJoZWxsbyI="  | base64 --decode | docker run --rm -i 
 
 
 echo "Y2xhc3MgTWFpbiB7CglzdGF0aWMgZnVuY3Rpb24gbWFpbigpIHsKCQl0cmFjZSgiSGVsbG8sIHdvcmxkISIpOwoJfQp9"  | base64 --decode | docker run --rm -i polygott run-project -s -l haxe | diff -u --label "haxe" <( echo "TWFpbi5oeDozOiBIZWxsbywgd29ybGQhCg==" | base64 --decode ) - && echo ✓ haxe:hello
-
-
-# java
-
-
-echo "Y2xhc3MgTWFpbiB7IHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsgU3lzdGVtLm91dC5wcmludGxuKCJoZWxsbyIpOyB9IH0="  | base64 --decode | docker run --rm -i polygott run-project -s -l java | diff -u --label "java" <( echo "aGVsbG8K" | base64 --decode ) - && echo ✓ java:hello
 
 
 # jest
