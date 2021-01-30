@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",fortran,"* ]]; then
+	echo S 'fortran:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'fortran'
+
+# fortran:hello
+SUCCESS=true
+OUTPUT="$(echo 'cHJvZ3JhbSBtYWluCnByaW50ICcoImhlbGxvIiknCmVuZCBwcm9ncmFtIG1haW4=' | \
+          base64 --decode | \
+          run-project -s -l 'fortran' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'fortran' \
+      <( echo 'aGVsbG8K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'fortran:hello'
+else
+  echo ❌ 'fortran:hello'
+  CODE=1
+fi
+
+exit $CODE

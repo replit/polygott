@@ -1,0 +1,254 @@
+#!/bin/bash
+
+set -e
+
+LANGUAGE="$(detect-language "$@")"
+
+while getopts ":sl:" opt; do
+  case ${opt} in
+    l )
+      LANGUAGE=$OPTARG
+      ;;
+    \? )
+      echo "Usage: run-language-server [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+
+case "$LANGUAGE" in
+"assembly")
+  echo "No language server configured for assembly" >&2
+  exit 1
+  ;;
+"ballerina")
+  echo "No language server configured for ballerina" >&2
+  exit 1
+  ;;
+"bash")
+  echo "No language server configured for bash" >&2
+  exit 1
+  ;;
+"c")
+  cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery"}'
+  ;;
+"common lisp"|"clisp"|"lisp")
+  echo "No language server configured for common lisp" >&2
+  exit 1
+  ;;
+"clojure")
+  echo "No language server configured for clojure" >&2
+  exit 1
+  ;;
+"cpp"|"c++")
+  cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++17", "-pthread"]}'
+  ;;
+"cpp11")
+  cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++11", "-pthread"]}'
+  ;;
+"crystal")
+  echo "No language server configured for crystal" >&2
+  exit 1
+  ;;
+"csharp"|"c#")
+  echo "No language server configured for csharp" >&2
+  exit 1
+  ;;
+"D"|"d"|"dlang")
+  echo "No language server configured for D" >&2
+  exit 1
+  ;;
+"dart")
+  /usr/lib/dart/bin/dart /usr/lib/dart/bin/snapshots/analysis_server.dart.snapshot --lsp
+  ;;
+"deno")
+  deno lsp
+  ;;
+"elisp")
+  echo "No language server configured for elisp" >&2
+  exit 1
+  ;;
+"erlang")
+  echo "No language server configured for erlang" >&2
+  exit 1
+  ;;
+"elixir")
+  echo "No language server configured for elixir" >&2
+  exit 1
+  ;;
+"nodejs")
+  echo "No language server configured for nodejs" >&2
+  exit 1
+  ;;
+"enzyme")
+  echo "No language server configured for enzyme" >&2
+  exit 1
+  ;;
+"express")
+  echo "No language server configured for express" >&2
+  exit 1
+  ;;
+"flow")
+  flow-language-server --stdio
+  ;;
+"forth")
+  echo "No language server configured for forth" >&2
+  exit 1
+  ;;
+"fortran")
+  echo "No language server configured for fortran" >&2
+  exit 1
+  ;;
+"fsharp"|"f#")
+  echo "No language server configured for fsharp" >&2
+  exit 1
+  ;;
+"gatsbyjs")
+  echo "No language server configured for gatsbyjs" >&2
+  exit 1
+  ;;
+"go"|"golang")
+  /bin/bash -c /opt/homes/go/go/bin/bingo
+  ;;
+"guile"|"scheme")
+  echo "No language server configured for guile" >&2
+  exit 1
+  ;;
+"haskell")
+  echo "No language server configured for haskell" >&2
+  exit 1
+  ;;
+"haxe")
+  haxe --server-listen stdio
+  ;;
+"java")
+  java -Declipse.application=org.eclipse.jdt.ls.core.id1 -Dosgi.bundles.defaultStartLevel=4 -Declipse.product=org.eclipse.jdt.ls.core.product -noverify -Xmx256m -XX:+UseConcMarkSweepGC -jar /config/language-server/plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar -configuration /config/language-server/config_linux -data /home/runner
+  ;;
+"jest")
+  echo "No language server configured for jest" >&2
+  exit 1
+  ;;
+"julia")
+  echo "No language server configured for julia" >&2
+  exit 1
+  ;;
+"kotlin")
+  echo "No language server configured for kotlin" >&2
+  exit 1
+  ;;
+"love2d")
+  echo "No language server configured for love2d" >&2
+  exit 1
+  ;;
+"lua")
+  echo "No language server configured for lua" >&2
+  exit 1
+  ;;
+"mercury")
+  echo "No language server configured for mercury" >&2
+  exit 1
+  ;;
+"nextjs")
+  echo "No language server configured for nextjs" >&2
+  exit 1
+  ;;
+"nim")
+  echo "No language server configured for nim" >&2
+  exit 1
+  ;;
+"objective-c")
+  echo "No language server configured for objective-c" >&2
+  exit 1
+  ;;
+"ocaml")
+  echo "No language server configured for ocaml" >&2
+  exit 1
+  ;;
+"pascal")
+  echo "No language server configured for pascal" >&2
+  exit 1
+  ;;
+"php")
+  echo "No language server configured for php" >&2
+  exit 1
+  ;;
+"powershell")
+  echo "No language server configured for powershell" >&2
+  exit 1
+  ;;
+"prolog")
+  echo "No language server configured for prolog" >&2
+  exit 1
+  ;;
+"python3")
+  pyls -v
+  ;;
+"pygame")
+  pyls -v
+  ;;
+"python")
+  pyls -v
+  ;;
+"pyxel")
+  pyls -v
+  ;;
+"quil")
+  echo "No language server configured for quil" >&2
+  exit 1
+  ;;
+"raku")
+  echo "No language server configured for raku" >&2
+  exit 1
+  ;;
+"react_native")
+  echo "No language server configured for react_native" >&2
+  exit 1
+  ;;
+"reactjs")
+  echo "No language server configured for reactjs" >&2
+  exit 1
+  ;;
+"reactts")
+  echo "No language server configured for reactts" >&2
+  exit 1
+  ;;
+"rlang")
+  echo "No language server configured for rlang" >&2
+  exit 1
+  ;;
+"ruby")
+  solargraph stdio
+  ;;
+"rust")
+  echo "No language server configured for rust" >&2
+  exit 1
+  ;;
+"scala")
+  echo "No language server configured for scala" >&2
+  exit 1
+  ;;
+"sqlite")
+  echo "No language server configured for sqlite" >&2
+  exit 1
+  ;;
+"swift")
+  echo "No language server configured for swift" >&2
+  exit 1
+  ;;
+"tcl")
+  echo "No language server configured for tcl" >&2
+  exit 1
+  ;;
+"WebAssembly"|"webassembly")
+  echo "No language server configured for WebAssembly" >&2
+  exit 1
+  ;;
+"wren")
+  echo "No language server configured for wren" >&2
+  exit 1
+  ;;
+*)
+  echo "Unknown Language: $LANGUAGE"
+  ;;
+esac

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",react_native,"* ]]; then
+	echo S 'react_native:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'react_native'
+
+
+exit $CODE

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",assembly,"* ]]; then
+	echo S 'assembly:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'assembly'
+
+# assembly:hello
+SUCCESS=true
+OUTPUT="$(echo 'c2VjdGlvbiAudGV4dApnbG9iYWwgX3N0YXJ0Cl9zdGFydDoKbW92IHJheCwgMQptb3YgcmRpLCAxCm1vdiByc2ksIGJ1Zgptb3YgcmR4LCA1CnN5c2NhbGwKbW92IHJheCwgNjAKeG9yIHJkaSwgcmRpCnN5c2NhbGwKc2VjdGlvbiAuZGF0YQpidWY6IGRiICJoZWxsbyI=' | \
+          base64 --decode | \
+          run-project -s -l 'assembly' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'assembly' \
+      <( echo 'aGVsbG8=' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'assembly:hello'
+else
+  echo ❌ 'assembly:hello'
+  CODE=1
+fi
+
+exit $CODE

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",julia,"* ]]; then
+	echo S 'julia:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'julia'
+
+# julia:hello
+SUCCESS=true
+OUTPUT="$(echo 'cHJpbnRsbigiaGVsbG8iKQ==' | \
+          base64 --decode | \
+          run-project -s -l 'julia' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'julia' \
+      <( echo 'aGVsbG8K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'julia:hello'
+else
+  echo ❌ 'julia:hello'
+  CODE=1
+fi
+
+exit $CODE

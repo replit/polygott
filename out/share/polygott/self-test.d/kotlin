@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",kotlin,"* ]]; then
+	echo S 'kotlin:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'kotlin'
+
+echo S 'kotlin:hello'
+
+exit $CODE

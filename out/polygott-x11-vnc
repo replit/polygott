@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# This script is now a no-op. X11 now starts automatically.
+
+exit 0

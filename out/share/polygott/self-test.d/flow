@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",flow,"* ]]; then
+	echo S 'flow:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'flow'
+
+
+exit $CODE

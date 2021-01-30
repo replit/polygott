@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",python3,"* ]]; then
+	echo S 'python3:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'python3'
+
+# python3:0
+SUCCESS=true
+OUTPUT="$(echo 'cHJpbnQoX19uYW1lX18p' | \
+          base64 --decode | \
+          run-project -s -l 'python3' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'python3' \
+      <( echo 'X19tYWluX18K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'python3:0'
+else
+  echo ❌ 'python3:0'
+  CODE=1
+fi
+# python3:hello
+SUCCESS=true
+OUTPUT="$(echo 'cHJpbnQoImhlbGxvIik=' | \
+          base64 --decode | \
+          run-project -s -l 'python3' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'python3' \
+      <( echo 'aGVsbG8K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'python3:hello'
+else
+  echo ❌ 'python3:hello'
+  CODE=1
+fi
+# python3:version
+SUCCESS=true
+OUTPUT="$(echo 'aW1wb3J0IHN5czsgcHJpbnQoc3lzLnZlcnNpb24uc3RhcnRzd2l0aCgnMy44Jykp' | \
+          base64 --decode | \
+          run-project -s -l 'python3' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'python3' \
+      <( echo 'VHJ1ZQo=' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'python3:version'
+else
+  echo ❌ 'python3:version'
+  CODE=1
+fi
+
+exit $CODE

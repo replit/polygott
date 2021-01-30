@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",jest,"* ]]; then
+	echo S 'jest:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'jest'
+
+
+exit $CODE

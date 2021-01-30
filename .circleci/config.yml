@@ -1,5 +1,28 @@
 version: 2.1
 jobs:
+  check_artifacts_freshness:
+    docker:
+      - image: docker:19.03
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.8
+      - run: apk add --no-cache --no-progress make git npm curl
+      - run: |
+          # Make sure all of the artifacts are up-to-date.
+          rm -rf out/*
+          make out/.gen.stamp
+          if ! git diff --exit-code out/ ; then
+            echo "There are changes to out/ that need to be checked in."
+            exit 1
+          fi
+          DIFF="$(git status --porcelain out/)"
+          if [[ -n "${DIFF}" ]]; then
+            echo "\$ git status --porcelain out/"
+            echo "${DIFF}"
+            echo "There are changes to out/ that need to be checked in."
+            exit 1
+          fi
   build_and_test:
     docker:
       - image: docker:18.09
@@ -51,6 +74,10 @@ jobs:
 workflows:
   ci:
     jobs:
+      - check_artifacts_freshness:
+          filters:
+            branches:
+              ignore: master
       - build_and_test:
           filters:
             branches:

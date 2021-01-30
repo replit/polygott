@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",reactjs,"* ]]; then
+	echo S 'reactjs:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'reactjs'
+
+
+exit $CODE

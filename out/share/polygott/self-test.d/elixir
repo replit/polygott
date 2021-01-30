@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",elixir,"* ]]; then
+	echo S 'elixir:*'
+	exit $CODE
+fi
+
+polygott-lang-setup -l 'elixir'
+
+# elixir:hello
+SUCCESS=true
+OUTPUT="$(echo 'SU8ucHV0cyAiaGVsbG8gd29ybGQi' | \
+          base64 --decode | \
+          run-project -s -l 'elixir' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'elixir' \
+      <( echo 'aGVsbG8gd29ybGQK' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'elixir:hello'
+else
+  echo ❌ 'elixir:hello'
+  CODE=1
+fi
+
+exit $CODE
