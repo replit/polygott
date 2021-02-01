@@ -858,9 +858,13 @@ if [[ -z "${LANGS}" || ",${LANGS}," == *",ruby,"* ]]; then
 	echo 'Setup ruby'
 	cd "${HOME}"
 
-	gem install --source http://rubygems.org rspec:3.5 stripe rufo sinatra
-	gem install solargraph -v 0.38.1
-	/usr/bin/build-prybar-lang.sh ruby
+	  # Gemfile.lock files are dependent on the exact bundler version. Always add
+  # new versions and never remove old versions from this list.
+  gem install bundler:2.2.3 bundler:2.2.7
+  gem install --source http://rubygems.org rspec:3.5 stripe rufo sinatra
+  gem install solargraph:0.38.1
+  /usr/bin/build-prybar-lang.sh ruby
+  
 
 	if [[ -n "$(ls -A /home/runner)" ]]; then
 		echo Storing home for ruby
