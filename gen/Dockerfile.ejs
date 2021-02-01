@@ -1,28 +1,11 @@
 # syntax = docker/dockerfile:1.2@sha256:e2a8561e419ab1ba6b2fe6cbdf49fd92b95912df1cf7d313c3e2230a333fdbcc
 
 
-## Import UPM.
-FROM replco/upm:light@sha256:7969cc1285d7900023d68cd3c5fd5155bc9506ac1b0bae56dc49dc690de2c383 AS upm
-
-
-## Image for prybar resources
-FROM node:8.14.0-alpine@sha256:fa979a27cee3c8664a689e27e778b766af72da52920454160421854027374f09 AS prybar
-
-ARG PRYBAR_TAG=circleci_pipeline_87_build_94
-COPY ./extra/fetch-prybar.sh fetch-prybar.sh
-RUN sh fetch-prybar.sh $PRYBAR_TAG
-COPY ./extra/build-prybar-lang.sh build-prybar-lang.sh
-
-
 ## The base image from which all others will extend.
 ## Installs the base packages, certificats, and a few choice .deb files.
 FROM ubuntu:18.04@sha256:ea188fdc5be9b25ca048f1e882b33f1bc763fb976a8a4fea446b38ed0efcbeba AS polygott-phase0
 ARG LANGS
 ENV LANGS=${LANGS}
-
-COPY --from=prybar /gocode /gocode
-COPY --from=prybar /build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
-COPY --from=prybar /usr/bin/prybar_assets /usr/bin/prybar_assets
 
 COPY ./out/phase0.sh /phase0.sh
 RUN --mount=type=tmpfs,target=/var/log \
@@ -30,6 +13,17 @@ RUN --mount=type=tmpfs,target=/var/log \
 
 # Environment variables that are depended on by phase1 files.
 ENV XDG_CONFIG_HOME=/config
+
+
+## Image for prybar resources
+FROM polygott-phase0 AS prybar
+
+ARG PRYBAR_TAG=circleci_pipeline_87_build_94
+RUN mkdir -p /gocode/src/github.com/replit/ && \
+    wget "https://github.com/replit/prybar/archive/${PRYBAR_TAG}.zip" && \
+    unzip "${PRYBAR_TAG}.zip" && \
+    mv "prybar-${PRYBAR_TAG}" /gocode/src/github.com/replit/prybar/ && \
+    cp -r /gocode/src/github.com/replit/prybar/prybar_assets /usr/bin/prybar_assets/
 
 
 ## Runs apt-get update and installs the base packages.
@@ -40,6 +34,10 @@ ENV LANGS=${LANGS}
 COPY ./out/phase1.sh /phase1.sh
 RUN --mount=type=tmpfs,target=/var/log \
     /bin/bash phase1.sh
+
+COPY ./extra/build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
+COPY --from=prybar /gocode /gocode
+COPY --from=prybar /usr/bin/prybar_assets /usr/bin/prybar_assets
 
 
 ## Installs the per-language packages.
@@ -56,6 +54,10 @@ RUN --mount=type=tmpfs,target=/var/log \
 FROM polygott-phase2 AS websockify
 RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify && \
     cd /root/websockify && make
+
+
+## Import UPM.
+FROM replco/upm:light@sha256:7969cc1285d7900023d68cd3c5fd5155bc9506ac1b0bae56dc49dc690de2c383 AS upm
 
 
 ## The polygott-specific tools.
