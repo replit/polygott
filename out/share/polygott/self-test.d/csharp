@@ -9,6 +9,7 @@ if [[ -n "${LANGS}" && ",${LANGS}," != *",csharp,"* ]]; then
 	exit $CODE
 fi
 
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
 polygott-lang-setup -l 'csharp'
 
 # csharp:hello

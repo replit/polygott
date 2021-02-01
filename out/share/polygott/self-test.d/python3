@@ -9,6 +9,7 @@ if [[ -n "${LANGS}" && ",${LANGS}," != *",python3,"* ]]; then
 	exit $CODE
 fi
 
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
 polygott-lang-setup -l 'python3'
 
 # python3:0
