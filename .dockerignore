@@ -1,8 +1,19 @@
-.circleci/
-.git/
+.circleci/**/*
+.circleci
+.git/**/*
+.git
+.gitignore
+stamps/**/*
+stamps
+diffs/**/*
+diffs
 **/*.stamp
-gen/node_modules/
-ignore/
+gen/node_modules/**/*
+gen/node_modules
+**/.mypy_cache/**/*
+**/.mypy_cache
+ignore/**/*
+ignore
 LICENSE
 README.md
 Makefile
@@ -10,5 +21,7 @@ Makefile
 # The contents of these files/directories are merged into the artifacts that go
 # into out/
 packages.txt
-gen/
-languages/
+gen/**/*
+gen
+languages/**/*
+languages
