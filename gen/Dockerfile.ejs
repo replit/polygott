@@ -97,6 +97,9 @@ COPY ./extra/fluxbox/apps /etc/X11/fluxbox/apps
 
 COPY ./extra/lang-gitignore /etc/.gitignore
 
+# Create all mountpoints.
+RUN mkdir -p /inject /io /mnt/scratch /mnt/cacache
+
 ENV \
         <%- Object.entries(env).map(([key, value]) => `${key}="${value}"`).sort().join(' \\\n        ') %>
 WORKDIR /home/runner
