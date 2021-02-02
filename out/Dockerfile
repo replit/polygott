@@ -95,6 +95,9 @@ COPY ./extra/fluxbox/apps /etc/X11/fluxbox/apps
 
 COPY ./extra/lang-gitignore /etc/.gitignore
 
+# Create all mountpoints.
+RUN mkdir -p /inject /io /mnt/scratch /mnt/cacache
+
 ENV \
         APT_OPTIONS="-o debug::nolocking=true -o dir::cache=/tmp/apt/cache -o dir::state=/tmp/apt/state -o dir::etc::sourcelist=/tmp/apt/sources/sources.list" \
         CPATH="/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu" \
