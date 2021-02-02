@@ -3,64 +3,73 @@
 
 # Default task:
 .PHONY: image
-image: out/Dockerfile ## Build Docker image with all languages
+image: stamps/image ## Build Docker image with all languages
+	# Invoking the underlying build rule for image (if needed).
+
+stamps/:
+	mkdir "$@"
+
+stamps/image: out/Dockerfile | stamps/
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		-f out/Dockerfile \
 		-t polygott:latest \
 		.
+	touch "$@"
 
 .PHONY: image-ci
-image-ci: out/Dockerfile ## Build Docker image with all languages needed for CI
+image-ci: stamps/image-ci ## Build Docker image with all languages needed for CI
+	# Invoking the underlying build rule for image-ci (if needed).
+
+stamps/image-ci: out/Dockerfile | stamps/
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=python3,ruby,java \
 		-f out/Dockerfile \
 		-t polygott-ci:latest \
 		.
+	touch "$@"
 
 out/Dockerfile: $(wildcard gen/*.*) $(wildcard languages/*.toml)
 	rm -rf out/ && mkdir out
 	(cd gen && npm install) && node gen/index.js
 
-image-%: languages/%.toml out/Dockerfile ## Build Docker image with single language LANG
+image-%: stamps/image-% ## Build Docker image with single language LANG
+	# Invoking the underlying build rule for image-$(*) (if needed).
+
+stamps/image-%: languages/%.toml out/Dockerfile | stamps/ ## Build Docker image with single language LANG
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=$(*) \
 		-f out/Dockerfile \
 		-t polygott-$(*) \
 		.
+	touch "$@"
 
 .PHONY: run
-run: image ## Build and run image with all languages
-	DOCKER_BUILDKIT=1 docker run -it --rm \
+run: stamps/image ## Build and run image with all languages
+	docker run -it --rm \
 		polygott
 
-.PHONY: run-lang
-run-lang:
-
-run-%: image-% run-lang ## Build and run image with single language LANG
-	DOCKER_BUILDKIT=1 docker run -it --rm \
+run-%: stamps/image-% ## Build and run image with single language LANG
+	docker run -it --rm \
 		"polygott-$(*)"
 
 .PHONY: test
-test: image ## Build and test all languages
-	DOCKER_BUILDKIT=1 docker run \
+test: stamps/image ## Build and test all languages
+	docker run --rm \
 		polygott:latest \
 		bash -c polygott-self-test
 
 .PHONY: test-ci
-test-ci: image-ci ## Build and test all languages needed for CI
-	DOCKER_BUILDKIT=1 docker run \
+test-ci: stamps/image-ci ## Build and test all languages needed for CI
+	docker run --rm \
 		polygott-ci:latest \
 		env LANGS=python3,ruby,java \
 		bash -c polygott-self-test
 
-.PHONY: test-lang
-test-lang:
-
-test-%: image-% test-lang ## Build and test single language LANG
-	DOCKER_BUILDKIT=1 docker run \
+test-%: stamps/image-% ## Build and test single language LANG
+	docker run --rm \
 		"polygott-$(*)" \
 		env "LANGS=$(*)" \
 		bash -c polygott-self-test
@@ -78,3 +87,7 @@ help: ## Show this message
 		sed 's/:[^#]*[#]# /|/'   | \
 		sed 's/%/LANG/'          | \
 		column -t -s'|' >&2
+
+.PHONY: clean
+clean:
+	rm -rf stamps
