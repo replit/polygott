@@ -9,6 +9,7 @@ if [[ -n "${LANGS}" && ",${LANGS}," != *",objective-c,"* ]]; then
 	exit $CODE
 fi
 
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
 polygott-lang-setup -l 'objective-c'
 
 # objective-c:hello
