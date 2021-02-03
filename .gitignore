@@ -1,7 +1,4 @@
-stamps/
-diffs/*.tar.bz2
-diffs/*.tmp
-*.stamp
+build/
 gen/node_modules/
 ignore/
 .mypy_cache/

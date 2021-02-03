@@ -3,13 +3,21 @@
 
 # Default task:
 .PHONY: image
-image: stamps/image ## Build Docker image with all languages
+image: build/stamps/image ## Build Docker image with all languages
 	# Invoking the underlying build rule for image (if needed).
 
-stamps/:
-	mkdir "$@"
+build/stamps/:
+	mkdir -p "$@"
 
-stamps/image: out/Dockerfile | stamps/
+out/Dockerfile: build/stamps/out
+	# Invoking the underlying build rule for building out/ (if needed).
+
+build/stamps/out: packages.txt $(wildcard gen/*) $(wildcard languages/*.toml) | build/stamps/
+	rm -rf out/ && mkdir out
+	(cd gen && npm install) && node gen/index.js
+	touch "$@"
+
+build/stamps/image: out/Dockerfile | build/stamps/
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		-f out/Dockerfile \
@@ -18,10 +26,10 @@ stamps/image: out/Dockerfile | stamps/
 	touch "$@"
 
 .PHONY: image-ci
-image-ci: stamps/image-ci ## Build Docker image with all languages needed for CI
+image-ci: build/stamps/image-ci ## Build Docker image with all languages needed for CI
 	# Invoking the underlying build rule for image-ci (if needed).
 
-stamps/image-ci: out/Dockerfile | stamps/
+build/stamps/image-ci: out/Dockerfile | build/stamps/
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=python3,ruby,java \
@@ -30,14 +38,10 @@ stamps/image-ci: out/Dockerfile | stamps/
 		.
 	touch "$@"
 
-out/Dockerfile: $(wildcard gen/*.*) $(wildcard languages/*.toml)
-	rm -rf out/ && mkdir out
-	(cd gen && npm install) && node gen/index.js
-
-image-%: stamps/image-% ## Build Docker image with single language LANG
+image-%: build/stamps/image-% ## Build Docker image with single language LANG
 	# Invoking the underlying build rule for image-$(*) (if needed).
 
-stamps/image-%: languages/%.toml out/Dockerfile | stamps/ ## Build Docker image with single language LANG
+build/stamps/image-%: languages/%.toml out/Dockerfile | build/stamps/
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=$(*) \
@@ -47,28 +51,28 @@ stamps/image-%: languages/%.toml out/Dockerfile | stamps/ ## Build Docker image 
 	touch "$@"
 
 .PHONY: run
-run: stamps/image ## Build and run image with all languages
+run: build/stamps/image ## Build and run image with all languages
 	docker run -it --rm \
 		polygott
 
-run-%: stamps/image-% ## Build and run image with single language LANG
+run-%: build/stamps/image-% ## Build and run image with single language LANG
 	docker run -it --rm \
 		"polygott-$(*)"
 
 .PHONY: test
-test: stamps/image ## Build and test all languages
+test: build/stamps/image ## Build and test all languages
 	docker run --rm \
 		polygott:latest \
 		bash -c polygott-self-test
 
 .PHONY: test-ci
-test-ci: stamps/image-ci ## Build and test all languages needed for CI
+test-ci: build/stamps/image-ci ## Build and test all languages needed for CI
 	docker run --rm \
 		polygott-ci:latest \
 		env LANGS=python3,ruby,java \
 		bash -c polygott-self-test
 
-test-%: stamps/image-% ## Build and test single language LANG
+test-%: build/stamps/image-% ## Build and test single language LANG
 	docker run --rm \
 		"polygott-$(*)" \
 		env "LANGS=$(*)" \
@@ -90,4 +94,4 @@ help: ## Show this message
 
 .PHONY: clean
 clean:
-	rm -rf stamps
+	rm -rf build

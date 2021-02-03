@@ -10,8 +10,8 @@ jobs:
       - run: apk add --no-cache --no-progress make git npm curl
       - run: |
           # Make sure all of the artifacts are up-to-date.
-          rm -rf out/*
-          make out/Dockerfile
+          rm -rf out/* build/
+          make build/stamps/out
           if ! git diff --exit-code out/ ; then
             echo "There are changes to out/ that need to be checked in."
             exit 1
