@@ -17,37 +17,42 @@ build/stamps/out: packages.txt $(wildcard gen/*) $(wildcard languages/*.toml) | 
 	(cd gen && npm install) && node gen/index.js
 	touch "$@"
 
-build/stamps/image: out/Dockerfile | build/stamps/
+build/:
+	mkdir -p "$@"
+
+build/context.tar.bz2: build/stamps/out $(wildcard run_dir/*) $(wildcard extra/*) | build/
+	./extra/manifest_tool.py context > "$@.tmp"
+	mv "$@.tmp" "$@"
+	sha256sum "$@"
+
+build/stamps/image: build/context.tar.bz2 | build/stamps/
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
-		-f out/Dockerfile \
 		-t polygott:latest \
-		.
+		- < build/context.tar.bz2
 	touch "$@"
 
 .PHONY: image-ci
 image-ci: build/stamps/image-ci ## Build Docker image with all languages needed for CI
 	# Invoking the underlying build rule for image-ci (if needed).
 
-build/stamps/image-ci: out/Dockerfile | build/stamps/
+build/stamps/image-ci: build/context.tar.bz2 | build/stamps/
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=python3,ruby,java \
-		-f out/Dockerfile \
 		-t polygott-ci:latest \
-		.
+		- < build/context.tar.bz2
 	touch "$@"
 
 image-%: build/stamps/image-% ## Build Docker image with single language LANG
 	# Invoking the underlying build rule for image-$(*) (if needed).
 
-build/stamps/image-%: languages/%.toml out/Dockerfile | build/stamps/
+build/stamps/image-%: build/context.tar.bz2 | build/stamps/
 	DOCKER_BUILDKIT=1 docker build \
 		--progress=plain \
 		--build-arg LANGS=$(*) \
-		-f out/Dockerfile \
 		-t polygott-$(*) \
-		.
+		- < build/context.tar.bz2
 	touch "$@"
 
 .PHONY: run
