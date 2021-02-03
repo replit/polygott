@@ -1,0 +1,30 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup bash'
+cd "${HOME}"
+
+cd /tmp && wget --quiet https://github.com/ewiger/beautify_bash/archive/master.tar.gz && tar xfz master.tar.gz && cp beautify_bash-master/beautify_bash.py /bin/ && chmod +x /bin/beautify_bash.py && rm -rf beautify_bash-master && rm -rf master.tar.gz
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for bash
+	mkdir -p /opt/homes/bash
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/bash
+  chown runner:runner -R /opt/homes/bash
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/bash
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

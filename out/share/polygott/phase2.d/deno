@@ -1,0 +1,30 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup deno'
+cd "${HOME}"
+
+curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.7.0
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for deno
+	mkdir -p /opt/homes/deno
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/deno
+  chown runner:runner -R /opt/homes/deno
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/deno
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

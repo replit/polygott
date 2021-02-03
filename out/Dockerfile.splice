@@ -1,0 +1,28 @@
+# syntax = docker/dockerfile:1.2@sha256:e2a8561e419ab1ba6b2fe6cbdf49fd92b95912df1cf7d313c3e2230a333fdbcc
+
+# A Dockerfile that can splice multiple independent layers into a single image.
+
+
+## Final image where the contents of the tarballs are all extracted together.
+FROM polygott:phase1.5 AS polygott
+#ADD#
+RUN : > /etc/ld.so.cache && \
+    ldconfig && \
+    mkdir -p /inject /io /mnt/scratch /mnt/cacache
+ENV \
+        APT_OPTIONS="-o debug::nolocking=true -o dir::cache=/tmp/apt/cache -o dir::state=/tmp/apt/state -o dir::etc::sourcelist=/tmp/apt/sources/sources.list" \
+        CPATH="/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu" \
+        CPPPATH="/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu" \
+        DISPLAY=":0" \
+        HOME="/home/runner" \
+        INCLUDE_PATH="/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu" \
+        LANG="en_US.UTF-8" \
+        LC_ALL="en_US.UTF-8" \
+        LD_LIBRARY_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/usr/local/lib:/home/runner/.apt/usr/lib" \
+        LIBRARY_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/usr/local/lib:/home/runner/.apt/usr/lib" \
+        PATH="/usr/local/go/bin:/opt/virtualenvs/python3/bin:/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:/home/runner/.apt/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+        PKG_CONFIG_PATH="/home/runner/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/i386-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/pkgconfig" \
+        PYTHONPATH="/opt/virtualenvs/python3/lib/python3.8/site-packages" \
+        USER="runner" \
+        VIRTUAL_ENV="/opt/virtualenvs/python3"
+WORKDIR /home/runner

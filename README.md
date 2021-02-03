@@ -1,10 +1,11 @@
 # Polygott
 ## Overview
 
-[Repl.it] allows you to quickly get started with any programming
-language online. In order to provide this capability, our evaluation
-server uses [Docker](https://www.docker.com/) to ensure that all these
-languages are installed with the appropriate environment set up.
+[Repl.it] allows you to quickly get started with any programming language
+online. In order to provide this capability, our evaluation server uses
+[Docker](https://www.docker.com/) with the
+[`buildx`](https://github.com/docker/buildx#installing) CLI plugin to ensure
+that all these languages are installed with the appropriate environment set up.
 
 We previously used a separate Docker image for each language, but
 concluded that it was both simpler and more efficient to use a single
@@ -13,17 +14,23 @@ necessary to build this combined image, **Polygott**, resides in this
 repository.  If you're lost and need some reference, we have
 [a blog](https://blog.repl.it/elisp) where we added elisp.
 
+Because of the fact that building a monolithic image is unwieldy and takes too
+much time, the build itself is made of a directed graph of intermediate nodes,
+where each language is a node, and they all get stitched together at the end to
+build the final combined image.
+
 ## Build and run
 
-You can build either the entire image, or a version that is limited to
-a single language. The latter is recommended when you are adding or
-modifying support for a particular language, since building the entire
-image takes an extremely long time. Makefile targets are provided for
-each of these cases:
+You can build either the entire image, a version that has a bundle of
+languages, and a version that is limited to a single language. The second one
+is used for CI, and the latter is recommended when you are adding or modifying
+support for a particular language, since building the entire image takes an
+extremely long time. Makefile targets are provided for each of these cases:
 
     % make help
     usage:
       make image         Build Docker image with all languages
+      make image-ci      Build Docker image with all languages needed for CI
       make image-LANG    Build Docker image with single language LANG
       make run           Build and run image with all languages
       make run-LANG      Build and run image with single language LANG
@@ -135,12 +142,12 @@ subdirectory](languages). The meaningful keys are as follows:
   script](gen/index.js) inside the Docker image.
 * The multi-stage [`Dockerfile`](gen/Dockerfile.ejs) is created from the
   language configuration files.
-* Languages are installed in several phases. [In phase
-  0](gen/phase0.ejs), shared packages [in
-  `packages.txt`](packages.txt) are installed. [In phase
-  1](gen/phase1.ejs), APT keys and repositories are configured, and
-  language-specific packages are installed. [In phase
-  2](gen/phase2.ejs), language-specific `setup` commands are run.
+* Languages are installed in several phases. [In phase 0](gen/phase0.ejs),
+  shared packages [in `packages.txt`](packages.txt) are installed, as well as
+  APT keys and repositories are configured. In phase 1.0, `apt-get update -y`
+  is run, which can be reused in later phases. In phase 1.5, language-specific
+  packages are installed. [In phase 2](gen/phase2-per-lang.ejs),
+  language-specific `setup` commands are run.
 
 ## Usage
 

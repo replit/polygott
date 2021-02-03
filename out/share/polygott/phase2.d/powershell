@@ -1,0 +1,35 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup powershell'
+cd "${HOME}"
+
+curl -L -o /tmp/powershell.tar.gz https://github.com/PowerShell/PowerShell/releases/download/v7.0.3/powershell-7.0.3-linux-x64.tar.gz
+mkdir /usr/local/pwsh
+tar zxf /tmp/powershell.tar.gz -C /usr/local/pwsh
+ln -s -f /usr/local/pwsh/pwsh /usr/bin/pwsh
+ln -s -f /usr/local/pwsh/pwsh /usr/bin/powershell
+rm -f /tmp/powershell.tar.gz
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for powershell
+	mkdir -p /opt/homes/powershell
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/powershell
+  chown runner:runner -R /opt/homes/powershell
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/powershell
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

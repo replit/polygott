@@ -1,0 +1,33 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup wren'
+cd "${HOME}"
+
+wget https://github.com/wren-lang/wren-cli/releases/download/0.3.0/wren_cli-linux-0.3.0.zip
+unzip wren_cli-linux-0.3.0.zip
+install wren_cli-linux-0.3.0/wren_cli /usr/local/bin
+rm -rf wren_cli-linux-0.3.0
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for wren
+	mkdir -p /opt/homes/wren
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/wren
+  chown runner:runner -R /opt/homes/wren
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/wren
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

@@ -18,14 +18,13 @@
 !extra/replit-v2.py
 !out/detect-language
 !out/phase0.sh
-!out/phase1.sh
-!out/phase2.sh
 !out/polygott-lang-setup
 !out/polygott-survey
 !out/polygott-x11-vnc
 !out/run-language-server
 !out/run-project
 !out/self-test
+!out/share/polygott/phase2.d/*
 !out/share/polygott/self-test.d/*
 !run_dir/
 !run_dir/**/*

@@ -1,0 +1,12 @@
+{
+  "parents": {
+<% for (const lang of languages) { -%>
+<%   if (lang.languages && lang.languages.length) { -%>
+    "phase2-<%= lang.id %>": "phase2-<%= lang.languages[0] %>",
+<%   } else { -%>
+    "phase2-<%= lang.id %>": "phase1.5",
+<%   } -%>
+<% } -%>
+    "phase2-tools": "phase1.5"
+  }
+}

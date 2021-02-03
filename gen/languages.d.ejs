@@ -1,0 +1,35 @@
+# A file with Makefile dependencies
+
+# Dependencies between language stamps
+<% for (const lang of languages) { -%>
+<%   if (lang.languages && lang.languages.length) { -%>
+build/stamps/build-layer-phase2-<%= lang.id %>: build/stamps/build-layer-phase2-<%= lang.languages[0] %>
+<%   } -%>
+<% } -%>
+
+# Dependencies between language manifests for diffs.
+<% for (const lang of languages) {
+  let parent = 'phase1.5';
+  if (lang.languages && lang.languages.length) {
+    parent = `phase2-${lang.languages[0]}`;
+  } -%>
+build/diffs/phase2-<%= lang.id %>.tar.bz2: extra/manifest_tool.py build/manifests/phase2-<%= lang.id %>.json.gz build/manifests/<%= parent %>.json.gz | build/diffs/
+	docker run --rm \
+		--mount "type=bind,src=$(PWD)/extra/manifest_tool.py,target=/usr/bin/manifest_tool.py,ro" \
+		--mount "type=bind,src=$(PWD)/build/manifests,target=/mnt/manifests,ro" \
+		"polygott:phase2-<%= lang.id %>" \
+		/usr/bin/manifest_tool.py diff \
+			--parent-manifest=/mnt/manifests/<%= parent %>.json.gz \
+			--manifest=/mnt/manifests/phase2-<%= lang.id %>.json.gz > "$@.tmp"
+	mv "$@.tmp" "$@"
+
+<% } -%>
+build/diffs/phase2-tools.tar.bz2: extra/manifest_tool.py build/manifests/phase2-tools.json.gz build/manifests/phase1.5.json.gz | build/diffs/
+	docker run --rm \
+		--mount "type=bind,src=$(PWD)/extra/manifest_tool.py,target=/usr/bin/manifest_tool.py,ro" \
+		--mount "type=bind,src=$(PWD)/build/manifests,target=/mnt/manifests,ro" \
+		"polygott:phase2-tools" \
+		/usr/bin/manifest_tool.py diff \
+			--parent-manifest=/mnt/manifests/phase1.5.json.gz \
+			--manifest=/mnt/manifests/phase2-tools.json.gz > "$@.tmp"
+	mv "$@.tmp" "$@"

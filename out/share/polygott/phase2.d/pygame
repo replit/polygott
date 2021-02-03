@@ -1,0 +1,33 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+echo 'Setup parents of pygame'
+rsync --recursive --links --perms --times /opt/homes/python3/ /home/runner/
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup pygame'
+cd "${HOME}"
+
+/opt/virtualenvs/python3/bin/python3 -m pip install pygame
+/opt/virtualenvs/python3/bin/python3 -m pip uninstall -y typing
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for pygame
+	mkdir -p /opt/homes/pygame
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/pygame
+  chown runner:runner -R /opt/homes/pygame
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/pygame
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

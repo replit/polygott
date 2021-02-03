@@ -1,0 +1,32 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup c'
+cd "${HOME}"
+
+cd /tmp && wget -q https://github.com/cquery-project/cquery/releases/download/v20180302/cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && tar xf cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && cd cquery-v20180302-x86_64-unknown-linux-gnu && cp bin/cquery /bin && cp -r lib/* /lib/ && cd /tmp && rm cquery-v20180302-x86_64-unknown-linux-gnu.tar.xz && rm -r cquery-v20180302-x86_64-unknown-linux-gnu
+update-alternatives --install /usr/bin/clang-format clang-format `which clang-format-7` 100
+mkdir -p /config/cquery && echo -e '%clang\n%c -std=c11\n%cpp -std=c++17\n-pthread' | tee /config/cquery/.cquery
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for c
+	mkdir -p /opt/homes/c
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/c
+  chown runner:runner -R /opt/homes/c
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/c
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

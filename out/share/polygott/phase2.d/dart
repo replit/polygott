@@ -1,0 +1,30 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup dart'
+cd "${HOME}"
+
+ln -s /usr/lib/dart/bin/pub /usr/local/bin/pub
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for dart
+	mkdir -p /opt/homes/dart
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/dart
+  chown runner:runner -R /opt/homes/dart
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/dart
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

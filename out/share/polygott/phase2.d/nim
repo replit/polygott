@@ -1,0 +1,43 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup nim'
+cd "${HOME}"
+
+  NIM_VER="1.2.0"
+  wget https://nim-lang.org/download/nim-$NIM_VER.tar.xz
+  tar xf nim-$NIM_VER.tar.xz
+  rm -rf nim-$NIM_VER.tar.xz
+  chown -R root: nim-$NIM_VER/
+  cd nim-$NIM_VER
+  sh build.sh
+  ./bin/nim c koch.nim
+  ./koch tools
+  sh install.sh /usr/local/bin
+  cp ./bin/* /usr/local/bin
+  cd ..
+  rm -rf nim-$NIM_VER
+  unset NIM_VER
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for nim
+	mkdir -p /opt/homes/nim
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/nim
+  chown runner:runner -R /opt/homes/nim
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/nim
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

@@ -1,0 +1,32 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup nodejs'
+cd "${HOME}"
+
+npm install -g jest@23.1.0 prettier@1.13.4 babylon@6.15 babel-traverse@6.21 walker@1.0.7 yarn
+yarn global add jest
+/usr/bin/build-prybar-lang.sh nodejs
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for nodejs
+	mkdir -p /opt/homes/nodejs
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/nodejs
+  chown runner:runner -R /opt/homes/nodejs
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/nodejs
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

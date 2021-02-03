@@ -2,22 +2,29 @@
 
 
 ## The base image from which all others will extend.
-## Installs the base packages, certificats, and a few choice .deb files.
+## Installs the base packages, certificates, and a few choice .deb files.
 FROM ubuntu:18.04@sha256:ea188fdc5be9b25ca048f1e882b33f1bc763fb976a8a4fea446b38ed0efcbeba AS polygott-phase0
-ARG LANGS
-ENV LANGS=${LANGS}
-
 COPY ./out/phase0.sh /phase0.sh
-RUN --mount=type=tmpfs,target=/var/log \
+RUN --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
     /bin/bash phase0.sh
 
 # Environment variables that are depended on by phase1 files.
 ENV XDG_CONFIG_HOME=/config
 
 
+## Runs apt-get update.
+FROM polygott-phase0 AS polygott-phase1.0
+RUN --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
+    DEBIAN_FRONTEND=noninteractive apt-get update -y && \
+    mkdir -p /var/lib/apt/lists/auxfiles
+
+
 ## Image for prybar resources
 FROM polygott-phase0 AS prybar
 
+ARG PRYBAR_TAG=circleci_pipeline_87_build_94
 ARG PRYBAR_TAG=circleci_pipeline_87_build_94
 RUN mkdir -p /gocode/src/github.com/replit/ && \
     wget "https://github.com/replit/prybar/archive/${PRYBAR_TAG}.zip" && \
@@ -26,32 +33,38 @@ RUN mkdir -p /gocode/src/github.com/replit/ && \
     cp -r /gocode/src/github.com/replit/prybar/prybar_assets /usr/bin/prybar_assets/
 
 
-## Runs apt-get update and installs the base packages.
-FROM polygott-phase0 AS polygott-phase1
-ARG LANGS
-ENV LANGS=${LANGS}
-
-COPY ./out/phase1.sh /phase1.sh
-RUN --mount=type=tmpfs,target=/var/log \
-    /bin/bash phase1.sh
+## Installs the per-language packages.
+FROM polygott-phase0 AS polygott-phase1.5
+RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/var/lib/apt/lists,ro \
+    --mount=type=tmpfs,target=/var/lib/apt/lists/auxfiles \
+    --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      <%- Object.keys(packages).sort().join(' \\\n      ') %>
 
 COPY ./extra/build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
 COPY --from=prybar /gocode /gocode
 COPY --from=prybar /usr/bin/prybar_assets /usr/bin/prybar_assets
 
+<% for (const lang of languages) { -%>
 
-## Installs the per-language packages.
-FROM polygott-phase1 AS polygott-phase2
-ARG LANGS
-ENV LANGS=${LANGS}
-
-COPY ./out/phase2.sh /phase2.sh
-RUN --mount=type=tmpfs,target=/var/log \
+## The individual language layer for <%= lang.id %>.
+<%   if (lang.languages && lang.languages.length) { -%>
+FROM polygott-phase2-<%= lang.languages[0] %> AS polygott-phase2-<%= lang.id %>
+<%   } else { -%>
+FROM polygott-phase1.5 AS polygott-phase2-<%= lang.id %>
+<%   } -%>
+COPY ./out/share/polygott/phase2.d/<%= lang.id %> /phase2.sh
+RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/var/lib/apt/lists,ro \
+    --mount=type=tmpfs,target=/var/lib/apt/lists/auxfiles \
+    --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
     /bin/bash phase2.sh
 
+<% } -%>
 
 ## Image to build websockify
-FROM polygott-phase2 AS websockify
+FROM polygott-phase1.5 AS websockify
 RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify && \
     cd /root/websockify && make
 
@@ -61,8 +74,7 @@ FROM replco/upm:light@sha256:7969cc1285d7900023d68cd3c5fd5155bc9506ac1b0bae56dc4
 
 
 ## The polygott-specific tools.
-FROM polygott-phase2 AS polygott
-
+FROM polygott-phase1.5 AS polygott-phase2-tools
 RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
 COPY ./extra/polygott-gitignore /etc/.gitignore
 
@@ -73,7 +85,7 @@ COPY ./out/self-test /usr/bin/polygott-self-test
 COPY ./out/polygott-survey /usr/bin/polygott-survey
 COPY ./out/polygott-lang-setup /usr/bin/polygott-lang-setup
 COPY ./out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
-COPY ./out/share/ /usr/share/
+COPY ./out/share/polygott/self-test.d/ /usr/share/polygott/self-test.d/
 COPY --from=upm /usr/local/bin/upm /usr/local/bin/upm
 COPY --from=websockify /root/websockify /usr/local/websockify
 
@@ -92,14 +104,8 @@ COPY ./extra/config.toml ${XDG_CONFIG_HOME}/pypoetry/config.toml
 COPY ./extra/replit-v2.py /usr/local/lib/python3.6/dist-packages/replit.py
 COPY ./extra/replit-v2.py /usr/local/lib/python2.7/dist-packages/replit.py
 COPY ./extra/matplotlibrc /config/matplotlib/matplotlibrc
+
 COPY ./extra/fluxbox/init /etc/X11/fluxbox/init
 COPY ./extra/fluxbox/apps /etc/X11/fluxbox/apps
 
 COPY ./extra/lang-gitignore /etc/.gitignore
-
-# Create all mountpoints.
-RUN mkdir -p /inject /io /mnt/scratch /mnt/cacache
-
-ENV \
-        <%- Object.entries(env).map(([key, value]) => `${key}="${value}"`).sort().join(' \\\n        ') %>
-WORKDIR /home/runner

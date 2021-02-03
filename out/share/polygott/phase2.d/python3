@@ -1,0 +1,38 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup python3'
+cd "${HOME}"
+
+ln -s /usr/bin/python3.8 /usr/local/bin/python3
+curl https://bootstrap.pypa.io/get-pip.py | python3
+python3 -m venv /opt/virtualenvs/python3
+/opt/virtualenvs/python3/bin/pip3 install --disable-pip-version-check pipreqs-amasad==0.4.10 pylint==2.6.0 jedi==0.17.2 mccabe==0.6.1 pycodestyle==2.6.0 pyflakes==2.2.0 python-language-server==0.36.2 rope==0.18.0 yapf==0.30.0 dephell==0.8.3 poetry==1.1.4
+/opt/virtualenvs/python3/bin/pip3 install poetry==1.0.5 bpython matplotlib nltk numpy ptpython requests scipy replit
+/opt/virtualenvs/python3/bin/pip3 install cs50
+/opt/virtualenvs/python3/bin/pip3 install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow_cpu-2.2.0-cp38-cp38-manylinux2010_x86_64.whl
+/opt/virtualenvs/python3/bin/python3 -m pip uninstall -y typing
+/usr/bin/build-prybar-lang.sh python3
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for python3
+	mkdir -p /opt/homes/python3
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/python3
+  chown runner:runner -R /opt/homes/python3
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/python3
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

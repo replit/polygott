@@ -1,0 +1,37 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup julia'
+cd "${HOME}"
+
+wget https://julialang-s3.julialang.org/bin/linux/x64/1.4/julia-1.4.1-linux-x86_64.tar.gz
+tar xf julia-1.4.1-linux-x86_64.tar.gz
+cp julia-1.4.1/bin/julia /usr/bin/
+cp -r julia-1.4.1/lib/* /usr/lib/
+cp -r julia-1.4.1/include/* /usr/include/
+cp -r julia-1.4.1/share/* /usr/share/
+rm -rf ./julia-1.4.1 julia-1.4.1-linux-x86_64.tar.gz
+/usr/bin/build-prybar-lang.sh julia
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for julia
+	mkdir -p /opt/homes/julia
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/julia
+  chown runner:runner -R /opt/homes/julia
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/julia
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh
