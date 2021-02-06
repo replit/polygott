@@ -393,13 +393,13 @@ if [[ -z "${LANGS}" || ",${LANGS}," == *",julia,"* ]]; then
 	echo 'Setup julia'
 	cd "${HOME}"
 
-	wget https://julialang-s3.julialang.org/bin/linux/x64/1.3/julia-1.3.1-linux-x86_64.tar.gz
-	tar xf julia-1.3.1-linux-x86_64.tar.gz
-	cp julia-1.3.1/bin/julia /usr/bin/
-	cp -r julia-1.3.1/lib/* /usr/lib/
-	cp -r julia-1.3.1/include/* /usr/include/
-	cp -r julia-1.3.1/share/* /usr/share/
-	rm -rf ./julia-1.3.1 julia-1.3.1-linux-x86_64.tar.gz
+	wget https://julialang-s3.julialang.org/bin/linux/x64/1.4/julia-1.4.1-linux-x86_64.tar.gz
+	tar xf julia-1.4.1-linux-x86_64.tar.gz
+	cp julia-1.4.1/bin/julia /usr/bin/
+	cp -r julia-1.4.1/lib/* /usr/lib/
+	cp -r julia-1.4.1/include/* /usr/include/
+	cp -r julia-1.4.1/share/* /usr/share/
+	rm -rf ./julia-1.4.1 julia-1.4.1-linux-x86_64.tar.gz
 	/usr/bin/build-prybar-lang.sh julia
 
 	if [[ -n "$(ls -A /home/runner)" ]]; then
