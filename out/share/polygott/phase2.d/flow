@@ -1,0 +1,32 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+echo 'Setup parents of flow'
+rsync --recursive --links --perms --times /opt/homes/nodejs/ /home/runner/
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup flow'
+cd "${HOME}"
+
+npm install -g flow-language-server-amasad flow-bin
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for flow
+	mkdir -p /opt/homes/flow
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/flow
+  chown runner:runner -R /opt/homes/flow
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/flow
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

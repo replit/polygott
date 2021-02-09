@@ -200,6 +200,7 @@ let lpad = (s, n) => s + new Array(n - s.length).fill(" ").join("");
 
 let ctx = {
 	basePackages,
+	languageInfo,
 	languages,
 	btoa,
 	lbypop,
@@ -219,9 +220,10 @@ let objects = {
 	"test.sh": "tests.ejs",
 	"self-test": "self-test.ejs",
 	"phase0.sh": "phase0.ejs",
-	"phase1.sh": "phase1.ejs",
-	"phase2.sh": "phase2.ejs",
 	"Dockerfile": "Dockerfile.ejs",
+	"Dockerfile.splice": "Dockerfile.splice.ejs",
+	"languages.d": "languages.d.ejs",
+	"languages.json": "languages.json.ejs",
 	"run-project": "run-project.ejs",
 	"run-language-server": "run-language-server.ejs",
 	"detect-language": "detect-language.ejs",
@@ -244,6 +246,7 @@ for (let target in objects) {
 
 const perLangScripts = [
 	'self-test',
+	'phase2',
 ];
 
 for (const perLangScript of perLangScripts) {

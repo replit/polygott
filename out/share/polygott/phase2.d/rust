@@ -1,0 +1,32 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup rust'
+cd "${HOME}"
+
+curl --proto '=https' --tlsv1.2 -Sf https://static.rust-lang.org/dist/rust-1.44.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp
+/tmp/rust-1.44.0-x86_64-unknown-linux-gnu/install.sh
+rm -rf /tmp/rust-1.44.0-x86_64-unknown-linux-gnu
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for rust
+	mkdir -p /opt/homes/rust
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/rust
+  chown runner:runner -R /opt/homes/rust
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/rust
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

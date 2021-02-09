@@ -1,0 +1,37 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+echo 'Setup parents of scala'
+rsync --recursive --links --perms --times /opt/homes/java/ /home/runner/
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup scala'
+cd "${HOME}"
+
+wget -nv https://downloads.lightbend.com/scala/2.13.1/scala-2.13.1.tgz
+tar -xf scala-2.13.1.tgz
+cp -R   scala-2.13.1/bin/*     /usr/local/bin/
+cp -R   scala-2.13.1/lib/*     /usr/local/lib/
+rm -rf  scala-2.13.1/
+/usr/bin/build-prybar-lang.sh scala
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for scala
+	mkdir -p /opt/homes/scala
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/scala
+  chown runner:runner -R /opt/homes/scala
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/scala
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

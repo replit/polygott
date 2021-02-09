@@ -1,32 +1,15 @@
-name = "objective-c"
-entrypoint = "main.m"
-extensions = [
-	"m",
-	"mm"
-]
+#!/bin/bash
+set -ev
+shopt -s dotglob
 
-packages = [
-	"clang-8",
-	"libcairo-dev",
-	"autoconf",
-	"libblocksruntime-dev",
-	"libtiff-dev",
-	"libpthread-workqueue-dev",
-	"libicu-dev",
-	"libgnutls28-dev",
-	"libjpeg-dev",
-	"libxft-dev",
-	"libtool",
-	"libffi-dev",
-	"libx11-dev",
-	"libxml2-dev",
-	"libxrandr-dev",
-	"libxt-dev",
-	"libkqueue-dev",
-]
+export HOME=/home/runner
 
-setup = [
-	'''
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup objective-c'
+cd "${HOME}"
+
 export LIBOBJC2=https://codeload.github.com/gnustep/libobjc2/tar.gz/v2.0
 export GNUSTEP_SOURCES=(
 	ftp://ftp.gnustep.org/pub/gnustep/core/gnustep-make-2.8.0.tar.gz
@@ -85,35 +68,21 @@ ldconfig
 rm -rf /tmp/gnustep-dev
 
 cd $HOME
-	'''
-]
+	
 
-[compile]
-command = [
-	"clang-8",
-	"-x", "objective-c",
-	"`gnustep-config --base-libs`", # Add "`gnustep-config --gui-libs`" if you want to use GUI libraries in your program too.
-	"-o", "main",
-]
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for objective-c
+	mkdir -p /opt/homes/objective-c
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/objective-c
+  chown runner:runner -R /opt/homes/objective-c
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/objective-c
+fi
 
-[run]
-command = [
-	"./main"
-]
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
 
-[tests]
 
-	[tests.hello]
-	code = """
-#import <objc/objc.h>
-#import <objc/Object.h>
-#import <Foundation/Foundation.h>
-int main(void) {
-	@autoreleasepool {
-		NSString* str = @"Hello from Objective-C 2.0!";
-		puts([str cString]);
-	}
-	return 0;
-}
-"""
-	output = "Hello from Objective-C 2.0!\n"
+rm /phase2.sh

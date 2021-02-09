@@ -1,0 +1,32 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+echo 'Setup parents of nextjs'
+rsync --recursive --links --perms --times /opt/homes/nodejs/ /home/runner/
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup nextjs'
+cd "${HOME}"
+
+mkdir -p /home/runner/pages
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for nextjs
+	mkdir -p /opt/homes/nextjs
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/nextjs
+  chown runner:runner -R /opt/homes/nextjs
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/nextjs
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

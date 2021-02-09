@@ -1,0 +1,50 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup forth'
+cd "${HOME}"
+
+  pushd /tmp
+  wget -O gforth-0.7.9.tar.xz http://www.complang.tuwien.ac.at/forth/gforth/Snapshots/0.7.9_20200716/gforth-0.7.9_20200716.tar.xz
+  tar -Jxf gforth-0.7.9.tar.xz
+  rm gforth-0.7.9.tar.xz
+  mv gforth-0.7.9_* gforth-0.7.9
+  cd gforth-0.7.9
+
+  cd unix
+  [ -e stat-fsi.c ] || wget -O stat-fsi.c https://git.savannah.gnu.org/cgit/gforth.git/plain/unix/stat-fsi.c
+  gcc stat-fsi.c -o stat-fsi
+  ./stat-fsi > stat.fs
+  cd ..
+
+  ./autogen.sh
+  ./configure
+  make
+  make more
+  make install
+  cd ..
+  rm -rf /tmp/gforth-0.7.9
+  popd
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for forth
+	mkdir -p /opt/homes/forth
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/forth
+  chown runner:runner -R /opt/homes/forth
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/forth
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

@@ -24,53 +24,98 @@ jobs:
             exit 1
           fi
   build_and_test:
-    docker:
-      - image: docker:18.09
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 18.09.3
-      - run: apk add --no-cache --no-progress make git npm python3
+      - run: |
+          curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+          sudo apt-get install -y --no-install-recommends make git nodejs
+      - run: |
+          mkdir -p ~/.docker/cli-plugins
+          curl -sL https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx
+          chmod +x ~/.docker/cli-plugins/docker-buildx
+          docker buildx version
+      - run:
+          no_output_timeout: 60m
+          # Let it retry a few times. The build cache should make it recover
+          # gracefully and continue from where it left off.
+          command: make -j2 image || make -j2 image
       - run: make test
   build_and_test_ci:
-    docker:
-      - image: docker:18.09
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 18.09.3
-      - run: apk add --no-cache --no-progress make git npm python3
+      - run: |
+          curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+          sudo apt-get install -y --no-install-recommends make git nodejs
+      - run: |
+          mkdir -p ~/.docker/cli-plugins
+          curl -sL https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx
+          chmod +x ~/.docker/cli-plugins/docker-buildx
+          docker buildx version
+      - run:
+          no_output_timeout: 60m
+          # Let it retry a few times. The build cache should make it recover
+          # gracefully and continue from where it left off.
+          command: make -j2 image-ci || make -j2 image-ci
       - run: make test-ci
   build_and_test_changed:
-    docker:
-      - image: docker:18.09
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 18.09.3
-      - run: apk add --no-cache --no-progress make git npm python3
+      - run: |
+          curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+          sudo apt-get install -y --no-install-recommends make git nodejs
+      - run: |
+          mkdir -p ~/.docker/cli-plugins
+          curl -sL https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx
+          chmod +x ~/.docker/cli-plugins/docker-buildx
+          docker buildx version
       - run: make changed-test
   build_test_and_deploy:
-    docker:
-      - image: docker:18.09
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 18.09.3
-      - run: apk add --no-cache --no-progress make git npm python3
-      - run: make test
+      - run: |
+          curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+          sudo apt-get install -y --no-install-recommends make git nodejs
+      - run: |
+          mkdir -p ~/.docker/cli-plugins
+          curl -sL https://github.com/docker/buildx/releases/download/v0.5.1/buildx-v0.5.1.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx
+          chmod +x ~/.docker/cli-plugins/docker-buildx
+          docker buildx version
+      - run:
+          no_output_timeout: 60m
+          # Let it retry a few times. The build cache should make it recover
+          # gracefully and continue from where it left off.
+          command: make image-ci || make image-ci
+      - run:
+          no_output_timeout: 60m
+          # Let it retry a few times. The build cache should make it recover
+          # gracefully and continue from where it left off.
+          command: make -j2 image || make -j2 image
       - run: make test-ci
+      - run: make test
       - deploy:
+          no_output_timeout: 60m
           command: |
             echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+
             docker tag polygott:latest replco/polygott:latest
             docker push replco/polygott:latest
             docker tag polygott:latest "replco/polygott:${CIRCLE_SHA1}"
             docker push "replco/polygott:${CIRCLE_SHA1}"
+
             docker tag polygott-ci:latest replco/polygott-ci:latest
             docker push replco/polygott-ci:latest
             docker tag polygott-ci:latest "replco/polygott-ci:${CIRCLE_SHA1}"
             docker push "replco/polygott-ci:${CIRCLE_SHA1}"
+
+            make push-cache-image
 workflows:
   ci:
     jobs:

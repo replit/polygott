@@ -1,0 +1,37 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+echo 'Setup parents of reactts'
+rsync --recursive --links --perms --times /opt/homes/nodejs/ /home/runner/
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup reactts'
+cd "${HOME}"
+
+rm -rf /home/runner/.profile /home/runner/.bashrc /home/runner/.bash_logout /home/runner/.cache /home/runner/.npm
+npx create-react-app --scripts-version=react-scripts-ts /home/runner/app
+rsync --archive /home/runner/app/ /home/runner
+rm -rf /home/runner/app
+yarn
+rm -f README.md
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for reactts
+	mkdir -p /opt/homes/reactts
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/reactts
+  chown runner:runner -R /opt/homes/reactts
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/reactts
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

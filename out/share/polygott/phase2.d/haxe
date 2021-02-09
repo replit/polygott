@@ -1,0 +1,41 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup haxe'
+cd "${HOME}"
+
+pushd /tmp
+curl --output hashlink.tar.gz -ks https://codeload.github.com/HaxeFoundation/hashlink/tar.gz/1.11
+tar -xz --file=hashlink.tar.gz
+rm hashlink.tar.gz
+cd hashlink-1.11
+sed -i '92s|.*|LFLAGS += -lm -Wl,-rpath,.:'$ORIGIN/../lib':$(PREFIX)/lib -Wl,--export-dynamic -Wl,--no-undefined|' Makefile
+make all
+make install
+cd ..
+rm -rf hashlink-1.11
+popd
+haxelib setup /home/runner
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for haxe
+	mkdir -p /opt/homes/haxe
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/haxe
+  chown runner:runner -R /opt/homes/haxe
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/haxe
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

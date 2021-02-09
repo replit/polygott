@@ -8,8 +8,6 @@ useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- basePackages.join(' ') %>
 
-rm -rf /var/lib/apt/lists/*
-
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 update-ca-certificates
@@ -21,7 +19,22 @@ wget -nv \
 dpkg -i *.deb
 rm *.deb
 
-mkdir /config
-chown runner:runner /config
+mkdir -p /config /opt/homes/default /opt/virtualenvs
+rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/default
+chown runner:runner -R /home/runner /opt/homes/default /config /opt/virtualenvs
+
+<% for (const [key, langs] of Object.entries(aptKeys)) { -%>
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv <%- c([key]) %>
+<% } -%>
+
+<% for (const [keyUrl, langs] of Object.entries(aptKeyUrls)) { %>
+curl -L <%- c([keyUrl]) %> | apt-key add -
+<% } -%>
+
+<% for (const [repo, langs] of Object.entries(aptRepos)) { -%>
+add-apt-repository --yes --no-update <%- c([repo]) %>
+<% } -%>
+
+rm -rf /var/lib/apt/lists/*
 
 rm /phase0.sh
