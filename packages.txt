@@ -32,6 +32,7 @@ libsdl2-dev
 mesa-utils
 tigervnc-standalone-server
 x11-apps
+x11-utils
 
 cmake
 ninja-build
