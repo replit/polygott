@@ -7,7 +7,7 @@ aptKeyUrls = [
   "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 ]
 aptRepos = [
-  "deb https://deb.nodesource.com/node_10.x bionic main",
+  "deb https://deb.nodesource.com/node_14.x bionic main",
 ]
 packages = [
   "nodejs"
