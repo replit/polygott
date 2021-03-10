@@ -27,7 +27,7 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 09617FD37CC06B54
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 6494C6D6997C215E
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 6507444DBDF4EAD2
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv A2E8E32E64BE8EFD6C3F1F7E0DD4CA7EB1C6CC6B
 
 
 curl -L https://packagecloud.io/cs50/repo/gpgkey | apt-key add -
@@ -48,7 +48,7 @@ add-apt-repository --yes --no-update ppa:bartbes/love-stable
 add-apt-repository --yes --no-update 'deb http://dl.mercurylang.org/deb/ stretch main'
 add-apt-repository --yes --no-update ppa:avsm/ppa
 add-apt-repository --yes --no-update ppa:deadsnakes/ppa
-add-apt-repository --yes --no-update 'deb https://dl.bintray.com/nxadm/rakudo-pkg-debs bionic main'
+add-apt-repository --yes --no-update 'deb https://dl.cloudsmith.io/public/nxadm-pkgs/rakudo-pkg/deb/ubuntu bionic main'
 
 rm -rf /var/lib/apt/lists/*
 
