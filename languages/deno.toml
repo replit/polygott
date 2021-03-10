@@ -4,7 +4,7 @@ extensions = [
   "ts"
 ]
 setup = [
-  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.8.0"
+  "curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.8.1"
 ]
 
 [languageServer]
