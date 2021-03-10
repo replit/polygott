@@ -10,7 +10,7 @@ chown -R $(id -u):$(id -g) /home/runner
 echo 'Setup deno'
 cd "${HOME}"
 
-curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.7.0
+curl -fsSL https://deno.land/x/install/install.sh | DENO_INSTALL=/usr sh -s v1.8.1
 
 if [[ -n "$(ls -A /home/runner)" ]]; then
 	echo Storing home for deno
