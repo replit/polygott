@@ -12,8 +12,6 @@ gnupg
 build-essential
 vim
 ca-certificates
-chromium-chromedriver
-firefox-geckodriver
 man
 rlwrap
 valgrind
