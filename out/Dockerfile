@@ -535,6 +535,16 @@ RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/v
     /bin/bash phase2.sh
 
 
+## The individual language layer for nix.
+FROM polygott-phase1.5 AS polygott-phase2-nix
+COPY ./out/share/polygott/phase2.d/nix /phase2.sh
+RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/var/lib/apt/lists,ro \
+    --mount=type=tmpfs,target=/var/lib/apt/lists/auxfiles \
+    --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
+    /bin/bash phase2.sh
+
+
 ## The individual language layer for objective-c.
 FROM polygott-phase1.5 AS polygott-phase2-objective-c
 COPY ./out/share/polygott/phase2.d/objective-c /phase2.sh

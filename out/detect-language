@@ -165,6 +165,10 @@ case "${LANGUAGE}" in
   echo 'nim';
   exit 0
   ;;
+"nix")
+  echo 'nix';
+  exit 0
+  ;;
 "objective-c")
   echo 'objective-c';
   exit 0
@@ -264,6 +268,7 @@ case "${LANGUAGE}" in
 esac
 
 # No language explicitly provided. Detect the existence of entrypoint files.
+if [ -f main.sh ]; then echo 'nix'; exit 0; fi
 if [ -f main.py ]; then echo 'python3'; exit 0; fi
 if [ -f main.py ]; then echo 'pygame'; exit 0; fi
 if [ -f main.py ]; then echo 'pyxel'; exit 0; fi
@@ -328,6 +333,7 @@ if [ -f index.js ]; then echo 'express'; exit 0; fi
 
 # No entrypoint files detected. Try to sniff out the existence of files based
 # on extension.
+if [ -n "$(find . -name '*.sh')" ]; then echo 'nix'; exit 0; fi
 if [ -n "$(find . -name '*.py')" ]; then echo 'python3'; exit 0; fi
 if [ -n "$(find . -name '*.py')" ]; then echo 'pygame'; exit 0; fi
 if [ -n "$(find . -name '*.py')" ]; then echo 'pyxel'; exit 0; fi

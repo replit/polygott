@@ -78,6 +78,8 @@ CODE=0
 /usr/share/polygott/self-test.d/nextjs || CODE=1
 # nim
 /usr/share/polygott/self-test.d/nim || CODE=1
+# nix
+/usr/share/polygott/self-test.d/nix || CODE=1
 # objective-c
 /usr/share/polygott/self-test.d/objective-c || CODE=1
 # ocaml

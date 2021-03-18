@@ -37,6 +37,7 @@
     "phase2-mercury": "phase1.5",
     "phase2-nextjs": "phase2-nodejs",
     "phase2-nim": "phase1.5",
+    "phase2-nix": "phase1.5",
     "phase2-objective-c": "phase1.5",
     "phase2-ocaml": "phase1.5",
     "phase2-pascal": "phase1.5",
