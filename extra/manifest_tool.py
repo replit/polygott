@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """Tool to help splitting and splicing docker image layers.
 
 There are four subcommands:
