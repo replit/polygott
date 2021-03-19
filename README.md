@@ -51,6 +51,10 @@ debug an intermittent network error while building one of the
 languages. To do this, identify the `docker build` command which is
 run by the Makefile, and run it yourself with the `--no-cache` flag.
 
+The CI requires having up-to-date generated artifacts (the files in `out/`)
+committed to ensure a consistent Docker build environment. These will be
+refreshed by running the tests, or by running `make -B build/stamps/out`).
+
 ## Language configuration
 
 Each supported language has a
