@@ -5,7 +5,7 @@ extensions = [
 ]
 packages = [
   "libssl-dev",
-  "libz-dev"
+  "libz-dev",
   "crystal"
 ]
 aptKeys = [
