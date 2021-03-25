@@ -36,8 +36,6 @@ curl -L https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | apt-
 
 curl -L https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 
-curl -L https://keybase.io/crystal/pgp_keys.asc | apt-key add -
-
 add-apt-repository --yes --no-update 'deb https://packagecloud.io/cs50/repo/ubuntu/ bionic main'
 add-apt-repository --yes --no-update 'deb https://dl.bintray.com/crystal/deb all stable'
 add-apt-repository --yes --no-update 'deb https://download.mono-project.com/repo/ubuntu stable-bionic main'
