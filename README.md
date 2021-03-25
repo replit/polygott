@@ -1,7 +1,7 @@
 # Polygott
 ## Overview
 
-[Repl.it] allows you to quickly get started with any programming language
+[Replit.com] allows you to quickly get started with any programming language
 online. In order to provide this capability, our evaluation server uses
 [Docker](https://www.docker.com/) with the
 [`buildx`](https://github.com/docker/buildx#installing) CLI plugin to ensure
@@ -12,7 +12,7 @@ concluded that it was both simpler and more efficient to use a single
 image which contains all supported languages simultaneously. The code
 necessary to build this combined image, **Polygott**, resides in this
 repository.  If you're lost and need some reference, we have
-[a blog](https://blog.repl.it/elisp) where we added elisp.
+[a blog](https://blog.replit.com/elisp) where we added elisp.
 
 Because of the fact that building a monolithic image is unwieldy and takes too
 much time, the build itself is made of a directed graph of intermediate nodes,
@@ -64,7 +64,7 @@ subdirectory](languages). The meaningful keys are as follows:
 ### Mandatory
 
 * `entrypoint`: The name of the file which will be executed on
-  [Repl.it] when you press the Run button. This is used in the
+  [Replit.com] when you press the Run button. This is used in the
   `detect-language` script built into the Polygott image: if a file
   exists with this name, then the project is detected to have this
   language. (Ties are resolved by `popularity`.) It is also used by
@@ -207,7 +207,7 @@ configuration file. `LANG` defaults to the output of
 
 When a commit is merged to `master`, [CircleCI](https://circleci.com/)
 automatically builds Polygott and pushes the image to [Docker
-Hub](https://hub.docker.com/r/replco/polygott). A Repl.it
+Hub](https://hub.docker.com/r/replco/polygott). A Replit
 engineer has to then push the new Polygott to production.
 
-[repl.it]: https://repl.it/
+[replit.com]: https://replit.com/
