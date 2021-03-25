@@ -5,13 +5,14 @@ extensions = [
 ]
 packages = [
   "libssl-dev",
+  "libz-dev",
   "crystal"
 ]
 aptKeys = [
-  "09617FD37CC06B54"
+  "379CE192D401AB61"
 ]
 aptRepos = [
-  "deb https://dist.crystal-lang.org/apt crystal main"
+  "deb https://dl.bintray.com/crystal/deb all stable"
 ]
 
 [run]

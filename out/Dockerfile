@@ -106,6 +106,7 @@ RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/v
       libxml2-dev \
       libxrandr-dev \
       libxt-dev \
+      libz-dev \
       littler \
       love \
       lua-socket \
