@@ -12,6 +12,8 @@
 !extra/lang-gitignore
 !extra/matplotlibrc
 !extra/polygott-gitignore
+!extra/pulse/client.conf
+!extra/pulse/default.pa
 !extra/pycodestyle
 !extra/pylintrc
 !extra/replit-v2.py
