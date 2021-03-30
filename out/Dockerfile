@@ -787,7 +787,7 @@ FROM replco/upm:light@sha256:7969cc1285d7900023d68cd3c5fd5155bc9506ac1b0bae56dc4
 
 ## The polygott-specific tools.
 FROM polygott-phase1.5 AS polygott-phase2-tools
-RUN curl -sSL https://github.com/replit/rfbproxy/releases/download/v0.1.1-3298ce3/rfbproxy.tar.xz | tar xJ -C /
+RUN curl -sSL https://github.com/replit/rfbproxy/releases/download/v0.1.1-c888349/rfbproxy.tar.xz | tar xJ -C /
 RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
 COPY ./extra/polygott-gitignore /etc/.gitignore
 
@@ -820,5 +820,6 @@ COPY ./extra/matplotlibrc /config/matplotlib/matplotlibrc
 
 COPY ./extra/fluxbox/init /etc/X11/fluxbox/init
 COPY ./extra/fluxbox/apps /etc/X11/fluxbox/apps
+COPY ./extra/pulse/client.conf ./extra/pulse/default.pa /etc/pulse/
 
 COPY ./extra/lang-gitignore /etc/.gitignore
