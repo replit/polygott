@@ -203,6 +203,11 @@ case "$LANGUAGE" in
     cp -a "/opt/homes/nim"/* /home/runner/
   fi
   ;;
+"nix")
+  if [ -d "/opt/homes/nix" ]; then
+    cp -a "/opt/homes/nix"/* /home/runner/
+  fi
+  ;;
 "objective-c")
   if [ -d "/opt/homes/objective-c" ]; then
     cp -a "/opt/homes/objective-c"/* /home/runner/

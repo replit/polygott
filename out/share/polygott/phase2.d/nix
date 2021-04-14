@@ -1,0 +1,33 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup nix'
+cd "${HOME}"
+
+  mkdir -m 0755 /nix && chown runner /nix
+  chown -R runner:runner /home/runner
+  su runner -c 'curl -L https://nixos.org/nix/install | sh && . /home/runner/.nix-profile/etc/profile.d/nix.sh && nix-channel --update && nix search -u > /dev/null'
+  
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for nix
+	mkdir -p /opt/homes/nix
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/nix
+  chown runner:runner -R /opt/homes/nix
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/nix
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

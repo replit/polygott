@@ -35,6 +35,7 @@ echo "lua                 " $(lua -v 2>&1  </dev/null | head -n 1 | sed -E 's/(L
 echo "mercury             " $(mmc --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "nextjs              " $(yarn --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "nim                 " $(nim --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
+echo "nix                 " $(bash --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "objective-c         " $(clang-8 --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "ocaml               " $(ocamlc --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "pascal              " $(fpc --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')

@@ -253,6 +253,11 @@ case "$LANGUAGE" in
   nim compile --run main.nim
   ;;
 
+"nix")
+  maybe_read_stdin main.sh
+  bash main.sh
+  ;;
+
 "objective-c")
   maybe_read_stdin main.m
   clang-8 -x objective-c `gnustep-config --base-libs` -o main main.m 1>&2

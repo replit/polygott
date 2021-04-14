@@ -157,6 +157,10 @@ case "$LANGUAGE" in
   echo "No language server configured for nim" >&2
   exit 1
   ;;
+"nix")
+  echo "No language server configured for nix" >&2
+  exit 1
+  ;;
 "objective-c")
   echo "No language server configured for objective-c" >&2
   exit 1

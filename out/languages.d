@@ -390,6 +390,16 @@ build/diffs/phase2-nim.tar.bz2: extra/manifest_tool.py build/manifests/phase2-ni
 			--manifest=/mnt/manifests/phase2-nim.json.gz > "$@.tmp"
 	mv "$@.tmp" "$@"
 
+build/diffs/phase2-nix.tar.bz2: extra/manifest_tool.py build/manifests/phase2-nix.json.gz build/manifests/phase1.5.json.gz | build/diffs/
+	docker run --rm \
+		--mount "type=bind,src=$(PWD)/extra/manifest_tool.py,target=/usr/bin/manifest_tool.py,ro" \
+		--mount "type=bind,src=$(PWD)/build/manifests,target=/mnt/manifests,ro" \
+		"polygott:phase2-nix" \
+		/usr/bin/manifest_tool.py diff \
+			--parent-manifest=/mnt/manifests/phase1.5.json.gz \
+			--manifest=/mnt/manifests/phase2-nix.json.gz > "$@.tmp"
+	mv "$@.tmp" "$@"
+
 build/diffs/phase2-objective-c.tar.bz2: extra/manifest_tool.py build/manifests/phase2-objective-c.json.gz build/manifests/phase1.5.json.gz | build/diffs/
 	docker run --rm \
 		--mount "type=bind,src=$(PWD)/extra/manifest_tool.py,target=/usr/bin/manifest_tool.py,ro" \

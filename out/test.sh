@@ -208,6 +208,12 @@ echo "Oi0gbW9kdWxlIG1haW4uCjotIGludGVyZmFjZS4KOi0gaW1wb3J0X21vZHVsZSBpby4KOi0gcH
 echo "ZWNobyAiaGVsbG8gd29ybGQi"  | base64 --decode | docker run --rm -i polygott run-project -s -l nim | diff -u --label "nim" <( echo "Q0M6IHN0ZGxpYl9pby5uaW0KQ0M6IHN0ZGxpYl9zeXN0ZW0ubmltCkNDOiBtYWluLm5pbQpoZWxsbyB3b3JsZAo=" | base64 --decode ) - && echo ✓ nim:hello
 
 
+# nix
+
+
+echo "ZWNobyBoZWxsbw=="  | base64 --decode | docker run --rm -i polygott run-project -s -l nix | diff -u --label "nix" <( echo "aGVsbG8K" | base64 --decode ) - && echo ✓ nix:hello
+
+
 # objective-c
 
 
