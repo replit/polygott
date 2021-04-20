@@ -41,7 +41,7 @@ const env = {
 	NIX_SSL_CERT_FILE: '/etc/ssl/certs/ca-certificates.crt',
 	NIX_PATH: '/home/runner/.nix-defexpr/channels',
 	NIX_PROFILES: '/nix/var/nix/profiles/default /home/runner/.nix-profile',
-	PKG_CONFIG_PATH: '/home/runner/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/i386-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/pkgconfig',
+	PKG_CONFIG_PATH: '/home/runner/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/i386-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/pkgconfig:/home/runner/.apt/usr/share/pkgconfig',
 	PYTHONPATH: '/opt/virtualenvs/python3/lib/python3.8/site-packages',
 	USER: 'runner',
 	VIRTUAL_ENV: '/opt/virtualenvs/python3',
