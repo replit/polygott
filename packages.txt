@@ -50,3 +50,6 @@ libopusfile0
 pulseaudio
 
 ffmpeg
+
+genisoimage
+qemu
