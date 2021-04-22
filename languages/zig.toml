@@ -1,0 +1,34 @@
+name = "zig"
+entrypoint = "main.zig"
+extensions = [
+  "zig"
+]
+
+aptKeys = [
+  "379CE192D401AB61"
+]
+
+aptRepos = [
+  "deb https://dl.bintray.com/dryzig/zig-ubuntu bionic main"
+]
+
+packages = [
+  "zig"
+]
+
+[compile]
+command = [
+  "zig",
+  "build-exe"
+]
+
+[run]
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "const std = @import(\"std\"); pub fn main() void { std.io.getStdOut().writeAll(\"hello\\n\",) catch unreachable; }"
+  output = "hello\n"
