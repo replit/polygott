@@ -1,0 +1,25 @@
+name = "tiny"
+entrypoint = "main.tl"
+extensions = [
+  "tl"
+]
+
+setup = [
+  "mkdir /tiny",
+  "git clone https://github.com/vgsantoniazzi/tiny-lang.git /tiny",
+  "cd /tiny",
+  "make && make install"
+]
+
+
+[run]
+command = [
+  "tiny",
+  "./main.tl",
+  "/tiny/tokens/english.yml",
+]
+
+[tests]
+  [tests.welcome]
+  code = 'str n = "welcome to tiny-lang"; print n;'
+  output = "welcome to tiny-lang\n"
