@@ -1,0 +1,31 @@
+name = "rust_nightly"
+entrypoint = "main.rs"
+extensions = [
+  "rs"
+]
+packages = [
+  "rust-gdb"
+]
+setup = [
+  "curl --proto '=https' --tlsv1.2 -Sf https://static.rust-lang.org/dist/2020-08-11/rust-nightly-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp",
+  "/tmp/rust-nightly-x86_64-unknown-linux-gnu/install.sh",
+  "rm -rf /tmp/rust-nightly-x86_64-unknown-linux-gnu"
+]
+
+[compile]
+command = [
+  "rustc",
+  "-o",
+  "main"
+]
+
+[run]
+command = [
+  "./main"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "fn main() {\n  println!(\"hello\");\n}"
+  output = "hello\n"
