@@ -1,0 +1,53 @@
+name = "perl"
+entrypoint = "main.pl"
+extensions = [
+  "pl",
+  "pm"
+]
+
+aliases = [
+  "perl5"
+]
+
+setup = [
+  "export PERL_VERSION=5.32.0",
+  "cd /tmp",
+  "wget http://www.cpan.org/src/5.0/perl-$PERL_VERSION.tar.gz",
+  "tar zxf perl-$PERL_VERSION.tar.gz",
+  "cd perl-$PERL_VERSION",
+  "./Configure -des -Dprefix=/usr/local -Duseshrplib -Dusethreads -Dusemultiplicity",
+  "make",
+  "make install",
+  "curl -L https://cpanmin.us | /usr/local/bin/perl - --notest App::cpanminus Perl::LanguageServer"
+]
+
+versionCommand = [
+  "/bin/bash",
+  "-c",
+  'perl -E "print $^V"'
+]
+
+[run]
+command = [
+  "perl",
+  "./main.pl"
+]
+
+[languageServer]
+command = [
+  "perl",
+  "-MPerl::LanguageServer",
+  "-ePerl::LanguageServer::run",
+  "--",
+  "--debug"
+]
+
+[tests]
+
+  [tests.hello]
+  code = 'print "hello world";'
+  output = "hello world"
+
+  [tests.version]
+  code = 'print $] == 5.032;'
+  output = "1"
