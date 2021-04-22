@@ -1,0 +1,25 @@
+name = "io"
+entrypoint = "main.io"
+extensions = [
+    "io"
+]
+setup = [
+    "wget http://iobin.suspended-chord.info/linux/iobin-linux-x64-deb-current.zip",
+    "unzip iobin-linux-x64-deb-current.zip",
+    "DEBIAN_FRONTEND=noninteractive apt install -y ./IoLanguage-2013.11.04-Linux-x64.deb"   
+]
+versionCommand = [
+    "io",
+    "--version"
+]
+
+[run]
+command = [
+    "io",
+    "main.io"
+]
+
+[tests]
+    [tests.hello]
+    code = "\"Hello, world!\" println"
+    output = "Hello, world!\n"
