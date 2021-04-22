@@ -1,0 +1,32 @@
+name = "stekovaya"
+entrypoint = "main.stk"
+extensions = [
+  "stk"
+]
+aptKeys = ["3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF"]
+aptRepos = [
+  "deb https://download.mono-project.com/repo/ubuntu stable-bionic main"
+]
+packages = [
+  "mono-complete"
+]
+setup = [
+  "cd /tmp",
+  "git clone https://github.com/stekovaya-org/Stekovaya.git",
+  "mv Stekovaya/stkvy.exe stkvy.exe",
+  "rm -rf Stekovaya",
+  "mv stkvy.exe /usr/bin/stkvy.exe"
+]
+
+[run]
+command = [
+  "mono",
+  "/usr/bin/stkvy.exe",
+  "main.stk"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "STR hello END MSG"
+  output = "hello\n"
