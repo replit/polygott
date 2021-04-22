@@ -1,0 +1,36 @@
+name = "racket"
+entrypoint = "main.rkt"
+extensions = [
+  "rkt"
+]
+
+packages = [
+]
+
+setup = [
+  "pushd /tmp",
+  "wget -O racket-7.8-x86_64-linux.sh https://mirror.racket-lang.org/installers/7.8/racket-7.8-x86_64-linux.sh",
+  "sh racket-7.8-x86_64-linux.sh --unix-style --create-dir --dest /usr",
+  "rm -rf /tmp/racket-7.8-x86_64-linux.sh",
+  "popd"
+]
+
+versionCommand = [
+  "racket",
+  "--version"
+]
+
+[run]
+command = [
+  "racket",
+  "main.rkt"
+]
+
+[tests]
+  [tests.eight]
+  code = "#lang racket\n(+ 3 5)"
+  output = "8\n"
+
+  [tests.hello]
+  code = "#lang racket\n(print \"hello\")"
+  output = "\"hello\""
