@@ -142,7 +142,7 @@ RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/v
       r-cran-stringr \
       r-recommended \
       rake-compiler \
-      rakudo-pkg \
+      rakudo-pkg=2021.3.0-01 \
       ruby \
       ruby-dev \
       rubygems \

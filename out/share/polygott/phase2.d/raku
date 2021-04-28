@@ -16,7 +16,7 @@ ln -s /opt/rakudo-pkg/bin/nqp /usr/local/bin/nqp
 ln -s /opt/rakudo-pkg/bin/moar /usr/local/bin/moar
 (cd /opt/rakudo-pkg/var/zef && /opt/rakudo-pkg/bin/raku -I. bin/zef --force-install install .)
 ln -s /opt/rakudo-pkg/share/perl6/site/bin/zef /usr/local/bin/zef
-zef install Linenoise
+zef install "Linenoise:ver<0.1.1>"
 
 if [[ -n "$(ls -A /home/runner)" ]]; then
 	echo Storing home for raku

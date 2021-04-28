@@ -12,7 +12,7 @@ aptRepos = [
 ]
 packages = [
   "libssl-dev",
-  "rakudo-pkg"
+  "rakudo-pkg=2021.3.0-01"
 ]
 setup = [
   "ln -s /opt/rakudo-pkg/bin/perl6 /usr/local/bin/perl6",
@@ -21,7 +21,7 @@ setup = [
   "ln -s /opt/rakudo-pkg/bin/moar /usr/local/bin/moar",
   "(cd /opt/rakudo-pkg/var/zef && /opt/rakudo-pkg/bin/raku -I. bin/zef --force-install install .)",
   "ln -s /opt/rakudo-pkg/share/perl6/site/bin/zef /usr/local/bin/zef",
-  "zef install Linenoise"
+  "zef install \"Linenoise:ver<0.1.1>\"",
 ]
 
 
