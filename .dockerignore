@@ -25,6 +25,7 @@
 !out/polygott-x11-vnc
 !out/run-language-server
 !out/run-project
+!extra/nixproxy.nix
 !out/self-test
 !out/share/polygott/phase2.d/*
 !out/share/polygott/self-test.d/*
