@@ -8,14 +8,14 @@ aliases = [
 entrypoint = "main.cpp"
 extensions = [
   "cpp",
-  "cc",
+  "cc"
 ]
 
 [compile]
 command = [
   "clang++-7",
   "-pthread",
-  "-std=c++17",
+  "-std=c++20",
   "-o",
   "main"
 ]
@@ -39,5 +39,5 @@ command = [
 [languageServer]
 command = [
   "cquery",
-  "--init={\"progressReportFrequencyMs\": -1,\"cacheDirectory\":\"/tmp/cquery\", \"extraClangArguments\": [\"-std=c++17\", \"-pthread\"]}"
+  "--init={\"progressReportFrequencyMs\": -1,\"cacheDirectory\":\"/tmp/cquery\", \"extraClangArguments\": [\"-std=c++20\", \"-pthread\"]}"
 ]
