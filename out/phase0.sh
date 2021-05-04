@@ -23,7 +23,7 @@ mkdir -p /config /opt/homes/default /opt/virtualenvs
 rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/default
 chown runner:runner -R /home/runner /opt/homes/default /config /opt/virtualenvs
 
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 379CE192D401AB61
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 321DC2EA7F0A4F06714516B8E456AE72856D1476
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 6494C6D6997C215E
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 6507444DBDF4EAD2
@@ -37,7 +37,7 @@ curl -L https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | apt-
 curl -L https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 
 add-apt-repository --yes --no-update 'deb https://packagecloud.io/cs50/repo/ubuntu/ bionic main'
-add-apt-repository --yes --no-update 'deb https://dl.bintray.com/crystal/deb all stable'
+add-apt-repository --yes --no-update 'deb https://download.opensuse.org/repositories/devel:languages:crystal/xUbuntu_18.04/ /'
 add-apt-repository --yes --no-update 'deb https://download.mono-project.com/repo/ubuntu stable-bionic main'
 add-apt-repository --yes --no-update 'deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main'
 add-apt-repository --yes --no-update ppa:kelleyk/emacs
