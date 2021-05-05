@@ -1,0 +1,33 @@
+name = "v"
+entrypoint = "main.v"
+extensions = [
+  "v"
+]
+packages = [
+  "libssl-dev"
+]
+setup = [
+  "cd /usr/local/share",
+  "git clone https://github.com/vlang/v",
+  "cd v",
+  "make",
+  "./v symlink"
+  
+]
+versionCommand = [
+  "v",
+  "version"
+]
+
+[run]
+command = [
+  "v",
+  "run",
+  "main.v"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "println('Hello, World!')"
+  output = "Hello, World!\n"
