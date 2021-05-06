@@ -9,10 +9,10 @@ packages = [
   "crystal"
 ]
 aptKeys = [
-  "379CE192D401AB61"
+  "321DC2EA7F0A4F06714516B8E456AE72856D1476"
 ]
 aptRepos = [
-  "deb https://dl.bintray.com/crystal/deb all stable"
+  "deb https://download.opensuse.org/repositories/devel:languages:crystal/xUbuntu_18.04/ /"
 ]
 
 [run]
