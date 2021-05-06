@@ -1,0 +1,25 @@
+name = "bywater BASIC"
+entrypoint = "main.bas"
+extensions = [
+    "bas",
+    "bs"
+]
+packages = [
+    "bwbasic",
+]
+
+[compile]
+command = [
+    "/bin/bwbasic",
+    "bwbasic main.bas",
+]
+
+[run]
+command = [
+    "bwbasic main.bas"
+]
+
+[tests]
+    [tests.hello]
+        code = "PRINT "Hello, World!""
+        output = "Hello, World!"
