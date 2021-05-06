@@ -10,7 +10,7 @@ aptRepos = [
   "deb https://packagecloud.io/cs50/repo/ubuntu/ bionic main"
 ]
 packages = [
-  "clang-7",
+  "clang-12",
   "clang-format-7",
   "libcs50",
 ]
@@ -24,7 +24,7 @@ setup = [
 
 [compile]
 command = [
-  "clang-7",
+  "clang-12",
   "-pthread",
   "-lm",
   "-o",
