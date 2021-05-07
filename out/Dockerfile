@@ -792,7 +792,7 @@ RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify
 
 
 ## Import UPM.
-FROM replco/upm:light@sha256:7969cc1285d7900023d68cd3c5fd5155bc9506ac1b0bae56dc49dc690de2c383 AS upm
+FROM replco/upm:light@sha256:9a07f4b0912f29692436be2a28c7024fee1d93eb16c3d3eed9fe6309dd121b37 AS upm
 
 
 ## The polygott-specific tools.
