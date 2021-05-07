@@ -6,7 +6,7 @@ echo "c                   " $(clang-10 --version 2>&1  </dev/null | head -n 1 | 
 echo "common lisp         " $(sbcl --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "clojure             " $(clojure -e (clojure-version) 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "cpp                 " $(clang++-10 --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
-echo "cpp11               " $(clang++-7 --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
+echo "cpp11               " $(clang++-10 --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "crystal             " $(crystal --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "csharp              " $(mcs --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')
 echo "D                   " $(gdc --version 2>&1  </dev/null | head -n 1 | sed -E 's/(License|Copyright|is free software).*//i')

@@ -102,7 +102,7 @@ case "$LANGUAGE" in
 
 "cpp11")
   maybe_read_stdin main.cpp
-  clang++-7 -pthread -std=c++11 -o main main.cpp 1>&2
+  clang++-10 -pthread -std=c++11 -o main main.cpp 1>&2
   ./main
   ;;
 
