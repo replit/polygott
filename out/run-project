@@ -80,7 +80,7 @@ case "$LANGUAGE" in
 
 "c")
   maybe_read_stdin main.c
-  clang-7 -pthread -lm -o main main.c 1>&2
+  clang-12 -pthread -lm -o main main.c 1>&2
   ./main
   ;;
 

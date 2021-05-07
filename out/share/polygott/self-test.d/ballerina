@@ -14,7 +14,7 @@ polygott-lang-setup -l 'ballerina'
 
 # ballerina:hello
 SUCCESS=true
-OUTPUT="$(echo 'aW1wb3J0IGJhbGxlcmluYS9pbzsKcHVibGljIGZ1bmN0aW9uIG1haW4oKSB7CiAgICBpbzpwcmludGxuKCJIZWxsbywgV29ybGQhIik7Cn0K' | \
+OUTPUT="$(echo 'aW1wb3J0IGJhbGxlcmluYS9pbzsNCnB1YmxpYyBmdW5jdGlvbiBtYWluKCkgew0KICAgIGlvOnByaW50bG4oIkhlbGxvLCBXb3JsZCEiKTsNCn0NCg==' | \
           base64 --decode | \
           run-project -s -l 'ballerina' \
        )" || SUCCESS=false

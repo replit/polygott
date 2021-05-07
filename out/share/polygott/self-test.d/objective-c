@@ -14,7 +14,7 @@ polygott-lang-setup -l 'objective-c'
 
 # objective-c:hello
 SUCCESS=true
-OUTPUT="$(echo 'I2ltcG9ydCA8b2JqYy9vYmpjLmg+CiNpbXBvcnQgPG9iamMvT2JqZWN0Lmg+CiNpbXBvcnQgPEZvdW5kYXRpb24vRm91bmRhdGlvbi5oPgppbnQgbWFpbih2b2lkKSB7CglAYXV0b3JlbGVhc2Vwb29sIHsKCQlOU1N0cmluZyogc3RyID0gQCJIZWxsbyBmcm9tIE9iamVjdGl2ZS1DIDIuMCEiOwoJCXB1dHMoW3N0ciBjU3RyaW5nXSk7Cgl9CglyZXR1cm4gMDsKfQo=' | \
+OUTPUT="$(echo 'I2ltcG9ydCA8b2JqYy9vYmpjLmg+DQojaW1wb3J0IDxvYmpjL09iamVjdC5oPg0KI2ltcG9ydCA8Rm91bmRhdGlvbi9Gb3VuZGF0aW9uLmg+DQppbnQgbWFpbih2b2lkKSB7DQoJQGF1dG9yZWxlYXNlcG9vbCB7DQoJCU5TU3RyaW5nKiBzdHIgPSBAIkhlbGxvIGZyb20gT2JqZWN0aXZlLUMgMi4wISI7DQoJCXB1dHMoW3N0ciBjU3RyaW5nXSk7DQoJfQ0KCXJldHVybiAwOw0KfQ0K' | \
           base64 --decode | \
           run-project -s -l 'objective-c' \
        )" || SUCCESS=false

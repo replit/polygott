@@ -43,9 +43,8 @@ RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/v
       autoconf \
       automake \
       clang \
-      clang-7 \
-      clang-8 \
       clang-12 \
+      clang-8 \
       clang-format-7 \
       crystal \
       dart=2.6.0-1 \
