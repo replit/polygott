@@ -14,6 +14,7 @@ jobs:
           make build/stamps/out
           if ! git diff --exit-code out/ ; then
             echo "There are changes to out/ that need to be checked in."
+            echo "Run \`make -B build/stamps/out\` and commit the changed files."
             exit 1
           fi
           DIFF="$(git status --porcelain out/)"
@@ -21,6 +22,7 @@ jobs:
             echo "\$ git status --porcelain out/"
             echo "${DIFF}"
             echo "There are changes to out/ that need to be checked in."
+            echo "Run \`make -B build/stamps/out\` and commit the changed files."
             exit 1
           fi
   build_and_test:

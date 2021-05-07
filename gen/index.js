@@ -55,7 +55,11 @@ const languageIds = glob
 const languageInfo = languageIds
 	.map(languageId => {
 		const filepath = path.join(base, "languages", `${languageId}.toml`);
-		const info = toml.parse(fs.readFileSync(filepath, 'utf8'));
+		const info = toml.parse(
+			fs
+				.readFileSync(filepath, 'utf8')
+				.replace(/\r\n/g, '\n')
+		);
 
 		const result = tv4.validateMultiple(info, schema);
 		if (!result.valid) {
@@ -239,7 +243,11 @@ for (let target in objects) {
 	let tp = path.join(dest, target);
 	fs.writeFileSync(
 		tp,
-		ejs.compile(fs.readFileSync(path.join(__dirname, objects[target]), "utf8"))(
+		ejs.compile(
+			fs
+				.readFileSync(path.join(__dirname, objects[target]), "utf8")
+				.replace(/\r\n/g, '\n')
+		)(
 			ctx
 		),
 		"utf8"
@@ -260,10 +268,12 @@ for (const perLangScript of perLangScripts) {
 		fs.writeFileSync(
 			scriptPath,
 			ejs.compile(
-				fs.readFileSync(
-					path.join(__dirname, `${perLangScript}-per-lang.ejs`),
-					'utf8',
-				),
+				fs
+					.readFileSync(
+						path.join(__dirname, `${perLangScript}-per-lang.ejs`),
+						'utf8',
+					)
+					.replace(/\r\n/g, '\n')
 			)(
 				{
 					...ctx,
