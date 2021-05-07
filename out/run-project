@@ -80,7 +80,7 @@ case "$LANGUAGE" in
 
 "c")
   maybe_read_stdin main.c
-  clang-12 -pthread -lm -o main main.c 1>&2
+  clang-10 -pthread -lm -o main main.c 1>&2
   ./main
   ;;
 
@@ -96,7 +96,7 @@ case "$LANGUAGE" in
 
 "cpp"|"c++")
   maybe_read_stdin main.cpp
-  clang++-12 -pthread -std=c++20 -o main main.cpp 1>&2
+  clang++-10 -pthread -std=c++20 -o main main.cpp 1>&2
   ./main
   ;;
 
