@@ -45,7 +45,7 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "cpp"|"c++")
-  cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++17", "-pthread"]}'
+  cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++20", "-pthread"]}'
   ;;
 "cpp11")
   cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++11", "-pthread"]}'
