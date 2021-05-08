@@ -14,7 +14,7 @@ polygott-lang-setup -l 'elisp'
 
 # elisp:math
 SUCCESS=true
-OUTPUT="$(echo 'KHByaW5jIChmb3JtYXQgIjIgKyAyID0gJWRcbiIgKCsgMiAyKSkpDQo=' | \
+OUTPUT="$(echo 'KHByaW5jIChmb3JtYXQgIjIgKyAyID0gJWRcbiIgKCsgMiAyKSkpCg==' | \
           base64 --decode | \
           run-project -s -l 'elisp' \
        )" || SUCCESS=false

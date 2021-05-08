@@ -13,7 +13,7 @@ echo "Y2xhc3MgTWFpbiB7IHB1YmxpYyBzdGF0aWMgdm9pZCBtYWluKFN0cmluZ1tdIGFyZ3MpIHsgU3
 # ballerina
 
 
-echo "aW1wb3J0IGJhbGxlcmluYS9pbzsNCnB1YmxpYyBmdW5jdGlvbiBtYWluKCkgew0KICAgIGlvOnByaW50bG4oIkhlbGxvLCBXb3JsZCEiKTsNCn0NCg=="  | base64 --decode | docker run --rm -i polygott run-project -s -l ballerina | diff -u --label "ballerina" <( echo "SGVsbG8sIFdvcmxkIQo=" | base64 --decode ) - && echo ✓ ballerina:hello
+echo "aW1wb3J0IGJhbGxlcmluYS9pbzsKcHVibGljIGZ1bmN0aW9uIG1haW4oKSB7CiAgICBpbzpwcmludGxuKCJIZWxsbywgV29ybGQhIik7Cn0K"  | base64 --decode | docker run --rm -i polygott run-project -s -l ballerina | diff -u --label "ballerina" <( echo "SGVsbG8sIFdvcmxkIQo=" | base64 --decode ) - && echo ✓ ballerina:hello
 
 
 # bash
@@ -85,7 +85,7 @@ echo "Y29uc29sZS5sb2coImhlbGxvIik="  | base64 --decode | docker run --rm -i poly
 # elisp
 
 
-echo "KHByaW5jIChmb3JtYXQgIjIgKyAyID0gJWRcbiIgKCsgMiAyKSkpDQo="  | base64 --decode | docker run --rm -i polygott run-project -s -l elisp | diff -u --label "elisp" <( echo "MiArIDIgPSA0Cg==" | base64 --decode ) - && echo ✓ elisp:math
+echo "KHByaW5jIChmb3JtYXQgIjIgKyAyID0gJWRcbiIgKCsgMiAyKSkpCg=="  | base64 --decode | docker run --rm -i polygott run-project -s -l elisp | diff -u --label "elisp" <( echo "MiArIDIgPSA0Cg==" | base64 --decode ) - && echo ✓ elisp:math
 
 
 # erlang
@@ -197,7 +197,7 @@ echo "cHJpbnQoImhlbGxvIik="  | base64 --decode | docker run --rm -i polygott run
 # mercury
 
 
-echo "Oi0gbW9kdWxlIG1haW4uCjotIGludGVyZmFjZS4KOi0gaW1wb3J0X21vZHVsZSBpby4KOi0gcHJlZA0KICBtYWluKGlvOjpkaSwgaW86OnVvKSBpcyBkZXQuCjotIGltcGxlbWVudGF0aW9uLgptYWluKCFJTykgOi0KIGlvLndyaXRlX3N0cmluZygiaGVsbG8gd29ybGQKIiwgIUlPKS4="  | base64 --decode | docker run --rm -i polygott run-project -s -l mercury | diff -u --label "mercury" <( echo "aGVsbG8gd29ybGQK" | base64 --decode ) - && echo ✓ mercury:hello
+echo "Oi0gbW9kdWxlIG1haW4uCjotIGludGVyZmFjZS4KOi0gaW1wb3J0X21vZHVsZSBpby4KOi0gcHJlZAogIG1haW4oaW86OmRpLCBpbzo6dW8pIGlzIGRldC4KOi0gaW1wbGVtZW50YXRpb24uCm1haW4oIUlPKSA6LQogaW8ud3JpdGVfc3RyaW5nKCJoZWxsbyB3b3JsZAoiLCAhSU8pLg=="  | base64 --decode | docker run --rm -i polygott run-project -s -l mercury | diff -u --label "mercury" <( echo "aGVsbG8gd29ybGQK" | base64 --decode ) - && echo ✓ mercury:hello
 
 
 # nextjs
@@ -217,7 +217,7 @@ echo "ZWNobyAneyBwa2dzIH06IHsgZGVwcyA9IFsgcGtncy5weXRob24zOSBdOyB9JyA+IHJlcGxpdC
 # objective-c
 
 
-echo "I2ltcG9ydCA8b2JqYy9vYmpjLmg+DQojaW1wb3J0IDxvYmpjL09iamVjdC5oPg0KI2ltcG9ydCA8Rm91bmRhdGlvbi9Gb3VuZGF0aW9uLmg+DQppbnQgbWFpbih2b2lkKSB7DQoJQGF1dG9yZWxlYXNlcG9vbCB7DQoJCU5TU3RyaW5nKiBzdHIgPSBAIkhlbGxvIGZyb20gT2JqZWN0aXZlLUMgMi4wISI7DQoJCXB1dHMoW3N0ciBjU3RyaW5nXSk7DQoJfQ0KCXJldHVybiAwOw0KfQ0K"  | base64 --decode | docker run --rm -i polygott run-project -s -l objective-c | diff -u --label "objective-c" <( echo "SGVsbG8gZnJvbSBPYmplY3RpdmUtQyAyLjAhCg==" | base64 --decode ) - && echo ✓ objective-c:hello
+echo "I2ltcG9ydCA8b2JqYy9vYmpjLmg+CiNpbXBvcnQgPG9iamMvT2JqZWN0Lmg+CiNpbXBvcnQgPEZvdW5kYXRpb24vRm91bmRhdGlvbi5oPgppbnQgbWFpbih2b2lkKSB7CglAYXV0b3JlbGVhc2Vwb29sIHsKCQlOU1N0cmluZyogc3RyID0gQCJIZWxsbyBmcm9tIE9iamVjdGl2ZS1DIDIuMCEiOwoJCXB1dHMoW3N0ciBjU3RyaW5nXSk7Cgl9CglyZXR1cm4gMDsKfQo="  | base64 --decode | docker run --rm -i polygott run-project -s -l objective-c | diff -u --label "objective-c" <( echo "SGVsbG8gZnJvbSBPYmplY3RpdmUtQyAyLjAhCg==" | base64 --decode ) - && echo ✓ objective-c:hello
 
 
 # ocaml
@@ -353,7 +353,7 @@ echo "cHV0cyB7aGVsbG99"  | base64 --decode | docker run --rm -i polygott run-pro
 # WebAssembly
 
 
-echo "Ozsgd2F0Mndhc20gbWFpbi53YXQNCg0KKG1vZHVsZSAkaGVsbG8NCiAgICA7OyBJbXBvcnQgdGhlIHJlcXVpcmVkIGZkX3dyaXRlIFdBU0kgZnVuY3Rpb24gd2hpY2ggd2lsbCB3cml0ZSB0aGUgZ2l2ZW4gaW8gdmVjdG9ycyB0byBzdGRvdXQNCiAgICA7OyBUaGUgZnVuY3Rpb24gc2lnbmF0dXJlIGZvciBmZF93cml0ZSBpczoNCiAgICA7OyAoRmlsZSBEZXNjcmlwdG9yLCAqaW92cywgaW92c19sZW4sIG53cml0dGVuKSAtPiBSZXR1cm5zIG51bWJlciBvZiBieXRlcyB3cml0dGVuDQogICAgKGltcG9ydCAid2FzaV91bnN0YWJsZSIgImZkX3dyaXRlIg0KICAgICAgICAoZnVuYyAkZmRfd3JpdGUgKHBhcmFtIGkzMiBpMzIgaTMyIGkzMikgKHJlc3VsdCBpMzIpKQ0KICAgICkNCg0KICAgIChtZW1vcnkgMSkNCiAgICAoZXhwb3J0ICJtZW1vcnkiIChtZW1vcnkgMCkpDQoNCiAgICA7OyBXcml0ZSAnaGVsbG8gd29ybGRcbicgdG8gbWVtb3J5IGF0IGFuIG9mZnNldCBvZiA4IGJ5dGVzDQogICAgOzsgTm90ZSB0aGUgdHJhaWxpbmcgbmV3bGluZSB3aGljaCBpcyByZXF1aXJlZCBmb3IgdGhlIHRleHQgdG8gYXBwZWFyDQogICAgKGRhdGEgKGkzMi5jb25zdCA4KSAiSGVsbG8sIFdvcmxkIikNCg0KICAgIChmdW5jICRtYWluIChleHBvcnQgIl9zdGFydCIpDQogICAgICAgIDs7IENyZWF0aW5nIGEgbmV3IGlvIHZlY3RvciB3aXRoaW4gbGluZWFyIG1lbW9yeQ0KICAgICAgICAoaTMyLnN0b3JlIChpMzIuY29uc3QgMCkgKGkzMi5jb25zdCA4KSkgIDs7IGlvdi5pb3ZfYmFzZSAtIFRoaXMgaXMgYSBwb2ludGVyIHRvIHRoZSBzdGFydCBvZiB0aGUgJ2hlbGxvIHdvcmxkXG4nIHN0cmluZw0KICAgICAgICAoaTMyLnN0b3JlIChpMzIuY29uc3QgNCkgKGkzMi5jb25zdCAxMikpICA7OyBpb3YuaW92X2xlbiAtIFRoZSBsZW5ndGggb2YgdGhlICdoZWxsbyB3b3JsZFxuJyBzdHJpbmcNCg0KICAgICAgICAoY2FsbCAkZmRfd3JpdGUNCiAgICAgICAgICAgIChpMzIuY29uc3QgMSkgOzsgZmlsZV9kZXNjcmlwdG9yIC0gMSBmb3Igc3Rkb3V0DQogICAgICAgICAgICAoaTMyLmNvbnN0IDApIDs7ICppb3ZzIC0gVGhlIHBvaW50ZXIgdG8gdGhlIGlvdiBhcnJheSwgd2hpY2ggaXMgc3RvcmVkIGF0IG1lbW9yeSBsb2NhdGlvbiAwDQogICAgICAgICAgICAoaTMyLmNvbnN0IDEpIDs7IGlvdnNfbGVuIC0gV2UncmUgcHJpbnRpbmcgMSBzdHJpbmcgc3RvcmVkIGluIGFuIGlvdiAtIHNvIG9uZS4NCiAgICAgICAgICAgIChpMzIuY29uc3QgMjApIDs7IG53cml0dGVuIC0gQSBwbGFjZSBpbiBtZW1vcnkgdG8gc3RvcmUgdGhlIG51bWJlciBvZiBieXRlcyB3cml0ZW4NCiAgICAgICAgKQ0KICAgICAgICBkcm9wIDs7IERpc2NhcmQgdGhlIG51bWJlciBvZiBieXRlcyB3cml0dGVuIGZyb20gdGhlIHRvcCB0aGUgc3RhY2sNCiAgICApDQopDQo="  | base64 --decode | docker run --rm -i polygott run-project -s -l webassembly | diff -u --label "WebAssembly" <( echo "SGVsbG8sIFdvcmxk" | base64 --decode ) - && echo ✓ WebAssembly:hello
+echo "Ozsgd2F0Mndhc20gbWFpbi53YXQKCihtb2R1bGUgJGhlbGxvCiAgICA7OyBJbXBvcnQgdGhlIHJlcXVpcmVkIGZkX3dyaXRlIFdBU0kgZnVuY3Rpb24gd2hpY2ggd2lsbCB3cml0ZSB0aGUgZ2l2ZW4gaW8gdmVjdG9ycyB0byBzdGRvdXQKICAgIDs7IFRoZSBmdW5jdGlvbiBzaWduYXR1cmUgZm9yIGZkX3dyaXRlIGlzOgogICAgOzsgKEZpbGUgRGVzY3JpcHRvciwgKmlvdnMsIGlvdnNfbGVuLCBud3JpdHRlbikgLT4gUmV0dXJucyBudW1iZXIgb2YgYnl0ZXMgd3JpdHRlbgogICAgKGltcG9ydCAid2FzaV91bnN0YWJsZSIgImZkX3dyaXRlIgogICAgICAgIChmdW5jICRmZF93cml0ZSAocGFyYW0gaTMyIGkzMiBpMzIgaTMyKSAocmVzdWx0IGkzMikpCiAgICApCgogICAgKG1lbW9yeSAxKQogICAgKGV4cG9ydCAibWVtb3J5IiAobWVtb3J5IDApKQoKICAgIDs7IFdyaXRlICdoZWxsbyB3b3JsZFxuJyB0byBtZW1vcnkgYXQgYW4gb2Zmc2V0IG9mIDggYnl0ZXMKICAgIDs7IE5vdGUgdGhlIHRyYWlsaW5nIG5ld2xpbmUgd2hpY2ggaXMgcmVxdWlyZWQgZm9yIHRoZSB0ZXh0IHRvIGFwcGVhcgogICAgKGRhdGEgKGkzMi5jb25zdCA4KSAiSGVsbG8sIFdvcmxkIikKCiAgICAoZnVuYyAkbWFpbiAoZXhwb3J0ICJfc3RhcnQiKQogICAgICAgIDs7IENyZWF0aW5nIGEgbmV3IGlvIHZlY3RvciB3aXRoaW4gbGluZWFyIG1lbW9yeQogICAgICAgIChpMzIuc3RvcmUgKGkzMi5jb25zdCAwKSAoaTMyLmNvbnN0IDgpKSAgOzsgaW92Lmlvdl9iYXNlIC0gVGhpcyBpcyBhIHBvaW50ZXIgdG8gdGhlIHN0YXJ0IG9mIHRoZSAnaGVsbG8gd29ybGRcbicgc3RyaW5nCiAgICAgICAgKGkzMi5zdG9yZSAoaTMyLmNvbnN0IDQpIChpMzIuY29uc3QgMTIpKSAgOzsgaW92Lmlvdl9sZW4gLSBUaGUgbGVuZ3RoIG9mIHRoZSAnaGVsbG8gd29ybGRcbicgc3RyaW5nCgogICAgICAgIChjYWxsICRmZF93cml0ZQogICAgICAgICAgICAoaTMyLmNvbnN0IDEpIDs7IGZpbGVfZGVzY3JpcHRvciAtIDEgZm9yIHN0ZG91dAogICAgICAgICAgICAoaTMyLmNvbnN0IDApIDs7ICppb3ZzIC0gVGhlIHBvaW50ZXIgdG8gdGhlIGlvdiBhcnJheSwgd2hpY2ggaXMgc3RvcmVkIGF0IG1lbW9yeSBsb2NhdGlvbiAwCiAgICAgICAgICAgIChpMzIuY29uc3QgMSkgOzsgaW92c19sZW4gLSBXZSdyZSBwcmludGluZyAxIHN0cmluZyBzdG9yZWQgaW4gYW4gaW92IC0gc28gb25lLgogICAgICAgICAgICAoaTMyLmNvbnN0IDIwKSA7OyBud3JpdHRlbiAtIEEgcGxhY2UgaW4gbWVtb3J5IHRvIHN0b3JlIHRoZSBudW1iZXIgb2YgYnl0ZXMgd3JpdGVuCiAgICAgICAgKQogICAgICAgIGRyb3AgOzsgRGlzY2FyZCB0aGUgbnVtYmVyIG9mIGJ5dGVzIHdyaXR0ZW4gZnJvbSB0aGUgdG9wIHRoZSBzdGFjawogICAgKQopCg=="  | base64 --decode | docker run --rm -i polygott run-project -s -l webassembly | diff -u --label "WebAssembly" <( echo "SGVsbG8sIFdvcmxk" | base64 --decode ) - && echo ✓ WebAssembly:hello
 
 
 # wren

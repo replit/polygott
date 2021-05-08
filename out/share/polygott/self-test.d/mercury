@@ -14,7 +14,7 @@ polygott-lang-setup -l 'mercury'
 
 # mercury:hello
 SUCCESS=true
-OUTPUT="$(echo 'Oi0gbW9kdWxlIG1haW4uCjotIGludGVyZmFjZS4KOi0gaW1wb3J0X21vZHVsZSBpby4KOi0gcHJlZA0KICBtYWluKGlvOjpkaSwgaW86OnVvKSBpcyBkZXQuCjotIGltcGxlbWVudGF0aW9uLgptYWluKCFJTykgOi0KIGlvLndyaXRlX3N0cmluZygiaGVsbG8gd29ybGQKIiwgIUlPKS4=' | \
+OUTPUT="$(echo 'Oi0gbW9kdWxlIG1haW4uCjotIGludGVyZmFjZS4KOi0gaW1wb3J0X21vZHVsZSBpby4KOi0gcHJlZAogIG1haW4oaW86OmRpLCBpbzo6dW8pIGlzIGRldC4KOi0gaW1wbGVtZW50YXRpb24uCm1haW4oIUlPKSA6LQogaW8ud3JpdGVfc3RyaW5nKCJoZWxsbyB3b3JsZAoiLCAhSU8pLg==' | \
           base64 --decode | \
           run-project -s -l 'mercury' \
        )" || SUCCESS=false
