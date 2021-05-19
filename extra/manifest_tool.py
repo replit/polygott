@@ -28,12 +28,11 @@ import json
 import os
 import os.path
 import re
-import shutil
 import stat
 import sys
 import tarfile
 
-from typing import IO, List, NamedTuple, Optional, Set, Sequence, Tuple
+from typing import IO, List, NamedTuple, Optional, Set, Tuple
 
 # These files are always expected to change and/or are injected by the Docker
 # runtime.
