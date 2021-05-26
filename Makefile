@@ -43,8 +43,8 @@ build/stamps/image: extra/manifest_tool.py build/stamps/diffs
 image-ci: build/stamps/image-ci ## Build Docker image with all languages needed for CI
 	# Invoking the underlying build rule for image-ci (if needed).
 
-build/stamps/image-ci: extra/manifest_tool.py build/diffs/phase2-tools.tar.bz2 build/diffs/phase2-java.tar.bz2 build/diffs/phase2-python3.tar.bz2 build/diffs/phase2-ruby.tar.bz2 | build/stamps/
-	./extra/manifest_tool.py splice java python3 ruby | docker buildx build \
+build/stamps/image-ci: extra/manifest_tool.py build/diffs/phase2-tools.tar.bz2 build/diffs/phase2-java.tar.bz2 build/diffs/phase2-python3.tar.bz2 build/diffs/phase2-ruby.tar.bz2 build/diffs/phase2-nix.tar.bz2 | build/stamps/
+	./extra/manifest_tool.py splice java python3 ruby nix | docker buildx build \
 		--progress=plain \
 		-t polygott-ci:latest \
 		--load \
@@ -167,7 +167,7 @@ test: build/stamps/image ## Build and test all languages
 test-ci: build/stamps/image-ci ## Build and test all languages needed for CI
 	docker run --rm \
 		polygott-ci:latest \
-		env LANGS=python3,ruby,java \
+		env LANGS=python3,ruby,java,nix \
 		bash -c polygott-self-test
 
 test-%: build/stamps/image-% ## Build and test single language LANG
