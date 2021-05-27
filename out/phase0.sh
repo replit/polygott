@@ -6,7 +6,7 @@ groupadd -g 1000 runner
 useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
 
 DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils build-essential busybox ca-certificates chromium-chromedriver cmake curl dirmngr ffmpeg firefox-geckodriver fluxbox git gnupg gnuplot-qt golang-go gpg-agent jq libboost-all-dev libc6-dbg libopus0 libopusfile0 libsdl-dev libsdl2-dev locales man mercurial mesa-utils ninja-build pulseaudio redis-tools rlwrap rsync silversearcher-ag software-properties-common ssh subversion tigervnc-standalone-server unzip valgrind vim wget x11-apps x11-utils
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils build-essential busybox ca-certificates chromium-chromedriver cmake curl dirmngr ffmpeg firefox-geckodriver fluxbox git gnupg gnuplot-qt golang-go gpg-agent jq language-pack-en libboost-all-dev libc6-dbg libopus0 libopusfile0 libsdl-dev libsdl2-dev locales man mercurial mesa-utils ninja-build pulseaudio redis-tools rlwrap rsync silversearcher-ag software-properties-common ssh subversion tigervnc-standalone-server unzip valgrind vim wget x11-apps x11-utils
 
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
