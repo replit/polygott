@@ -817,6 +817,9 @@ COPY ./run_dir /run_dir/
 RUN ln -sf /usr/lib/chromium-browser/chromedriver /usr/local/bin
 
 COPY ./extra/apt-install /usr/bin/install-pkg
+RUN mkdir -p /opt/dap/java/
+COPY ./extra/java-dap /opt/dap/java/run
+RUN chmod +x /opt/dap/java/run
 
 COPY ./extra/_test_runner.py /home/runner/_test_runner.py
 COPY ./extra/cquery11 /opt/homes/cpp11/.cquery

@@ -23,7 +23,7 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "java")
-  java -Declipse.application=org.eclipse.jdt.ls.core.id1 -Dosgi.bundles.defaultStartLevel=4 -Declipse.product=org.eclipse.jdt.ls.core.product -noverify -Xmx256m -XX:+UseConcMarkSweepGC -jar /config/language-server/plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar -configuration /config/language-server/config_linux -data /home/runner
+  exec java -Declipse.application=org.eclipse.jdt.ls.core.id1 -Dosgi.bundles.defaultStartLevel=4 -Declipse.product=org.eclipse.jdt.ls.core.product -Dcom.microsoft.java.debug.serverAddress=localhost:41010 -noverify -Xmx256m -XX:+UseConcMarkSweepGC -jar /config/language-server/plugins/org.eclipse.equinox.launcher_1.6.100.v20201223-0822.jar -configuration /config/language-server/config_linux -data /home/runner
   ;;
 "ballerina")
   echo "No language server configured for ballerina" >&2
@@ -34,7 +34,7 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "c")
-  cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery"}'
+  exec cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery"}'
   ;;
 "common lisp"|"clisp"|"lisp")
   echo "No language server configured for common lisp" >&2
@@ -45,10 +45,10 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "cpp"|"c++")
-  cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++17", "-pthread"]}'
+  exec cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++17", "-pthread"]}'
   ;;
 "cpp11")
-  cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++11", "-pthread"]}'
+  exec cquery '--init={"progressReportFrequencyMs": -1,"cacheDirectory":"/tmp/cquery", "extraClangArguments": ["-std=c++11", "-pthread"]}'
   ;;
 "crystal")
   echo "No language server configured for crystal" >&2
@@ -63,10 +63,10 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "dart")
-  /usr/lib/dart/bin/dart /usr/lib/dart/bin/snapshots/analysis_server.dart.snapshot --lsp
+  exec /usr/lib/dart/bin/dart /usr/lib/dart/bin/snapshots/analysis_server.dart.snapshot --lsp
   ;;
 "deno")
-  deno lsp
+  exec deno lsp
   ;;
 "elisp")
   echo "No language server configured for elisp" >&2
@@ -93,7 +93,7 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "flow")
-  flow-language-server --stdio
+  exec flow-language-server --stdio
   ;;
 "forth")
   echo "No language server configured for forth" >&2
@@ -112,7 +112,7 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "go"|"golang")
-  /bin/bash -c /opt/homes/go/go/bin/bingo
+  exec /bin/bash -c /opt/homes/go/go/bin/bingo
   ;;
 "guile"|"scheme")
   echo "No language server configured for guile" >&2
@@ -123,7 +123,7 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "haxe")
-  haxe --server-listen stdio
+  exec haxe --server-listen stdio
   ;;
 "jest")
   echo "No language server configured for jest" >&2
@@ -186,16 +186,16 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "python3")
-  pyls -v
+  exec pyls -v
   ;;
 "pygame")
-  pyls -v
+  exec pyls -v
   ;;
 "python")
-  pyls -v
+  exec pyls -v
   ;;
 "pyxel")
-  pyls -v
+  exec pyls -v
   ;;
 "quil")
   echo "No language server configured for quil" >&2
@@ -222,7 +222,7 @@ case "$LANGUAGE" in
   exit 1
   ;;
 "ruby")
-  solargraph stdio
+  exec solargraph stdio
   ;;
 "rust")
   echo "No language server configured for rust" >&2
