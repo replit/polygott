@@ -10,7 +10,7 @@ extensions = [
 
 [compile]
 command = [
-  "clang++-7",
+  "clang++-10",
   "-pthread",
   "-std=c++11",
   "-o",
