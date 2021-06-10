@@ -55,7 +55,6 @@ debugger = None
 send_msg("ready")
 while True:
     line = pid1_in.readline()
-    line = line
     if 0 == len(line):
         raise EOFError
 
