@@ -21,7 +21,7 @@ case "$LANGUAGE" in
 <% for ( let lang of languages ) { -%>
 <%- lang.names.map(x => `"${x}"`).join('|') %>)
 <% if ( lang.languageServer ) { -%>
-  <%- c(lang.languageServer.command) %>
+  exec <%- c(lang.languageServer.command) %>
 <% } else { -%>
   echo "No language server configured for <%= lang.name %>" >&2
   exit 1
