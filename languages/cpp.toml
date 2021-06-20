@@ -11,6 +11,10 @@ extensions = [
   "cc",
 ]
 
+packages = [
+  "libsfml-dev"
+]
+
 [compile]
 command = [
   "clang++-7",
