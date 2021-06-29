@@ -52,4 +52,9 @@ add-apt-repository --yes --no-update 'deb https://dl.cloudsmith.io/public/nxadm-
 
 rm -rf /var/lib/apt/lists/*
 
+# Allow users to override the bash configuration files
+echo '[ -f ~/"${REPL_SLUG}/.config/bashrc" ] && . ~/"${REPL_SLUG}/.config/bashrc"' >> ~/.bashrc
+echo '[ -f ~/"${REPL_SLUG}/.config/bash_logout" ] && . ~/"${REPL_SLUG}/.config/bash_logout"' >> ~/.bash_logout
+echo '[ -f ~/"${REPL_SLUG}/.config/profile" ] && . ~/"${REPL_SLUG}/.config/profile"' >> ~/.profile
+
 rm /phase0.sh

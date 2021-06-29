@@ -10,7 +10,9 @@ RUN --mount=type=tmpfs,target=/tmp \
     /bin/bash phase0.sh
 
 # Environment variables that are depended on by phase1 files.
+# TODO: Remove XDG_CONFIG_HOME, since that will be used for user overrides.
 ENV XDG_CONFIG_HOME=/config
+ENV XDG_CONFIG_DIRS=/config
 
 
 ## Runs apt-get update.
