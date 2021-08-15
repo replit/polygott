@@ -42,7 +42,7 @@ add-apt-repository --yes --no-update 'deb https://download.mono-project.com/repo
 add-apt-repository --yes --no-update 'deb [arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main'
 add-apt-repository --yes --no-update ppa:kelleyk/emacs
 add-apt-repository --yes --no-update 'deb https://packages.erlang-solutions.com/ubuntu bionic contrib'
-add-apt-repository --yes --no-update 'deb https://deb.nodesource.com/node_14.x bionic main'
+add-apt-repository --yes --no-update 'deb https://deb.nodesource.com/node_16.x bionic main'
 add-apt-repository --yes --no-update ppa:haxe/releases
 add-apt-repository --yes --no-update ppa:bartbes/love-stable
 add-apt-repository --yes --no-update 'deb http://dl.mercurylang.org/deb/ stretch main'
