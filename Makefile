@@ -177,7 +177,7 @@ test-%: build/stamps/image-% ## Build and test single language LANG
 		bash -c polygott-self-test
 
 .PHONY: changed-test
-changed-test: $(addprefix test-,$(basename $(notdir $(shell git diff --name-only origin/master -- languages)))) ## Build and test only changed/added languages
+changed-test: $(addprefix test-,$(basename $(notdir $(shell git diff --name-only --diff-filter=ACMR origin/master -- languages)))) ## Build and test only changed/added languages
 	# You should still do `make test` to have confidence everything works together.
 	# This is a way to catch some failures faster.
 

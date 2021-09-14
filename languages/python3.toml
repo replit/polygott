@@ -21,8 +21,10 @@ setup = [
   "ln -s /usr/bin/python3.8 /usr/local/bin/python3",
   "curl https://bootstrap.pypa.io/get-pip.py | python3",
   "python3 -m venv /opt/virtualenvs/python3",
+  # Use replit's version of pip.
+  "git clone https://github.com/replit/pip /tmp/pip && (cd /tmp/pip && /opt/virtualenvs/python3/bin/pip3 install --use-feature=in-tree-build .) && rm -rf /tmp/pip",
   # Packages required for replit packaging
-  "/opt/virtualenvs/python3/bin/pip3 install --disable-pip-version-check pipreqs-amasad==0.4.10 poetry==1.1.6 dephell==0.8.3",
+  "/opt/virtualenvs/python3/bin/pip3 install --disable-pip-version-check pipreqs-amasad==0.4.10 poetry==1.1.6",
   # pyls and friends' transient dependencies, explicitly pinned
   "/opt/virtualenvs/python3/bin/pip3 install --disable-pip-version-check toml==0.10.2 future==0.18.2 importlib-metadata==3.10.1 parso==0.5.2 pluggy==0.13.1 python-jsonrpc-server==0.3.2 typing-extensions==3.7.4.3 ujson==1.35 zipp==3.4.1",
   # pyls and friends
