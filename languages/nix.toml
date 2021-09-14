@@ -27,4 +27,4 @@ echo '{ pkgs }: { deps = [ pkgs.python39 ]; }' > replit.nix
 nix-shell --argstr repldir "$PWD" /opt/nixproxy.nix --command "python --version"
 
 """
-  output = "Python 3.9.4\n"
+  output = "Python 3.9.6\n"

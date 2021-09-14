@@ -21,7 +21,7 @@ OUTPUT="$(echo 'ZWNobyAneyBwa2dzIH06IHsgZGVwcyA9IFsgcGtncy5weXRob24zOSBdOyB9JyA+
 if [[ "${SUCCESS}" == "true" ]]; then
   echo "${OUTPUT}" | \
     diff --unified --ignore-trailing-space --label 'nix' \
-      <( echo 'UHl0aG9uIDMuOS40Cg==' | base64 --decode ) \
+      <( echo 'UHl0aG9uIDMuOS42Cg==' | base64 --decode ) \
       - || \
   SUCCESS=false
 else
