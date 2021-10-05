@@ -1,29 +1,36 @@
 # Polygott
 ## Overview
 
-[Repl.it] allows you to quickly get started with any programming
-language online. In order to provide this capability, our evaluation
-server uses [Docker](https://www.docker.com/) to ensure that all these
-languages are installed with the appropriate environment set up.
+[Replit.com] allows you to quickly get started with any programming language
+online. In order to provide this capability, our evaluation server uses
+[Docker](https://www.docker.com/) with the
+[`buildx`](https://github.com/docker/buildx#installing) CLI plugin to ensure
+that all these languages are installed with the appropriate environment set up.
 
 We previously used a separate Docker image for each language, but
 concluded that it was both simpler and more efficient to use a single
 image which contains all supported languages simultaneously. The code
 necessary to build this combined image, **Polygott**, resides in this
-repository.  If you're lost and need some reference, we have 
-[a blog](https://blog.repl.it/elisp) where we added elisp.
+repository.  If you're lost and need some reference, we have
+[a blog](https://blog.replit.com/elisp) where we added elisp.
+
+Because of the fact that building a monolithic image is unwieldy and takes too
+much time, the build itself is made of a directed graph of intermediate nodes,
+where each language is a node, and they all get stitched together at the end to
+build the final combined image.
 
 ## Build and run
 
-You can build either the entire image, or a version that is limited to
-a single language. The latter is recommended when you are adding or
-modifying support for a particular language, since building the entire
-image takes an extremely long time. Makefile targets are provided for
-each of these cases:
+You can build either the entire image, a version that has a bundle of
+languages, and a version that is limited to a single language. The second one
+is used for CI, and the latter is recommended when you are adding or modifying
+support for a particular language, since building the entire image takes an
+extremely long time. Makefile targets are provided for each of these cases:
 
     % make help
     usage:
       make image         Build Docker image with all languages
+      make image-ci      Build Docker image with all languages needed for CI
       make image-LANG    Build Docker image with single language LANG
       make run           Build and run image with all languages
       make run-LANG      Build and run image with single language LANG
@@ -44,6 +51,10 @@ debug an intermittent network error while building one of the
 languages. To do this, identify the `docker build` command which is
 run by the Makefile, and run it yourself with the `--no-cache` flag.
 
+The CI requires having up-to-date generated artifacts (the files in `out/`)
+committed to ensure a consistent Docker build environment. These will be
+refreshed by running the tests, or by running `make -B build/stamps/out`).
+
 ## Language configuration
 
 Each supported language has a
@@ -53,7 +64,7 @@ subdirectory](languages). The meaningful keys are as follows:
 ### Mandatory
 
 * `entrypoint`: The name of the file which will be executed on
-  [Repl.it] when you press the Run button. This is used in the
+  [Replit.com] when you press the Run button. This is used in the
   `detect-language` script built into the Polygott image: if a file
   exists with this name, then the project is detected to have this
   language. (Ties are resolved by `popularity`.) It is also used by
@@ -133,12 +144,14 @@ subdirectory](languages). The meaningful keys are as follows:
   shell scripts using the language configuration via the
   [EJS](https://ejs.co/) templating system. This is done by [a Node.js
   script](gen/index.js) inside the Docker image.
-* Languages are installed in several phases. [In phase
-  0](gen/phase0.ejs), shared packages [in
-  `packages.txt`](packages.txt) are installed. [In phase
-  1](gen/phase1.ejs), APT keys and repositories are configured, and
-  language-specific packages are installed. [In phase
-  2](gen/phase2.ejs), language-specific `setup` commands are run.
+* The multi-stage [`Dockerfile`](gen/Dockerfile.ejs) is created from the
+  language configuration files.
+* Languages are installed in several phases. [In phase 0](gen/phase0.ejs),
+  shared packages [in `packages.txt`](packages.txt) are installed, as well as
+  APT keys and repositories are configured. In phase 1.0, `apt-get update -y`
+  is run, which can be reused in later phases. In phase 1.5, language-specific
+  packages are installed. [In phase 2](gen/phase2-per-lang.ejs),
+  language-specific `setup` commands are run.
 
 ## Usage
 
@@ -190,16 +203,11 @@ Run the `languageServer` command configured in the language's
 configuration file. `LANG` defaults to the output of
 `detect-language`.
 
-    polygott-x11-vnc
-
-Start VNC forwarding for X11. Fork into the background and return.
-This script does not interact with language configuration at all.
-
 ## Deployment
 
 When a commit is merged to `master`, [CircleCI](https://circleci.com/)
 automatically builds Polygott and pushes the image to [Docker
-Hub](https://hub.docker.com/r/replco/polygott). A Repl.it
+Hub](https://hub.docker.com/r/replco/polygott). A Replit
 engineer has to then push the new Polygott to production.
 
-[repl.it]: https://repl.it/
+[replit.com]: https://replit.com/

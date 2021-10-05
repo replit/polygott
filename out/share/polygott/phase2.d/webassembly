@@ -1,0 +1,34 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup WebAssembly'
+cd "${HOME}"
+
+wget https://github.com/wasmerio/wasmer/releases/download/0.14.0/wasmer-linux-amd64.tar.gz -O /tmp/wasmer.tar.gz
+mkdir /usr/local/wasmer
+tar -xvf /tmp/wasmer.tar.gz -C /usr/local/wasmer --strip-components=1
+ln -s /usr/local/wasmer/wasmer /usr/local/bin/wasmer
+rm /tmp/wasmer.tar.gz
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for WebAssembly
+	mkdir -p /opt/homes/WebAssembly
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/WebAssembly
+  chown runner:runner -R /opt/homes/WebAssembly
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/WebAssembly
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

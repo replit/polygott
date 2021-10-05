@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",objective-c,"* ]]; then
+	echo S 'objective-c:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'objective-c'
+
+# objective-c:hello
+SUCCESS=true
+OUTPUT="$(echo 'I2ltcG9ydCA8b2JqYy9vYmpjLmg+CiNpbXBvcnQgPG9iamMvT2JqZWN0Lmg+CiNpbXBvcnQgPEZvdW5kYXRpb24vRm91bmRhdGlvbi5oPgppbnQgbWFpbih2b2lkKSB7CglAYXV0b3JlbGVhc2Vwb29sIHsKCQlOU1N0cmluZyogc3RyID0gQCJIZWxsbyBmcm9tIE9iamVjdGl2ZS1DIDIuMCEiOwoJCXB1dHMoW3N0ciBjU3RyaW5nXSk7Cgl9CglyZXR1cm4gMDsKfQo=' | \
+          base64 --decode | \
+          run-project -s -l 'objective-c' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'objective-c' \
+      <( echo 'SGVsbG8gZnJvbSBPYmplY3RpdmUtQyAyLjAhCg==' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'objective-c:hello'
+else
+  echo ❌ 'objective-c:hello'
+  CODE=1
+fi
+
+exit $CODE

@@ -1,0 +1,88 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup objective-c'
+cd "${HOME}"
+
+export LIBOBJC2=https://codeload.github.com/gnustep/libobjc2/tar.gz/v2.0
+export GNUSTEP_SOURCES=(
+	ftp://ftp.gnustep.org/pub/gnustep/core/gnustep-make-2.8.0.tar.gz
+	ftp://ftp.gnustep.org/pub/gnustep/core/gnustep-base-1.27.0.tar.gz
+	ftp://ftp.gnustep.org/pub/gnustep/core/gnustep-gui-0.28.0.tar.gz
+	ftp://ftp.gnustep.org/pub/gnustep/core/gnustep-back-0.28.0.tar.gz
+)
+
+# Create temporary directory
+mkdir /tmp/gnustep-dev && cd /tmp/gnustep-dev
+
+# Use clang
+export CC=clang-8
+export CXX=clang++-8
+
+# Install libobjc2
+export LIBOBJC2_NAME=libobjc2-2.0
+curl --output ${LIBOBJC2_NAME}.tar.gz -ks $LIBOBJC2
+tar -xz --file=${LIBOBJC2_NAME}.tar.gz
+cd $LIBOBJC2_NAME
+mkdir Build && cd Build
+cmake ..
+make
+make install
+cd ../..
+
+# Install GNUStep from source
+export GNUSTEP_MAKEFILES=/usr/local/share/GNUstep/Makefiles
+for dl in "${GNUSTEP_SOURCES[@]}"; do
+	export pkg=$(basename ${dl##*/} .tar.gz)
+	echo '---Downloading '${pkg}'---'
+	(
+		curl -ks ${dl} | tar vzx && cd ${pkg} || exit $?
+		{
+			./configure
+			make
+			make install
+			ldconfig
+			. /usr/local/share/GNUstep/Makefiles/GNUstep.sh
+		}
+	) || exit $?
+done
+
+# Reinstall libdispatch-dev
+cd /tmp/gnustep-dev
+git clone https://github.com/plaurent/libdispatch.git
+cd libdispatch
+rm -Rf build
+mkdir build && cd build
+../configure  --prefix=/usr
+make
+make install
+ldconfig
+
+# Remove temporary directory
+rm -rf /tmp/gnustep-dev
+
+cd $HOME
+	
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for objective-c
+	mkdir -p /opt/homes/objective-c
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/objective-c
+  chown runner:runner -R /opt/homes/objective-c
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/objective-c
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

@@ -1,14 +1,15 @@
 name = "elixir"
+languages = [
+  "erlang"
+]
 entrypoint = "main.exs"
 extensions = [
   "ex",
   "exs"
 ]
 packages = [
-  "erlang",
-  "elixir"
+  "elixir",
 ]
-
 
 [run]
 command = [

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",raku,"* ]]; then
+	echo S 'raku:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'raku'
+
+# raku:hello
+SUCCESS=true
+OUTPUT="$(echo 'c2F5ICdoZWxsbyB3b3JsZCc7' | \
+          base64 --decode | \
+          run-project -s -l 'raku' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'raku' \
+      <( echo 'aGVsbG8gd29ybGQK' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'raku:hello'
+else
+  echo ❌ 'raku:hello'
+  CODE=1
+fi
+
+exit $CODE

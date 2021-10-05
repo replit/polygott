@@ -12,139 +12,202 @@ const schema = require("./schema.json");
 
 const btoa = b => Buffer.from(b).toString("base64");
 
-let packages = fs
+const basePackages = fs
 	.readFileSync(path.join(base, "packages.txt"), "utf8")
 	.split(/\r?\n/)
 	.filter(x => !/^#|^\s*$/.test(x));
-
-let basePackages = [].concat(packages);
+basePackages.sort();
 
 console.log(basePackages);
 
-let aptKeys = [];
-let aptKeyUrls = []
-let aptRepos = [];
+const aptKeys = {};
+const aptKeyUrls = {};
+const aptRepos = {};
+const packages = {};
 
-let list = glob.sync(path.join(base, "languages", "*.toml"));
-let languages = [];
-let handledLanguages = {};
-list.sort();
+// TODO: Move this to a configuration file instead of having it here.
+const env = {
+	APT_OPTIONS: '-o debug::nolocking=true -o dir::cache=/tmp/apt/cache -o dir::state=/tmp/apt/state -o dir::etc::sourcelist=/tmp/apt/sources/sources.list',
+	CPATH: '/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu',
+	CPPPATH: '/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu',
+	DISPLAY: ':0',
+	HOME: '/home/runner',
+	INCLUDE_PATH: '/home/runner/.apt/usr/include:/home/runner/.apt/usr/include/x86_64-linux-gnu',
+	LANG: 'en_US.UTF-8',
+	LC_ALL: 'en_US.UTF-8',
+	LD_LIBRARY_PATH: '/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/usr/local/lib:/home/runner/.apt/usr/lib',
+	LIBRARY_PATH: '/home/runner/.apt/usr/lib/x86_64-linux-gnu:/home/runner/.apt/usr/lib/i386-linux-gnu:/usr/local/lib:/home/runner/.apt/usr/lib',
+	PATH: '/home/runner/.nix-profile/bin:/usr/local/go/bin:/opt/virtualenvs/python3/bin:/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:/home/runner/.apt/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+	NIX_SSL_CERT_FILE: '/etc/ssl/certs/ca-certificates.crt',
+	NIX_PATH: '/home/runner/.nix-defexpr/channels',
+	NIX_PROFILES: '/nix/var/nix/profiles/default /home/runner/.nix-profile',
+	PKG_CONFIG_PATH: '/home/runner/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/i386-linux-gnu/pkgconfig:/home/runner/.apt/usr/lib/pkgconfig:/home/runner/.apt/usr/share/pkgconfig',
+	PYTHONPATH: '/opt/virtualenvs/python3/lib/python3.8/site-packages',
+	USER: 'runner',
+	VIRTUAL_ENV: '/opt/virtualenvs/python3',
+};
 
-let dc = [];
-function undup(line) {
-	if (dc.indexOf(line) == -1) {
-		dc.push(line);
-		return line;
-	} else {
-		return "#" + line;
+const languageIds = glob
+	.sync(path.join(base, "languages", "*.toml"))
+	.map(filename => path.basename(filename, '.toml'))
+	.sort();
+
+const languageInfo = languageIds
+	.map(languageId => {
+		const filepath = path.join(base, "languages", `${languageId}.toml`);
+		const info = toml.parse(
+			fs
+				.readFileSync(filepath, 'utf8')
+				.replace(/\r\n/g, '\n')
+		);
+
+		const result = tv4.validateMultiple(info, schema);
+		if (!result.valid) {
+			console.log(`Warning: ${filepath} schema invalid.`);
+			for (const error of result.errors) {
+				console.log(`-> ${error.message} @ ${error.dataPath}`);
+			}
+			process.exit(1);
+		}
+
+		info.id = languageId;
+		return info;
+	}).reduce((result, info) => {
+		result[info.id] = info;
+		return result;
+	}, {});
+
+for (const childLanguage of Object.values(languageInfo)) {
+	if (!childLanguage.languages) {
+		continue;
+	}
+
+	const queue = [].concat(childLanguage.languages);
+	while (queue.length) {
+		const parentLanguage = languageInfo[queue.shift()];
+		if (!parentLanguage.childLanguages) {
+			parentLanguage.childLanguages = new Set();
+		}
+		if (parentLanguage.childLanguages.has(childLanguage.id)) {
+			continue;
+		}
+		parentLanguage.childLanguages.add(childLanguage.id);
+
+		if (parentLanguage.languages) {
+			queue.push(...parentLanguage.languages);
+		}
 	}
 }
 
+const languages = [];
+const handledLanguages = {};
 function handleLanguage(language, dependency = false) {
-	if (language in handledLanguages) {
+	if (language.id in handledLanguages) {
 		return;
 	}
 
-	let file = path.join(base, "languages", language + ".toml");
-	let info = toml.parse(fs.readFileSync(file, "utf8"));
-
-	let result = tv4.validateMultiple(info, schema);
-	if (!result.valid) {
-		console.log(`Warning: ${file} schema invalid.`);
-		for (let error of result.errors) {
-			console.log(`-> ${error.message} @ ${error.dataPath}`);
-		}
-		process.exit(1);
-	}
-
-	let name = info.name;
-	info.id = path.basename(file).replace(/.toml$/, '');
-	let names = [name, info.id];
-	if (info.aliases) {
-		names = names.concat(info.aliases);
+	let name = language.name;
+	let names = [name, language.id];
+	if (language.aliases) {
+		names = names.concat(language.aliases);
 	};
-	info.names = [...new Set(names)];
-	if (process.env.LANGS) {
-		let set = process.env.LANGS.split(/[ ,]+/);
-		if (set.indexOf(info.id) == -1 && !dependency) return;
+	language.names = [...new Set(names)];
+	language.popularity = language.popularity || 2;
+
+	for (const parentLanguageId of (language.languages || [])) {
+		handleLanguage(languageInfo[parentLanguageId]);
 	}
 
-	if (info.languages) {
-		for (let l of info.languages) {
-			handleLanguage(l, true);
-		}
-	}
-
-	info.popularity = info.popularity || 2;
-
-	if (!info.versionCommand) {
+	if (!language.versionCommand) {
 		let flag = "--version";
-		if (["lua"].indexOf(info.name) !== -1) {
+		if (["lua"].indexOf(language.name) !== -1) {
 			flag = "-v";
 		}
 
-		if (["go"].indexOf(info.name) !== -1) {
+		if (["go"].indexOf(language.name) !== -1) {
 			flag = "version";
 		}
 
-		if (["java"].indexOf(info.name) !== -1) {
+		if (["java"].indexOf(language.name) !== -1) {
 			flag = "-version";
 		}
 
-		if (info.compile) {
-			info.versionCommand = [info.compile.command[0], flag];
-		} else if (info.run) {
-			info.versionCommand = [info.run.command[0], flag];
+		if (language.compile) {
+			language.versionCommand = [language.compile.command[0], flag];
+		} else if (language.run) {
+			language.versionCommand = [language.run.command[0], flag];
 		} else {
-			info.versionCommand = ["/bin/false"];
+			language.versionCommand = ["/bin/false"];
 		}
 	}
 
-	if ("tests" in info) {
-	} else {
+	if (!("tests" in language)) {
 		console.log(`Warning ${name} has no tests.`);
-		info.tests = {};
+		language.tests = {};
 	}
 
-	if (info.aptKeys) {
-		for (let p of info.aptKeys) {
-			if (aptKeys.indexOf(p) == -1) aptKeys.push(p);
+	const languageIds = [language.id, ...(language.childLanguages || [])];
+
+	if (language.aptKeys) {
+		for (let p of language.aptKeys) {
+			if (!aptKeys[p]) {
+				aptKeys[p] = [];
+			}
+			aptKeys[p].push(...languageIds);
 		}
 	}
 
-	if (info.aptKeyUrls) {
-		for (let p of info.aptKeyUrls) {
-			if (aptKeyUrls.indexOf(p) == -1) aptKeyUrls.push(p);
+	if (language.aptKeyUrls) {
+		for (let p of language.aptKeyUrls) {
+			if (!aptKeyUrls[p]) {
+				aptKeyUrls[p] = [];
+			}
+			aptKeyUrls[p].push(...languageIds);
 		}
 	}
 
-	if (info.aptRepos) {
-		for (let p of info.aptRepos) {
-			if (aptRepos.indexOf(p) == -1) aptRepos.push(p);
+	if (language.aptRepos) {
+		for (let p of language.aptRepos) {
+			if (!aptRepos[p]) {
+				aptRepos[p] = [];
+			}
+			aptRepos[p].push(...languageIds);
 		}
 	}
 
-	if (info.packages) {
-		for (let p of info.packages) {
-			if (packages.indexOf(p) == -1) packages.push(p);
+	if (language.packages) {
+		for (let p of language.packages) {
+			if (basePackages.indexOf(p) != -1) continue;
+			if (!packages[p]) {
+				packages[p] = [];
+			}
+			packages[p].push(...languageIds);
 		}
 	}
-	languages.push(info);
-	handledLanguages[language] = true;
+	languages.push(language);
+	handledLanguages[language.id] = true;
 }
 
-for (let file of list) {
-	let language = path.basename(file, ".toml");
-	handleLanguage(language);
+for (const languageId of languageIds ) {
+	handleLanguage(languageInfo[languageId]);
 }
 
-let lbypop = JSON.parse(JSON.stringify(languages));
-lbypop.sort((a, b) => b.popularity - a.popularity);
+// Ensure this is stable-sorted.
+const lbypop = JSON.parse(JSON.stringify(languages))
+	.map((value, index) => [index, value])
+	.sort(([aIndex, aValue], [bIndex, bValue]) => {
+		if (aValue.popularity == bValue.popularity) {
+			return aIndex - bIndex;
+		}
+		return bValue.popularity - aValue.popularity;
+	})
+	.map(([, value]) => value);
 
 let lpad = (s, n) => s + new Array(n - s.length).fill(" ").join("");
 
 let ctx = {
 	basePackages,
+	languageInfo,
 	languages,
 	btoa,
 	lbypop,
@@ -152,8 +215,8 @@ let ctx = {
 	aptRepos,
 	aptKeys,
 	aptKeyUrls,
-	undup,
 	lpad,
+	env,
 	c: a => a.map((s) => {
 		if (/^(\S*|`[^`]+`)$/.test(s)) return s;
 		return `'${s.replace(/[$'\\]/g, (m) => '\\' + m)}'`;
@@ -162,10 +225,12 @@ let ctx = {
 
 let objects = {
 	"test.sh": "tests.ejs",
-	"self-test": "inside-test.ejs",
+	"self-test": "self-test.ejs",
 	"phase0.sh": "phase0.ejs",
-	"phase1.sh": "phase1.ejs",
-	"phase2.sh": "phase2.ejs",
+	"Dockerfile": "Dockerfile.ejs",
+	"Dockerfile.splice": "Dockerfile.splice.ejs",
+	"languages.d": "languages.d.ejs",
+	"languages.json": "languages.json.ejs",
 	"run-project": "run-project.ejs",
 	"run-language-server": "run-language-server.ejs",
 	"detect-language": "detect-language.ejs",
@@ -178,12 +243,47 @@ for (let target in objects) {
 	let tp = path.join(dest, target);
 	fs.writeFileSync(
 		tp,
-		ejs.compile(fs.readFileSync(path.join(__dirname, objects[target]), "utf8"))(
+		ejs.compile(
+			fs
+				.readFileSync(path.join(__dirname, objects[target]), "utf8")
+				.replace(/\r\n/g, '\n')
+		)(
 			ctx
 		),
 		"utf8"
 	);
 	fs.chmodSync(path.join(dest, target), 0o755);
+}
+
+const perLangScripts = [
+	'self-test',
+	'phase2',
+];
+
+for (const perLangScript of perLangScripts) {
+	const dirname = path.join(dest, `share/polygott/${perLangScript}.d`);
+	fs.mkdirSync(dirname, { recursive: true, mode: 0o755 });
+	for (const lang of languages) {
+		const scriptPath = path.join(dirname, lang.id);
+		fs.writeFileSync(
+			scriptPath,
+			ejs.compile(
+				fs
+					.readFileSync(
+						path.join(__dirname, `${perLangScript}-per-lang.ejs`),
+						'utf8',
+					)
+					.replace(/\r\n/g, '\n')
+			)(
+				{
+					...ctx,
+					lang,
+				},
+			),
+			'utf8'
+		);
+		fs.chmodSync(scriptPath, 0o755);
+	}
 }
 
 // Local Variables:

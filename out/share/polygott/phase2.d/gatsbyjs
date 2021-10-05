@@ -1,0 +1,35 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+echo 'Setup parents of gatsbyjs'
+rsync --recursive --links --perms --times /opt/homes/nodejs/ /home/runner/
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup gatsbyjs'
+cd "${HOME}"
+
+rm -f /home/runner/.profile /home/runner/.bashrc /home/runner/.bash_logout
+npm install -g gatsby-cli
+gatsby new /home/runner && rm LICENSE && rm README.md && rm .prettierrc && rm .gitignore
+yarn
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for gatsbyjs
+	mkdir -p /opt/homes/gatsbyjs
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/gatsbyjs
+  chown runner:runner -R /opt/homes/gatsbyjs
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/gatsbyjs
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

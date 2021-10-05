@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",dart,"* ]]; then
+	echo S 'dart:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'dart'
+
+# dart:hello
+SUCCESS=true
+OUTPUT="$(echo 'dm9pZCBtYWluKCkgeyBwcmludCgnSGVsbG8sIFdvcmxkIScpOyB9' | \
+          base64 --decode | \
+          run-project -s -l 'dart' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'dart' \
+      <( echo 'SGVsbG8sIFdvcmxkIQo=' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'dart:hello'
+else
+  echo ❌ 'dart:hello'
+  CODE=1
+fi
+
+exit $CODE

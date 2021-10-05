@@ -1,0 +1,389 @@
+#!/bin/bash
+
+set -e
+
+READ_STDIN=0
+LANGUAGE=`detect-language`
+BUILDER=0
+
+while getopts ":sl:b" opt; do
+  case ${opt} in
+    s )
+      READ_STDIN=1
+      ;;
+    l )
+      LANGUAGE=$OPTARG
+      ;;
+    b )
+      BUILDER=1
+      ;;
+    : )
+      echo "Invalid option: $OPTARG requires an argument"
+      exit 1
+      ;;
+    \? )
+      echo "Usage: run-project [-sb] [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+if [ $BUILDER -ne 0 ]; then
+  if [ -f Makefile ] && [ $( cat /proc/$PPID/comm ) != 'make' ]; then
+    exec make
+  fi
+
+  if [ -f CMakeLists.txt ]; then
+    mkdir /tmp/build
+    PROJ=$(pwd)
+    cd /tmp/build
+    exec bash -c "cmake $PROJ && ninja"
+  fi
+
+  if [ -f package.json ]; then
+    if jq -e .scripts.start package.json; then
+      exec npm start
+    fi
+  fi
+
+fi
+
+maybe_read_stdin() {
+    if [ $READ_STDIN -ne 0 ]; then
+        cat - > /home/runner/$1
+    fi
+}
+
+case "$LANGUAGE" in
+
+"assembly")
+  maybe_read_stdin main.asm
+  /bin/bash -c 'nasm -felf64 -omain.o main.asm && ld -s -omain main.o' main.asm 1>&2
+  ./main
+  ;;
+
+"java")
+  maybe_read_stdin Main.java
+  javac -classpath .:/run_dir/junit-4.12.jar:/run_dir/hamcrest-core-1.3.jar:/run_dir/json-simple-1.1.1.jar -d . Main.java 1>&2
+  java -classpath .:/run_dir/junit-4.12.jar:/run_dir/hamcrest-core-1.3.jar:/run_dir/json-simple-1.1.1.jar Main
+  ;;
+
+"ballerina")
+  maybe_read_stdin main.bal
+  ballerina run main.bal
+  ;;
+
+"bash")
+  maybe_read_stdin main.sh
+  /bin/bash ./main.sh
+  ;;
+
+"c")
+  maybe_read_stdin main.c
+  clang-7 -pthread -lm -o main main.c 1>&2
+  ./main
+  ;;
+
+"common lisp"|"clisp"|"lisp")
+  maybe_read_stdin main.lisp
+  sbcl --script ./main.lisp
+  ;;
+
+"clojure")
+  maybe_read_stdin main.clj
+  clojure main.clj
+  ;;
+
+"cpp"|"c++")
+  maybe_read_stdin main.cpp
+  clang++-7 -pthread -std=c++17 -o main main.cpp 1>&2
+  ./main
+  ;;
+
+"cpp11")
+  maybe_read_stdin main.cpp
+  clang++-7 -pthread -std=c++11 -o main main.cpp 1>&2
+  ./main
+  ;;
+
+"crystal")
+  maybe_read_stdin main.cr
+  crystal run ./main.cr
+  ;;
+
+"csharp"|"c#")
+  maybe_read_stdin main.cs
+  mcs -out:main.exe main.cs 1>&2
+  mono main.exe
+  ;;
+
+"D"|"d"|"dlang")
+  maybe_read_stdin main.d
+  gdc -o main main.d 1>&2
+  ./main
+  ;;
+
+"dart")
+  maybe_read_stdin main.dart
+  /usr/lib/dart/bin/dart ./main.dart
+  ;;
+
+"deno")
+  maybe_read_stdin index.ts
+  deno run --lock=lock.json --lock-write --allow-all index.ts
+  ;;
+
+"elisp")
+  maybe_read_stdin main.el
+  emacs -nw -Q --script main.el
+  ;;
+
+"erlang")
+  maybe_read_stdin main.erl
+  erlc main.erl main.erl 1>&2
+  erl -noshell -s main start -s init stop
+  ;;
+
+"elixir")
+  maybe_read_stdin main.exs
+  elixir ./main.exs
+  ;;
+
+"nodejs")
+  maybe_read_stdin index.js
+  node index.js
+  ;;
+
+"enzyme")
+  maybe_read_stdin index.js
+  node index.js
+  ;;
+
+"express")
+  maybe_read_stdin index.js
+  node index.js
+  ;;
+
+"flow")
+  maybe_read_stdin src/index.js
+  yarn start
+  ;;
+
+"forth")
+  maybe_read_stdin main.fth
+  gforth -- ./main.fth -e bye
+  ;;
+
+"fortran")
+  maybe_read_stdin main.f90
+  bash -c 'gfortran main.f90' main.f90 1>&2
+  ./a.out
+  ;;
+
+"fsharp"|"f#")
+  maybe_read_stdin main.fs
+  fsharpc --nologo --out:main.exe main.fs 1>&2
+  mono main.exe
+  ;;
+
+"gatsbyjs")
+  maybe_read_stdin src/pages/index.js
+  yarn develop
+  ;;
+
+"go"|"golang")
+  maybe_read_stdin main.go
+  go build -o main main.go 1>&2
+  ./main
+  ;;
+
+"guile"|"scheme")
+  maybe_read_stdin main.scm
+  guile -s ./main.scm
+  ;;
+
+"haskell")
+  maybe_read_stdin main.hs
+  ghc -o main main.hs 1>&2
+  ./main
+  ;;
+
+"haxe")
+  maybe_read_stdin Main.hx
+  haxe build.hxml
+  ;;
+
+"jest")
+  maybe_read_stdin config.json
+  jest --colors --config /home/runner/config.json
+  ;;
+
+"julia")
+  maybe_read_stdin main.jl
+  prybar-julia -q ./main.jl
+  ;;
+
+"kotlin")
+  maybe_read_stdin main.kt
+  ;;
+
+"love2d")
+  maybe_read_stdin main.lua
+  love .
+  ;;
+
+"lua")
+  maybe_read_stdin main.lua
+  lua ./main.lua
+  ;;
+
+"mercury")
+  maybe_read_stdin main.m
+  mmc --make main main.m 1>&2
+  ./main
+  ;;
+
+"nextjs")
+  maybe_read_stdin pages/index.js
+  yarn dev
+  ;;
+
+"nim")
+  maybe_read_stdin main.nim
+  nim compile --run main.nim
+  ;;
+
+"nix")
+  maybe_read_stdin main.sh
+  bash main.sh
+  ;;
+
+"objective-c")
+  maybe_read_stdin main.m
+  clang-8 -x objective-c `gnustep-config --base-libs` -o main main.m 1>&2
+  ./main
+  ;;
+
+"ocaml")
+  maybe_read_stdin main.ml
+  ocamlc -o main main.ml 1>&2
+  ./main
+  ;;
+
+"pascal")
+  maybe_read_stdin main.pas
+  fpc main.pas 1>&2
+  ./main
+  ;;
+
+"php")
+  maybe_read_stdin main.php
+  php main.php
+  ;;
+
+"powershell")
+  maybe_read_stdin main.ps1
+  pwsh main.ps1
+  ;;
+
+"prolog")
+  maybe_read_stdin main.pro
+  gplc --no-top-level -o main main.pro 1>&2
+  ./main
+  ;;
+
+"python3")
+  maybe_read_stdin main.py
+  python3 -B main.py
+  ;;
+
+"pygame")
+  maybe_read_stdin main.py
+  python3 -B main.py
+  ;;
+
+"python")
+  maybe_read_stdin main.py
+  python2 -B main.py
+  ;;
+
+"pyxel")
+  maybe_read_stdin main.py
+  python3 -B main.py
+  ;;
+
+"quil")
+  maybe_read_stdin main.quil
+  ;;
+
+"raku")
+  maybe_read_stdin main.raku
+  raku ./main.raku
+  ;;
+
+"react_native")
+  maybe_read_stdin index.js
+  jest --colors --config /home/runner/config.json
+  ;;
+
+"reactjs")
+  maybe_read_stdin src/index.js
+  yarn start
+  ;;
+
+"reactts")
+  maybe_read_stdin src/index.tsx
+  yarn start
+  ;;
+
+"rlang")
+  maybe_read_stdin main.r
+  R --slave -f main.r
+  ;;
+
+"ruby")
+  maybe_read_stdin main.rb
+  ruby main.rb
+  ;;
+
+"rust")
+  maybe_read_stdin main.rs
+  rustc -o main main.rs 1>&2
+  ./main
+  ;;
+
+"scala")
+  maybe_read_stdin Main.scala
+  scalac Main.scala 1>&2
+  scala Main
+  ;;
+
+"sqlite")
+  maybe_read_stdin main.sql
+  sqlite3 -init main.sql
+  ;;
+
+"swift")
+  maybe_read_stdin main.swift
+  swiftc -o main main.swift 1>&2
+  ./main
+  ;;
+
+"tcl")
+  maybe_read_stdin main.tcl
+  prybar-tcl -q ./main.tcl
+  ;;
+
+"WebAssembly"|"webassembly")
+  maybe_read_stdin main.wat
+  wasmer run main.wat
+  ;;
+
+"wren")
+  maybe_read_stdin main.wren
+  wren_cli main.wren
+  ;;
+*)
+  echo "Unknown Language: $LANGUAGE"
+  ;;
+esac

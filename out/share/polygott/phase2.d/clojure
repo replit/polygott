@@ -1,0 +1,41 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup clojure'
+cd "${HOME}"
+
+  wget https://download.clojure.org/install/linux-install-1.10.1.478.sh
+  chmod +x linux-install-1.10.1.478.sh
+  ./linux-install-1.10.1.478.sh
+  rm linux-install-1.10.1.478.sh
+
+  # this ensures that we cache the maven deps in the image ($XDG_CONFIG_HOME)
+  # https://clojure.org/reference/deps_and_cli#_command_line_tools
+  # pretty ridiculous but what else can you do?
+  clojure -Sverbose -Sdeps '{:mvn/local-repo "/home/runner/.m2/repository"}' --eval ''
+  mv /home/runner/.m2/repository "${XDG_CONFIG_HOME}/clojure/repository"
+  rm -rf /home/runner/.m2
+  /usr/bin/build-prybar-lang.sh clojure
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for clojure
+	mkdir -p /opt/homes/clojure
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/clojure
+  chown runner:runner -R /opt/homes/clojure
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/clojure
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

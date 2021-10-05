@@ -1,0 +1,34 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+echo 'Setup parents of ballerina'
+rsync --recursive --links --perms --times /opt/homes/java/ /home/runner/
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup ballerina'
+cd "${HOME}"
+
+wget https://dist.ballerina.io/downloads/1.2.13/ballerina-linux-installer-x64-1.2.13.deb
+dpkg -i ballerina-linux-installer-x64-1.2.13.deb
+rm -r ballerina-linux-installer-x64-1.2.13.deb
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for ballerina
+	mkdir -p /opt/homes/ballerina
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/ballerina
+  chown runner:runner -R /opt/homes/ballerina
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/ballerina
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

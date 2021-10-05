@@ -1,11 +1,10 @@
 name = "jest"
 entrypoint = "config.json"
+languages = [
+	"nodejs"
+]
 extensions = [
   "js"
-]
-packages = []
-setup = [
-  "yarn global add jest"
 ]
 
 [run]

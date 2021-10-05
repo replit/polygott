@@ -5,13 +5,14 @@ extensions = [
 ]
 packages = [
   "libssl-dev",
+  "libz-dev",
   "crystal"
 ]
 aptKeys = [
-  "09617FD37CC06B54"
+  "321DC2EA7F0A4F06714516B8E456AE72856D1476"
 ]
 aptRepos = [
-  "deb https://dist.crystal-lang.org/apt crystal main"
+  "deb https://download.opensuse.org/repositories/devel:languages:crystal/xUbuntu_18.04/ /"
 ]
 
 [run]

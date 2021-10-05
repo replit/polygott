@@ -2,11 +2,11 @@
 # <%= lang.name %>
 <%   for ( let tname in lang.tests ) { -%>
 <%     let test = lang.tests[tname]; -%>
-<%       if ( test.input ) continue %>
-<%       if ( test.skip ) { %>
+<%     if ( test.input ) continue; %>
+<%     if ( test.skip ) { %>
 echo S <%= lang.name %>:<%= tname %>
-<%       } else { %>
+<%     } else { %>
 echo "<%= btoa(test.code) %>"  | base64 --decode | docker run --rm -i polygott run-project -s -l <%= lang.id %> | diff -u --label "<%= lang.name %>" <( echo "<%= btoa(test.output) %>" | base64 --decode ) - && echo ✓ <%= lang.name %>:<%= tname %>
-<%       } %>
+<%     } %>
 <%   } %>
 <% } -%>

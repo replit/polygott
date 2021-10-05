@@ -1,0 +1,38 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup swift'
+cd "${HOME}"
+
+wget https://swift.org/builds/swift-5.0.1-release/ubuntu1804/swift-5.0.1-RELEASE/swift-5.0.1-RELEASE-ubuntu18.04.tar.gz
+wget https://swift.org/builds/swift-5.0.1-release/ubuntu1804/swift-5.0.1-RELEASE/swift-5.0.1-RELEASE-ubuntu18.04.tar.gz.sig
+wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
+gpg --verify swift-5.0.1-RELEASE-ubuntu18.04.tar.gz.sig || exit 1
+tar xzvf swift-5.0.1-RELEASE-ubuntu18.04.tar.gz --strip-components=1 -C /
+rm swift-5.0.1-RELEASE-ubuntu18.04.tar.gz
+rm swift-5.0.1-RELEASE-ubuntu18.04.tar.gz.sig
+chmod -R go+r /usr/lib/swift
+swift --version
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for swift
+	mkdir -p /opt/homes/swift
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/swift
+  chown runner:runner -R /opt/homes/swift
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/swift
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

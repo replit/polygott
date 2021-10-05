@@ -1,0 +1,30 @@
+name = "nix"
+entrypoint = "main.sh"
+popularity = 5.0
+extensions = [
+  "sh"
+]
+packages = [
+]
+setup = [
+  """
+  mkdir -m 0755 /nix && chown runner /nix
+  chown -R runner:runner /home/runner
+  su runner -c 'curl -L https://nixos.org/nix/install | sh && . /home/runner/.nix-profile/etc/profile.d/nix.sh && nix-channel --update && nix search -u > /dev/null'
+  """
+]
+
+# a rough approximation of how nix will be used
+[run]
+command = [
+  "bash",
+  "main.sh"
+]
+[tests]
+  [tests.hello]
+  code = """
+echo '{ pkgs }: { deps = [ pkgs.python39 ]; }' > replit.nix
+nix-shell --argstr repldir "$PWD" /opt/nixproxy.nix --command "python --version"
+
+"""
+  output = "Python 3.9.6\n"

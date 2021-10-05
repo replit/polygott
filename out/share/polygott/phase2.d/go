@@ -1,0 +1,31 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup go'
+cd "${HOME}"
+
+cd /tmp && wget -q https://golang.org/dl/go1.14.7.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.14.7.linux-amd64.tar.gz && rm go1.14.7.linux-amd64.tar.gz
+/usr/local/go/bin/go get -u github.com/saibing/bingo
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for go
+	mkdir -p /opt/homes/go
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/go
+  chown runner:runner -R /opt/homes/go
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/go
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

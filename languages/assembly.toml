@@ -22,5 +22,5 @@ command = [
 
 [tests]
     [tests.hello]
-        code = "section .text\nglobal _start\n_start:\nmov rax, 1\nmov rdi, 1\nmov rsi, buf\nmov rdx, 5\nsyscall\nmov rax, 60\nsyscall\nsection .data\nbuf: db \"hello\""
+        code = "section .text\nglobal _start\n_start:\nmov rax, 1\nmov rdi, 1\nmov rsi, buf\nmov rdx, 5\nsyscall\nmov rax, 60\nxor rdi, rdi\nsyscall\nsection .data\nbuf: db \"hello\""
         output = "hello"

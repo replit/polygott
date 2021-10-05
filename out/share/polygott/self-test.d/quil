@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",quil,"* ]]; then
+	echo S 'quil:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'quil'
+
+
+exit $CODE

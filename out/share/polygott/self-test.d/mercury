@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",mercury,"* ]]; then
+	echo S 'mercury:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'mercury'
+
+# mercury:hello
+SUCCESS=true
+OUTPUT="$(echo 'Oi0gbW9kdWxlIG1haW4uCjotIGludGVyZmFjZS4KOi0gaW1wb3J0X21vZHVsZSBpby4KOi0gcHJlZAogIG1haW4oaW86OmRpLCBpbzo6dW8pIGlzIGRldC4KOi0gaW1wbGVtZW50YXRpb24uCm1haW4oIUlPKSA6LQogaW8ud3JpdGVfc3RyaW5nKCJoZWxsbyB3b3JsZAoiLCAhSU8pLg==' | \
+          base64 --decode | \
+          run-project -s -l 'mercury' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'mercury' \
+      <( echo 'aGVsbG8gd29ybGQK' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'mercury:hello'
+else
+  echo ❌ 'mercury:hello'
+  CODE=1
+fi
+
+exit $CODE

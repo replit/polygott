@@ -5,22 +5,23 @@ extensions = [
   "raku"
 ]
 aptKeys = [
-  "379CE192D401AB61"
+  "A2E8E32E64BE8EFD6C3F1F7E0DD4CA7EB1C6CC6B"
 ]
 aptRepos = [
-  "deb https://dl.bintray.com/nxadm/rakudo-pkg-debs bionic main"
+  "deb https://dl.cloudsmith.io/public/nxadm-pkgs/rakudo-pkg/deb/ubuntu bionic main"
 ]
 packages = [
   "libssl-dev",
-  "rakudo-pkg"
+  "rakudo-pkg=2021.3.0-01"
 ]
 setup = [
   "ln -s /opt/rakudo-pkg/bin/perl6 /usr/local/bin/perl6",
   "ln -s /opt/rakudo-pkg/bin/raku /usr/local/bin/raku",
   "ln -s /opt/rakudo-pkg/bin/nqp /usr/local/bin/nqp",
   "ln -s /opt/rakudo-pkg/bin/moar /usr/local/bin/moar",
-  "ln -s /opt/rakudo-pkg/bin/zef /usr/local/bin/zef",
-  "zef install Linenoise"
+  "(cd /opt/rakudo-pkg/var/zef && /opt/rakudo-pkg/bin/raku -I. bin/zef --force-install install .)",
+  "ln -s /opt/rakudo-pkg/share/perl6/site/bin/zef /usr/local/bin/zef",
+  "zef install \"Linenoise:ver<0.1.1>\"",
 ]
 
 

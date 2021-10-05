@@ -1,0 +1,42 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+<% if (lang.setup && lang.setup.length) { -%>
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+<%   if (lang.languages && lang.languages.length) { -%>
+echo 'Setup parents of <%= lang.name %>'
+<%     for (const parentLanguage of (lang.languages || [])) { -%>
+rsync --recursive --links --perms --times /opt/homes/<%= parentLanguage %>/ /home/runner/
+<%     } -%>
+<%   } -%>
+chown -R $(id -u):$(id -g) /home/runner
+
+<%   if (lang.setup && lang.setup.length) { -%>
+echo 'Setup <%= lang.name %>'
+cd "${HOME}"
+
+<%     for ( let line of lang.setup ) { -%>
+<%- line %>
+<%     } -%>
+
+<%   } -%>
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for <%= lang.name %>
+	mkdir -p /opt/homes/<%= lang.name %>
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/<%= lang.name %>
+  chown runner:runner -R /opt/homes/<%= lang.name %>
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/<%= lang.name %>
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+<% } -%>
+
+rm /phase2.sh

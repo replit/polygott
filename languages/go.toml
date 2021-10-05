@@ -6,16 +6,13 @@ entrypoint = "main.go"
 extensions = [
   "go"
 ]
-aptRepos = [
-  "ppa:longsleep/golang-backports"
-]
 
 packages = [
-  "golang-1.14-go",
   "pkg-config"
 ]
 setup = [
-  "go get -u github.com/saibing/bingo"
+  "cd /tmp && wget -q https://golang.org/dl/go1.14.7.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.14.7.linux-amd64.tar.gz && rm go1.14.7.linux-amd64.tar.gz",
+  "/usr/local/go/bin/go get -u github.com/saibing/bingo"
 ]
 
 [compile]

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",nix,"* ]]; then
+	echo S 'nix:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'nix'
+
+# nix:hello
+SUCCESS=true
+OUTPUT="$(echo 'ZWNobyAneyBwa2dzIH06IHsgZGVwcyA9IFsgcGtncy5weXRob24zOSBdOyB9JyA+IHJlcGxpdC5uaXgKbml4LXNoZWxsIC0tYXJnc3RyIHJlcGxkaXIgIiRQV0QiIC9vcHQvbml4cHJveHkubml4IC0tY29tbWFuZCAicHl0aG9uIC0tdmVyc2lvbiIKCg==' | \
+          base64 --decode | \
+          run-project -s -l 'nix' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'nix' \
+      <( echo 'UHl0aG9uIDMuOS42Cg==' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'nix:hello'
+else
+  echo ❌ 'nix:hello'
+  CODE=1
+fi
+
+exit $CODE

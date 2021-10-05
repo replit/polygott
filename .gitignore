@@ -1,4 +1,4 @@
-.dir-locals-2.el
+build/
 gen/node_modules/
-import/node_modules/
-out
+ignore/
+.mypy_cache/

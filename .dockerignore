@@ -1,3 +1,35 @@
-gen/node_modules
-import
+# Exclude EVERYTHING.
+*
 
+# Only allow things that are explicitly referenced from the Dockerfiles.
+!extra/_test_runner.py
+!extra/apt-install
+!extra/build-prybar-lang.sh
+!extra/config.toml
+!extra/cquery11
+!extra/fluxbox/apps
+!extra/fluxbox/init
+!extra/java-dap
+!extra/py-dap
+!extra/lang-gitignore
+!extra/matplotlibrc
+!extra/polygott-gitignore
+!extra/pulse/client.conf
+!extra/pulse/default.pa
+!extra/pycodestyle
+!extra/pylintrc
+!extra/replit-v2.py
+!extra/replit-v2.py
+!out/detect-language
+!out/phase0.sh
+!out/polygott-lang-setup
+!out/polygott-survey
+!out/polygott-x11-vnc
+!out/run-language-server
+!out/run-project
+!extra/nixproxy.nix
+!out/self-test
+!out/share/polygott/phase2.d/*
+!out/share/polygott/self-test.d/*
+!run_dir/
+!run_dir/**/*

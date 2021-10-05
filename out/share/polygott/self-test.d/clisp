@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",clisp,"* ]]; then
+	echo S 'common lisp:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'clisp'
+
+# common lisp:hello
+SUCCESS=true
+OUTPUT="$(echo 'KGZvcm1hdCB0ICJIZWxsbywgd29ybGQhIik=' | \
+          base64 --decode | \
+          run-project -s -l 'clisp' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'common lisp' \
+      <( echo 'SGVsbG8sIHdvcmxkIQ==' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'common lisp:hello'
+else
+  echo ❌ 'common lisp:hello'
+  CODE=1
+fi
+
+exit $CODE

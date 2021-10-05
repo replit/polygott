@@ -1,0 +1,36 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup raku'
+cd "${HOME}"
+
+ln -s /opt/rakudo-pkg/bin/perl6 /usr/local/bin/perl6
+ln -s /opt/rakudo-pkg/bin/raku /usr/local/bin/raku
+ln -s /opt/rakudo-pkg/bin/nqp /usr/local/bin/nqp
+ln -s /opt/rakudo-pkg/bin/moar /usr/local/bin/moar
+(cd /opt/rakudo-pkg/var/zef && /opt/rakudo-pkg/bin/raku -I. bin/zef --force-install install .)
+ln -s /opt/rakudo-pkg/share/perl6/site/bin/zef /usr/local/bin/zef
+zef install "Linenoise:ver<0.1.1>"
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for raku
+	mkdir -p /opt/homes/raku
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/raku
+  chown runner:runner -R /opt/homes/raku
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/raku
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

@@ -1,0 +1,33 @@
+#!/bin/bash
+set -ev
+shopt -s dotglob
+
+export HOME=/home/runner
+
+rsync --delete --recursive --links --perms --times /opt/homes/default/ /home/runner
+chown -R $(id -u):$(id -g) /home/runner
+
+echo 'Setup elisp'
+cd "${HOME}"
+
+git clone https://github.com/cask/cask.git /usr/local/cask
+ln -s /usr/local/cask/bin/cask /usr/local/bin/cask
+cask upgrade-cask
+/usr/bin/build-prybar-lang.sh elisp
+
+if [[ -n "$(ls -A /home/runner)" ]]; then
+	echo Storing home for elisp
+	mkdir -p /opt/homes/elisp
+  rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/elisp
+  chown runner:runner -R /opt/homes/elisp
+	find /home/runner/ -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+	ls -A /opt/homes/elisp
+fi
+
+chown runner:runner -R /home/runner /config /opt/virtualenvs
+if [[ -n "$(ls /tmp/)" ]]; then
+	rm -rf /tmp/*
+fi
+
+
+rm /phase2.sh

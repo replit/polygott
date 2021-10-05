@@ -5,14 +5,41 @@ shopt -s dotglob
 groupadd -g 1000 runner
 useradd -m -d /home/runner -g runner -s /bin/bash runner --uid 1000 --gid 1000
 
-apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends <%- basePackages.join(' ') %>
 
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
+update-ca-certificates
 
-mkdir /config
-chown runner.runner /config
+wget -nv \
+  https://launchpad.net/ubuntu/+archive/primary/+files/libtinfo6_6.1+20181013-2ubuntu2_amd64.deb \
+  https://launchpad.net/ubuntu/+archive/primary/+files/libreadline8_8.0-1_amd64.deb \
+  https://storage.googleapis.com/container-bins/stderred_1.0_amd64.deb
+dpkg -i *.deb
+rm *.deb
+
+mkdir -p /config /opt/homes/default /opt/virtualenvs
+rsync --archive --no-specials --no-devices /home/runner/ /opt/homes/default
+chown runner:runner -R /home/runner /opt/homes/default /config /opt/virtualenvs
+
+<% for (const [key, langs] of Object.entries(aptKeys)) { -%>
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv <%- c([key]) %>
+<% } -%>
+
+<% for (const [keyUrl, langs] of Object.entries(aptKeyUrls)) { %>
+curl -L <%- c([keyUrl]) %> | apt-key add -
+<% } -%>
+
+<% for (const [repo, langs] of Object.entries(aptRepos)) { -%>
+add-apt-repository --yes --no-update <%- c([repo]) %>
+<% } -%>
 
 rm -rf /var/lib/apt/lists/*
+
+# Allow users to override the bash configuration files
+echo '[ -f ~/"${REPL_SLUG}/.config/bashrc" ] && . ~/"${REPL_SLUG}/.config/bashrc"' >> ~/.bashrc
+echo '[ -f ~/"${REPL_SLUG}/.config/bash_logout" ] && . ~/"${REPL_SLUG}/.config/bash_logout"' >> ~/.bash_logout
+echo '[ -f ~/"${REPL_SLUG}/.config/profile" ] && . ~/"${REPL_SLUG}/.config/profile"' >> ~/.profile
+
 rm /phase0.sh

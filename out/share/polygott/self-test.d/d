@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",d,"* ]]; then
+	echo S 'D:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'd'
+
+# D:hello
+SUCCESS=true
+OUTPUT="$(echo 'aW1wb3J0IHN0ZC5zdGRpbzogd3JpdGVsbjt2b2lkIG1haW4oKXt3cml0ZWxuKCJoZWxsbyIpO30=' | \
+          base64 --decode | \
+          run-project -s -l 'd' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'D' \
+      <( echo 'aGVsbG8K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'D:hello'
+else
+  echo ❌ 'D:hello'
+  CODE=1
+fi
+
+exit $CODE

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",deno,"* ]]; then
+	echo S 'deno:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'deno'
+
+# deno:hello
+SUCCESS=true
+OUTPUT="$(echo 'Y29uc29sZS5sb2coImhlbGxvIik=' | \
+          base64 --decode | \
+          run-project -s -l 'deno' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'deno' \
+      <( echo 'aGVsbG8K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'deno:hello'
+else
+  echo ❌ 'deno:hello'
+  CODE=1
+fi
+
+exit $CODE

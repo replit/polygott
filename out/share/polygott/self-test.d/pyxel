@@ -1,0 +1,82 @@
+#!/bin/bash
+
+set -e
+
+CODE=0
+
+if [[ -n "${LANGS}" && ",${LANGS}," != *",pyxel,"* ]]; then
+	echo S 'pyxel:*'
+	exit $CODE
+fi
+
+find /home/runner -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
+polygott-lang-setup -l 'pyxel'
+
+# pyxel:0
+SUCCESS=true
+OUTPUT="$(echo 'cHJpbnQoX19uYW1lX18p' | \
+          base64 --decode | \
+          run-project -s -l 'pyxel' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'pyxel' \
+      <( echo 'X19tYWluX18K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'pyxel:0'
+else
+  echo ❌ 'pyxel:0'
+  CODE=1
+fi
+# pyxel:hello
+SUCCESS=true
+OUTPUT="$(echo 'cHJpbnQoImhlbGxvIik=' | \
+          base64 --decode | \
+          run-project -s -l 'pyxel' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'pyxel' \
+      <( echo 'aGVsbG8K' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'pyxel:hello'
+else
+  echo ❌ 'pyxel:hello'
+  CODE=1
+fi
+# pyxel:pyxel
+SUCCESS=true
+OUTPUT="$(echo 'aW1wb3J0IHB5eGVs' | \
+          base64 --decode | \
+          run-project -s -l 'pyxel' \
+       )" || SUCCESS=false
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo "${OUTPUT}" | \
+    diff --unified --ignore-trailing-space --label 'pyxel' \
+      <( echo 'Cg==' | base64 --decode ) \
+      - || \
+  SUCCESS=false
+else
+  echo "run failed: \"${OUTPUT}\", exit code $?" >&2
+fi
+
+if [[ "${SUCCESS}" == "true" ]]; then
+  echo ✓ 'pyxel:pyxel'
+else
+  echo ❌ 'pyxel:pyxel'
+  CODE=1
+fi
+
+exit $CODE

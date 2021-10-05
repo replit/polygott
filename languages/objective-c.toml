@@ -49,7 +49,7 @@ tar -xz --file=${LIBOBJC2_NAME}.tar.gz
 cd $LIBOBJC2_NAME
 mkdir Build && cd Build
 cmake ..
-make -j8
+make
 make install
 cd ../..
 
@@ -62,7 +62,7 @@ for dl in "${GNUSTEP_SOURCES[@]}"; do
 		curl -ks ${dl} | tar vzx && cd ${pkg} || exit $?
 		{
 			./configure
-			make -j8
+			make
 			make install
 			ldconfig
 			. /usr/local/share/GNUstep/Makefiles/GNUstep.sh

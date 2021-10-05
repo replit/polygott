@@ -1,4 +1,5 @@
 locales
+language-pack-en
 
 jq
 unzip
@@ -7,6 +8,7 @@ wget
 git
 subversion
 mercurial
+rsync
 gnupg
 build-essential
 vim
@@ -24,9 +26,14 @@ apt-utils
 dirmngr
 gpg-agent
 
-x11vnc
-xserver-xorg-video-dummy
-x11-xserver-utils
+fluxbox
+gnuplot-qt
+libsdl-dev
+libsdl2-dev
+mesa-utils
+tigervnc-standalone-server
+x11-apps
+x11-utils
 
 cmake
 ninja-build
@@ -41,3 +48,6 @@ golang-go
 
 libopus0
 libopusfile0
+pulseaudio
+
+ffmpeg

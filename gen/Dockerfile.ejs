@@ -1,0 +1,120 @@
+# syntax = docker/dockerfile:1.2@sha256:e2a8561e419ab1ba6b2fe6cbdf49fd92b95912df1cf7d313c3e2230a333fdbcc
+
+
+## The base image from which all others will extend.
+## Installs the base packages, certificates, and a few choice .deb files.
+FROM ubuntu:18.04@sha256:ea188fdc5be9b25ca048f1e882b33f1bc763fb976a8a4fea446b38ed0efcbeba AS polygott-phase0
+COPY ./out/phase0.sh /phase0.sh
+RUN --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
+    /bin/bash phase0.sh
+
+# Environment variables that are depended on by phase1 files.
+# TODO: Remove XDG_CONFIG_HOME, since that will be used for user overrides.
+ENV XDG_CONFIG_HOME=/config
+ENV XDG_CONFIG_DIRS=/config
+
+
+## Runs apt-get update.
+FROM polygott-phase0 AS polygott-phase1.0
+RUN --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
+    DEBIAN_FRONTEND=noninteractive apt-get update -y && \
+    mkdir -p /var/lib/apt/lists/auxfiles
+
+
+## Image for prybar resources
+FROM polygott-phase0 AS prybar
+
+ARG PRYBAR_TAG=circleci_pipeline_87_build_94
+ARG PRYBAR_TAG=circleci_pipeline_87_build_94
+RUN mkdir -p /gocode/src/github.com/replit/ && \
+    wget "https://github.com/replit/prybar/archive/${PRYBAR_TAG}.zip" && \
+    unzip "${PRYBAR_TAG}.zip" && \
+    mv "prybar-${PRYBAR_TAG}" /gocode/src/github.com/replit/prybar/ && \
+    cp -r /gocode/src/github.com/replit/prybar/prybar_assets /usr/bin/prybar_assets/
+
+
+## Installs the per-language packages.
+FROM polygott-phase0 AS polygott-phase1.5
+RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/var/lib/apt/lists,ro \
+    --mount=type=tmpfs,target=/var/lib/apt/lists/auxfiles \
+    --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      <%- Object.keys(packages).sort().join(' \\\n      ') %>
+
+COPY ./extra/build-prybar-lang.sh /usr/bin/build-prybar-lang.sh
+COPY --from=prybar /gocode /gocode
+COPY --from=prybar /usr/bin/prybar_assets /usr/bin/prybar_assets
+
+<% for (const lang of languages) { -%>
+
+## The individual language layer for <%= lang.id %>.
+<%   if (lang.languages && lang.languages.length) { -%>
+FROM polygott-phase2-<%= lang.languages[0] %> AS polygott-phase2-<%= lang.id %>
+<%   } else { -%>
+FROM polygott-phase1.5 AS polygott-phase2-<%= lang.id %>
+<%   } -%>
+COPY ./out/share/polygott/phase2.d/<%= lang.id %> /phase2.sh
+RUN --mount=type=bind,from=polygott-phase1.0,source=/var/lib/apt/lists,target=/var/lib/apt/lists,ro \
+    --mount=type=tmpfs,target=/var/lib/apt/lists/auxfiles \
+    --mount=type=tmpfs,target=/tmp \
+    --mount=type=tmpfs,target=/var/log \
+    /bin/bash phase2.sh
+
+<% } -%>
+
+## Image to build websockify
+FROM polygott-phase1.5 AS websockify
+RUN git clone --depth=1 https://github.com/novnc/websockify.git /root/websockify && \
+    cd /root/websockify && make
+
+
+## Import UPM.
+FROM replco/upm:light@sha256:fc729728ec975f918953ad6a12497de712ca0858344ddbbeb638f692c60c6167 AS upm
+
+
+## The polygott-specific tools.
+FROM polygott-phase1.5 AS polygott-phase2-tools
+RUN curl -sSL https://github.com/replit/rfbproxy/releases/download/v0.1.1-c888349/rfbproxy.tar.xz | tar xJ -C /
+RUN echo '[core]\n    excludesFile = /etc/.gitignore' > /etc/gitconfig
+COPY ./extra/polygott-gitignore /etc/.gitignore
+
+COPY ./out/run-project /usr/bin/run-project
+COPY ./out/run-language-server /usr/bin/run-language-server
+COPY ./out/detect-language /usr/bin/detect-language
+COPY ./out/self-test /usr/bin/polygott-self-test
+COPY ./out/polygott-survey /usr/bin/polygott-survey
+COPY ./out/polygott-lang-setup /usr/bin/polygott-lang-setup
+COPY ./out/polygott-x11-vnc /usr/bin/polygott-x11-vnc
+COPY ./out/share/polygott/self-test.d/ /usr/share/polygott/self-test.d/
+COPY --from=upm /usr/local/bin/upm /usr/local/bin/upm
+COPY --from=websockify /root/websockify /usr/local/websockify
+
+COPY ./run_dir /run_dir/
+
+RUN ln -sf /usr/lib/chromium-browser/chromedriver /usr/local/bin
+
+COPY ./extra/apt-install /usr/bin/install-pkg
+RUN mkdir -p /opt/dap/java/ /opt/dap/python/
+COPY ./extra/java-dap /opt/dap/java/run
+COPY ./extra/py-dap /opt/dap/python/run
+RUN chmod +x /opt/dap/java/run /opt/dap/python/run
+
+COPY ./extra/_test_runner.py /home/runner/_test_runner.py
+COPY ./extra/cquery11 /opt/homes/cpp11/.cquery
+COPY ./extra/pycodestyle ${XDG_CONFIG_HOME}/pycodestyle
+COPY ./extra/pylintrc /etc/pylintrc
+COPY ./extra/config.toml ${XDG_CONFIG_HOME}/pypoetry/config.toml
+
+COPY ./extra/replit-v2.py /usr/local/lib/python3.6/dist-packages/replit.py
+COPY ./extra/replit-v2.py /usr/local/lib/python2.7/dist-packages/replit.py
+COPY ./extra/matplotlibrc /config/matplotlib/matplotlibrc
+
+COPY ./extra/fluxbox/init /etc/X11/fluxbox/init
+COPY ./extra/fluxbox/apps /etc/X11/fluxbox/apps
+COPY ./extra/pulse/client.conf ./extra/pulse/default.pa /etc/pulse/
+COPY ./extra/nixproxy.nix /opt/nixproxy.nix
+
+COPY ./extra/lang-gitignore /etc/.gitignore

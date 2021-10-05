@@ -26,6 +26,8 @@ packages = [
 popularity = 5.0
 setup = [
   "/opt/virtualenvs/python3/bin/python3 -m pip install pygame",
+  # Avoid using older versions of the typing library.
+  "/opt/virtualenvs/python3/bin/python3 -m pip uninstall -y typing",
 ]
 [run]
 command = [
@@ -43,10 +45,6 @@ command = [
   [tests.hello]
   code = "print(\"hello\")"
   output = "hello\n"
-
-  [tests.pygame]
-  code = "import pygame"
-  output = "pygame 1.9.6\nHello from the pygame community. https://www.pygame.org/contribute.html\n"
 
 [languageServer]
 command = [

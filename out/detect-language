@@ -1,0 +1,413 @@
+#!/bin/bash
+
+set -e
+
+# If the language is explicitly passed in, use that.
+LANGUAGE=
+while getopts ":sl:" opt; do
+  case "${opt}" in
+    l )
+      LANGUAGE="${OPTARG}"
+      ;;
+    \? )
+      echo "Usage: detect-language [-l language]"
+      exit 1
+      ;;
+  esac
+done
+
+case "${LANGUAGE}" in
+"assembly")
+  echo 'assembly';
+  exit 0
+  ;;
+"java")
+  echo 'java';
+  exit 0
+  ;;
+"ballerina")
+  echo 'ballerina';
+  exit 0
+  ;;
+"bash")
+  echo 'bash';
+  exit 0
+  ;;
+"c")
+  echo 'c';
+  exit 0
+  ;;
+"common lisp"|"clisp"|"lisp")
+  echo 'clisp';
+  exit 0
+  ;;
+"clojure")
+  echo 'clojure';
+  exit 0
+  ;;
+"cpp"|"c++")
+  echo 'cpp';
+  exit 0
+  ;;
+"cpp11")
+  echo 'cpp11';
+  exit 0
+  ;;
+"crystal")
+  echo 'crystal';
+  exit 0
+  ;;
+"csharp"|"c#")
+  echo 'csharp';
+  exit 0
+  ;;
+"D"|"d"|"dlang")
+  echo 'd';
+  exit 0
+  ;;
+"dart")
+  echo 'dart';
+  exit 0
+  ;;
+"deno")
+  echo 'deno';
+  exit 0
+  ;;
+"elisp")
+  echo 'elisp';
+  exit 0
+  ;;
+"erlang")
+  echo 'erlang';
+  exit 0
+  ;;
+"elixir")
+  echo 'elixir';
+  exit 0
+  ;;
+"nodejs")
+  echo 'nodejs';
+  exit 0
+  ;;
+"enzyme")
+  echo 'enzyme';
+  exit 0
+  ;;
+"express")
+  echo 'express';
+  exit 0
+  ;;
+"flow")
+  echo 'flow';
+  exit 0
+  ;;
+"forth")
+  echo 'forth';
+  exit 0
+  ;;
+"fortran")
+  echo 'fortran';
+  exit 0
+  ;;
+"fsharp"|"f#")
+  echo 'fsharp';
+  exit 0
+  ;;
+"gatsbyjs")
+  echo 'gatsbyjs';
+  exit 0
+  ;;
+"go"|"golang")
+  echo 'go';
+  exit 0
+  ;;
+"guile"|"scheme")
+  echo 'guile';
+  exit 0
+  ;;
+"haskell")
+  echo 'haskell';
+  exit 0
+  ;;
+"haxe")
+  echo 'haxe';
+  exit 0
+  ;;
+"jest")
+  echo 'jest';
+  exit 0
+  ;;
+"julia")
+  echo 'julia';
+  exit 0
+  ;;
+"kotlin")
+  echo 'kotlin';
+  exit 0
+  ;;
+"love2d")
+  echo 'love2d';
+  exit 0
+  ;;
+"lua")
+  echo 'lua';
+  exit 0
+  ;;
+"mercury")
+  echo 'mercury';
+  exit 0
+  ;;
+"nextjs")
+  echo 'nextjs';
+  exit 0
+  ;;
+"nim")
+  echo 'nim';
+  exit 0
+  ;;
+"nix")
+  echo 'nix';
+  exit 0
+  ;;
+"objective-c")
+  echo 'objective-c';
+  exit 0
+  ;;
+"ocaml")
+  echo 'ocaml';
+  exit 0
+  ;;
+"pascal")
+  echo 'pascal';
+  exit 0
+  ;;
+"php")
+  echo 'php';
+  exit 0
+  ;;
+"powershell")
+  echo 'powershell';
+  exit 0
+  ;;
+"prolog")
+  echo 'prolog';
+  exit 0
+  ;;
+"python3")
+  echo 'python3';
+  exit 0
+  ;;
+"pygame")
+  echo 'pygame';
+  exit 0
+  ;;
+"python")
+  echo 'python';
+  exit 0
+  ;;
+"pyxel")
+  echo 'pyxel';
+  exit 0
+  ;;
+"quil")
+  echo 'quil';
+  exit 0
+  ;;
+"raku")
+  echo 'raku';
+  exit 0
+  ;;
+"react_native")
+  echo 'react_native';
+  exit 0
+  ;;
+"reactjs")
+  echo 'reactjs';
+  exit 0
+  ;;
+"reactts")
+  echo 'reactts';
+  exit 0
+  ;;
+"rlang")
+  echo 'rlang';
+  exit 0
+  ;;
+"ruby")
+  echo 'ruby';
+  exit 0
+  ;;
+"rust")
+  echo 'rust';
+  exit 0
+  ;;
+"scala")
+  echo 'scala';
+  exit 0
+  ;;
+"sqlite")
+  echo 'sqlite';
+  exit 0
+  ;;
+"swift")
+  echo 'swift';
+  exit 0
+  ;;
+"tcl")
+  echo 'tcl';
+  exit 0
+  ;;
+"WebAssembly"|"webassembly")
+  echo 'webassembly';
+  exit 0
+  ;;
+"wren")
+  echo 'wren';
+  exit 0
+  ;;
+esac
+
+# No language explicitly provided. Detect the existence of entrypoint files.
+if [ -f main.sh ]; then echo 'nix'; exit 0; fi
+if [ -f main.py ]; then echo 'python3'; exit 0; fi
+if [ -f main.py ]; then echo 'pygame'; exit 0; fi
+if [ -f main.py ]; then echo 'pyxel'; exit 0; fi
+if [ -f main.asm ]; then echo 'assembly'; exit 0; fi
+if [ -f Main.java ]; then echo 'java'; exit 0; fi
+if [ -f main.bal ]; then echo 'ballerina'; exit 0; fi
+if [ -f main.sh ]; then echo 'bash'; exit 0; fi
+if [ -f main.c ]; then echo 'c'; exit 0; fi
+if [ -f main.lisp ]; then echo 'clisp'; exit 0; fi
+if [ -f main.clj ]; then echo 'clojure'; exit 0; fi
+if [ -f main.cpp ]; then echo 'cpp'; exit 0; fi
+if [ -f main.cpp ]; then echo 'cpp11'; exit 0; fi
+if [ -f main.cr ]; then echo 'crystal'; exit 0; fi
+if [ -f main.cs ]; then echo 'csharp'; exit 0; fi
+if [ -f main.d ]; then echo 'd'; exit 0; fi
+if [ -f main.dart ]; then echo 'dart'; exit 0; fi
+if [ -f index.ts ]; then echo 'deno'; exit 0; fi
+if [ -f main.el ]; then echo 'elisp'; exit 0; fi
+if [ -f main.erl ]; then echo 'erlang'; exit 0; fi
+if [ -f main.exs ]; then echo 'elixir'; exit 0; fi
+if [ -f index.js ]; then echo 'nodejs'; exit 0; fi
+if [ -f src/index.js ]; then echo 'flow'; exit 0; fi
+if [ -f main.fth ]; then echo 'forth'; exit 0; fi
+if [ -f main.f90 ]; then echo 'fortran'; exit 0; fi
+if [ -f main.fs ]; then echo 'fsharp'; exit 0; fi
+if [ -f src/pages/index.js ]; then echo 'gatsbyjs'; exit 0; fi
+if [ -f main.go ]; then echo 'go'; exit 0; fi
+if [ -f main.scm ]; then echo 'guile'; exit 0; fi
+if [ -f main.hs ]; then echo 'haskell'; exit 0; fi
+if [ -f Main.hx ]; then echo 'haxe'; exit 0; fi
+if [ -f config.json ]; then echo 'jest'; exit 0; fi
+if [ -f main.jl ]; then echo 'julia'; exit 0; fi
+if [ -f main.kt ]; then echo 'kotlin'; exit 0; fi
+if [ -f main.lua ]; then echo 'love2d'; exit 0; fi
+if [ -f main.lua ]; then echo 'lua'; exit 0; fi
+if [ -f main.m ]; then echo 'mercury'; exit 0; fi
+if [ -f pages/index.js ]; then echo 'nextjs'; exit 0; fi
+if [ -f main.nim ]; then echo 'nim'; exit 0; fi
+if [ -f main.m ]; then echo 'objective-c'; exit 0; fi
+if [ -f main.ml ]; then echo 'ocaml'; exit 0; fi
+if [ -f main.pas ]; then echo 'pascal'; exit 0; fi
+if [ -f main.php ]; then echo 'php'; exit 0; fi
+if [ -f main.ps1 ]; then echo 'powershell'; exit 0; fi
+if [ -f main.pro ]; then echo 'prolog'; exit 0; fi
+if [ -f main.py ]; then echo 'python'; exit 0; fi
+if [ -f main.quil ]; then echo 'quil'; exit 0; fi
+if [ -f main.raku ]; then echo 'raku'; exit 0; fi
+if [ -f index.js ]; then echo 'react_native'; exit 0; fi
+if [ -f src/index.js ]; then echo 'reactjs'; exit 0; fi
+if [ -f src/index.tsx ]; then echo 'reactts'; exit 0; fi
+if [ -f main.r ]; then echo 'rlang'; exit 0; fi
+if [ -f main.rb ]; then echo 'ruby'; exit 0; fi
+if [ -f main.rs ]; then echo 'rust'; exit 0; fi
+if [ -f Main.scala ]; then echo 'scala'; exit 0; fi
+if [ -f main.sql ]; then echo 'sqlite'; exit 0; fi
+if [ -f main.swift ]; then echo 'swift'; exit 0; fi
+if [ -f main.tcl ]; then echo 'tcl'; exit 0; fi
+if [ -f main.wat ]; then echo 'webassembly'; exit 0; fi
+if [ -f main.wren ]; then echo 'wren'; exit 0; fi
+if [ -f index.js ]; then echo 'enzyme'; exit 0; fi
+if [ -f index.js ]; then echo 'express'; exit 0; fi
+
+# No entrypoint files detected. Try to sniff out the existence of files based
+# on extension.
+if [ -n "$(find . -name '*.sh')" ]; then echo 'nix'; exit 0; fi
+if [ -n "$(find . -name '*.py')" ]; then echo 'python3'; exit 0; fi
+if [ -n "$(find . -name '*.py')" ]; then echo 'pygame'; exit 0; fi
+if [ -n "$(find . -name '*.py')" ]; then echo 'pyxel'; exit 0; fi
+if [ -n "$(find . -name '*.asm')" ]; then echo 'assembly'; exit 0; fi
+if [ -n "$(find . -name '*.s')" ]; then echo 'assembly'; exit 0; fi
+if [ -n "$(find . -name '*.java')" ]; then echo 'java'; exit 0; fi
+if [ -n "$(find . -name '*.bal')" ]; then echo 'ballerina'; exit 0; fi
+if [ -n "$(find . -name '*.sh')" ]; then echo 'bash'; exit 0; fi
+if [ -n "$(find . -name '*.c')" ]; then echo 'c'; exit 0; fi
+if [ -n "$(find . -name '*.lisp')" ]; then echo 'clisp'; exit 0; fi
+if [ -n "$(find . -name '*.clj')" ]; then echo 'clojure'; exit 0; fi
+if [ -n "$(find . -name '*.cljc')" ]; then echo 'clojure'; exit 0; fi
+if [ -n "$(find . -name '*.cljs')" ]; then echo 'clojure'; exit 0; fi
+if [ -n "$(find . -name '*.edn')" ]; then echo 'clojure'; exit 0; fi
+if [ -n "$(find . -name '*.cpp')" ]; then echo 'cpp'; exit 0; fi
+if [ -n "$(find . -name '*.cc')" ]; then echo 'cpp'; exit 0; fi
+if [ -n "$(find . -name '*.cpp')" ]; then echo 'cpp11'; exit 0; fi
+if [ -n "$(find . -name '*.cc')" ]; then echo 'cpp11'; exit 0; fi
+if [ -n "$(find . -name '*.cr')" ]; then echo 'crystal'; exit 0; fi
+if [ -n "$(find . -name '*.cs')" ]; then echo 'csharp'; exit 0; fi
+if [ -n "$(find . -name '*.d')" ]; then echo 'd'; exit 0; fi
+if [ -n "$(find . -name '*.dart')" ]; then echo 'dart'; exit 0; fi
+if [ -n "$(find . -name '*.ts')" ]; then echo 'deno'; exit 0; fi
+if [ -n "$(find . -name '*.el')" ]; then echo 'elisp'; exit 0; fi
+if [ -n "$(find . -name '*.elc')" ]; then echo 'elisp'; exit 0; fi
+if [ -n "$(find . -name '*.erl')" ]; then echo 'erlang'; exit 0; fi
+if [ -n "$(find . -name '*.ex')" ]; then echo 'elixir'; exit 0; fi
+if [ -n "$(find . -name '*.exs')" ]; then echo 'elixir'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'nodejs'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'flow'; exit 0; fi
+if [ -n "$(find . -name '*.fth')" ]; then echo 'forth'; exit 0; fi
+if [ -n "$(find . -name '*.4th')" ]; then echo 'forth'; exit 0; fi
+if [ -n "$(find . -name '*.f90')" ]; then echo 'fortran'; exit 0; fi
+if [ -n "$(find . -name '*.fs')" ]; then echo 'fsharp'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'gatsbyjs'; exit 0; fi
+if [ -n "$(find . -name '*.go')" ]; then echo 'go'; exit 0; fi
+if [ -n "$(find . -name '*.scm')" ]; then echo 'guile'; exit 0; fi
+if [ -n "$(find . -name '*.hs')" ]; then echo 'haskell'; exit 0; fi
+if [ -n "$(find . -name '*.hx')" ]; then echo 'haxe'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'jest'; exit 0; fi
+if [ -n "$(find . -name '*.jl')" ]; then echo 'julia'; exit 0; fi
+if [ -n "$(find . -name '*.kt')" ]; then echo 'kotlin'; exit 0; fi
+if [ -n "$(find . -name '*.lua')" ]; then echo 'love2d'; exit 0; fi
+if [ -n "$(find . -name '*.lua')" ]; then echo 'lua'; exit 0; fi
+if [ -n "$(find . -name '*.m')" ]; then echo 'mercury'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'nextjs'; exit 0; fi
+if [ -n "$(find . -name '*.nim')" ]; then echo 'nim'; exit 0; fi
+if [ -n "$(find . -name '*.m')" ]; then echo 'objective-c'; exit 0; fi
+if [ -n "$(find . -name '*.mm')" ]; then echo 'objective-c'; exit 0; fi
+if [ -n "$(find . -name '*.ml')" ]; then echo 'ocaml'; exit 0; fi
+if [ -n "$(find . -name '*.pas')" ]; then echo 'pascal'; exit 0; fi
+if [ -n "$(find . -name '*.pp')" ]; then echo 'pascal'; exit 0; fi
+if [ -n "$(find . -name '*.php')" ]; then echo 'php'; exit 0; fi
+if [ -n "$(find . -name '*.ps1')" ]; then echo 'powershell'; exit 0; fi
+if [ -n "$(find . -name '*.psm1')" ]; then echo 'powershell'; exit 0; fi
+if [ -n "$(find . -name '*.psd1')" ]; then echo 'powershell'; exit 0; fi
+if [ -n "$(find . -name '*.pro')" ]; then echo 'prolog'; exit 0; fi
+if [ -n "$(find . -name '*.prolog')" ]; then echo 'prolog'; exit 0; fi
+if [ -n "$(find . -name '*.wam')" ]; then echo 'prolog'; exit 0; fi
+if [ -n "$(find . -name '*.py')" ]; then echo 'python'; exit 0; fi
+if [ -n "$(find . -name '*.quil')" ]; then echo 'quil'; exit 0; fi
+if [ -n "$(find . -name '*.p6')" ]; then echo 'raku'; exit 0; fi
+if [ -n "$(find . -name '*.raku')" ]; then echo 'raku'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'react_native'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'reactjs'; exit 0; fi
+if [ -n "$(find . -name '*.tsx')" ]; then echo 'reactts'; exit 0; fi
+if [ -n "$(find . -name '*.r')" ]; then echo 'rlang'; exit 0; fi
+if [ -n "$(find . -name '*.rb')" ]; then echo 'ruby'; exit 0; fi
+if [ -n "$(find . -name '*.rs')" ]; then echo 'rust'; exit 0; fi
+if [ -n "$(find . -name '*.scala')" ]; then echo 'scala'; exit 0; fi
+if [ -n "$(find . -name '*.sql')" ]; then echo 'sqlite'; exit 0; fi
+if [ -n "$(find . -name '*.swift')" ]; then echo 'swift'; exit 0; fi
+if [ -n "$(find . -name '*.tcl')" ]; then echo 'tcl'; exit 0; fi
+if [ -n "$(find . -name '*.wat')" ]; then echo 'webassembly'; exit 0; fi
+if [ -n "$(find . -name '*.wren')" ]; then echo 'wren'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'enzyme'; exit 0; fi
+if [ -n "$(find . -name '*.js')" ]; then echo 'express'; exit 0; fi
