@@ -24,7 +24,12 @@ def _main() -> None:
     with os.fdopen(3, 'w') as port_fd:
         port_fd.write(str(debugpy.listen(('localhost', 0))[1]))
     debugpy.wait_for_client()
-    target_as_str = sys.argv[1]
+    if len(sys.argv) > 1:
+        # The first argument to this script is this script itself, so we need
+        # to remove it. `runpy.run_path` below will change the new
+        # `sys.argv[0]` to the correct script name.
+        sys.argv.pop(0)
+    target_as_str = sys.argv[0]
     dir = os.path.dirname(os.path.abspath(target_as_str))
     sys.path.insert(0, os.getcwd())
     runpy.run_path(target_as_str, run_name="__main__")
