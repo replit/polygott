@@ -7,13 +7,13 @@ aptKeyUrls = [
   "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
 ]
 aptRepos = [
-  "deb https://deb.nodesource.com/node_14.x bionic main",
+  "deb https://deb.nodesource.com/node_18.x bionic main",
 ]
 packages = [
   "nodejs"
 ]
 setup = [
-  "npm install -g jest@23.1.0 prettier@1.13.4 babylon@6.15 babel-traverse@6.21 walker@1.0.7 yarn",
+  "npm install -g jest@28.0.2 prettier@2.6.2 babylon@6.18.0 babel-traverse@6.26.0 walker@1.0.8 yarn",
   "yarn global add jest",
   "/usr/bin/build-prybar-lang.sh nodejs"
 ]
