@@ -1,4 +1,12 @@
 # Polygott
+
+**Warning**: This repository is now obsolete. Replit is no longer developing
+Polygott and is fully betting on [nix](https://blog.replit.com/nix) to expose
+tools and languages on Repls. This repository will still exist for archiving
+and historical purposes.
+
+---
+
 ## Overview
 
 [Replit.com] allows you to quickly get started with any programming language
