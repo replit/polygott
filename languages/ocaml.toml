@@ -13,28 +13,46 @@ aptRepos = [
 packages = [
   "m4",
   "ocaml",
-  "opam"
+  "opam",
+  "libgmp-dev"
 ]
 
 setup = [
-  "opam init -c ocaml-system -n --disable-sandboxing",
-  "/usr/bin/build-prybar-lang.sh ocaml"
+  "opam init --root /opt/homes/ocaml/.opam -c 4.10.0 --no-setup --disable-sandboxing",
+  "opam install --root /opt/homes/ocaml/.opam --yes base containers dune merlin menhir ocamlfind ocamlformat sedlex utop yojson zarith",
+  "opam env --root /opt/homes/ocaml/.opam --set-root >> /opt/homes/ocaml/.opam_env",
+  "/usr/bin/build-prybar-lang.sh ocaml",
 ]
 
 [compile]
 command = [
-  "ocamlc",
+  "CAML_LD_LIBRARY_PATH=/opt/homes/ocaml/.opam/4.10.0/lib/stublibs:/opt/homes/ocaml/.opam/4.10.0/lib/ocaml/stublibs:/opt/homes/ocaml/.opam/4.10.0/lib/ocaml",
+  "OCAML_TOPLEVEL_PATH=/opt/homes/ocaml/.opam/4.10.0/lib/toplevel",
+  "PATH=/opt/homes/ocaml/.opam/4.10.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "/opt/homes/ocaml/.opam/4.10.0/bin/ocamlfind",
+  "ocamlopt",
+  "-linkpkg",
+  "-package",
+  "base,containers",
   "-o",
-  "main"
+  "main",
 ]
 
 [run]
 command = [
-  "./main"
+  "./main",
 ]
 
 [tests]
 
   [tests.hello]
-  code = """print_string "hello world!\n";;"""
+  code = 'let () = print_endline "hello world!"'
   output = "hello world!\n"
+
+  [tests.containers]
+  code = '''let () = 
+  ["hello"; "world"] 
+  |> CCList.to_string ~sep:", " ~stop:"!" CCFun.id 
+  |> print_endline
+  '''
+  output = "hello, world!\n"
