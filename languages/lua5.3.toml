@@ -1,0 +1,31 @@
+name = "lua5.3"
+entrypoint = "main.lua"
+extensions = [
+  "lua"
+]
+packages = [
+  "lua5.3",
+  "liblua5.3-0",
+  "lua-socket",
+  "luarocks"
+]
+setup = [
+  "luarocks install luasec && luarocks install penlight"
+#  "/usr/bin/build-prybar-lang.sh lua"
+]
+
+[run]
+command = [
+  "lua5.3",
+  "./main.lua"
+]
+
+[tests]
+
+  [tests.hello]
+  code = "print(\"hello\")"
+  output = "hello\n"
+
+  [tests.version]
+  code = "print(_VERSION)"
+  output = "Lua 5.3\n"
